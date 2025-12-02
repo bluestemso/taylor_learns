@@ -1,0 +1,501 @@
+{% extends "web/base.html" %}
+{% load static %}
+
+{% block page_title %}Typography Showcase - Pegasus Tailwind Classes{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <h1 class="text-4xl font-bold mb-8 text-center">Pegasus Tailwind CSS Classes Showcase</h1>
+
+    <!-- Typography Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Typography Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Title -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-title</h3>
+                    <p class="pg-help mb-4">Large, bold headings with bottom margin</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-title">This is a Page Title</div>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-title { @apply text-3xl font-bold mb-2; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Subtitle -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-subtitle</h3>
+                    <p class="pg-help mb-4">Medium-sized subtitles</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-subtitle">This is a Subtitle</div>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-subtitle { @apply text-xl mb-1; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Link -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-link</h3>
+                    <p class="pg-help mb-4">Styled links with hover effect</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <a href="#" class="pg-link">This is a Link (hover me)</a>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-link { @apply text-blue-500 hover:text-blue-800; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Text Alignment -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Text Alignment Classes</h3>
+                    <p class="pg-help mb-4">Center, left, and right text alignment</p>
+                    <div class="space-y-4">
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-text-centered">Centered Text</div>
+                        </div>
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-text-left">Left Aligned Text</div>
+                        </div>
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-text-right">Right Aligned Text</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Text -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-help</h3>
+                    <p class="pg-help mb-4">Small, muted helper text</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-help">This is help text for providing additional context</div>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-help { @apply text-sm text-base-content/70; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Text Colors -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Text Color Classes</h3>
+                    <p class="pg-help mb-4">Semantic color classes for text</p>
+                    <div class="space-y-2">
+                        <div class="pg-text-primary">Primary Text Color</div>
+                        <div class="pg-text-success">Success Text Color</div>
+                        <div class="pg-text-info">Info Text Color</div>
+                        <div class="pg-text-danger">Danger Text Color</div>
+                        <div class="pg-text-muted">Muted Text Color</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-content</h3>
+                    <p class="pg-help mb-4">Prose styling for rich content</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-content">
+                            <h1>Heading 1</h1>
+                            <h2>Heading 2</h2>
+                            <p>This is a paragraph with <strong>bold text</strong> and <em>italic text</em>. The prose
+                                class applies beautiful typography to content.</p>
+                            <ul>
+                                <li>List item 1</li>
+                                <li>List item 2</li>
+                                <li>List item 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-content { @apply prose max-w-none lg:prose-lg; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Hidden Mobile Inline -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-hidden-mobile-inline</h3>
+                    <p class="pg-help mb-4">Hidden on mobile, inline-block on desktop</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <span>Always visible</span>
+                        <span class="pg-hidden-mobile-inline">(Hidden on mobile, visible on desktop)</span>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-hidden-mobile-inline { @apply hidden md:inline-block; }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Button Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Button Variants -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Button Variants</h3>
+                    <p class="pg-help mb-4">Different button styles</p>
+                    <div class="flex flex-wrap gap-4 border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <button class="pg-button-primary">Primary Button</button>
+                        <button class="pg-button-secondary">Secondary Button</button>
+                        <button class="pg-button-light">Light Button</button>
+                        <button class="pg-button-danger">Danger Button</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inline Buttons -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-inline-buttons</h3>
+                    <p class="pg-help mb-4">Horizontal button group with spacing</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-inline-buttons">
+                            <button class="pg-button-primary">Save</button>
+                            <button class="pg-button-secondary">Cancel</button>
+                            <button class="pg-button-light">Reset</button>
+                        </div>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-inline-buttons { @apply flex space-x-1; }</code></pre>
+                </div>
+            </div>
+
+            <!-- Icon -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-icon</h3>
+                    <p class="pg-help mb-4">Icon container sizing</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <span class="pg-icon">
+                            <i class="fas fa-heart"></i>
+                        </span>
+                        <span class="pg-icon">
+                            <i class="fas fa-star"></i>
+                        </span>
+                        <span class="pg-icon">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
+                    <pre
+                        class="mt-4 bg-base-200 p-3 rounded text-sm overflow-x-auto"><code>.pg-icon { @apply w-6 h-6 inline-flex justify-center items-center; }</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forms Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Form Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Form Input Group -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Form Elements</h3>
+                    <p class="pg-help mb-4">Input group, label, and control styles</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-input-group">
+                            <label class="pg-label">Email Address</label>
+                            <input type="email" class="pg-control" placeholder="name@example.com">
+                        </div>
+                        <div class="pg-input-group">
+                            <label class="pg-label">Password</label>
+                            <input type="password" class="pg-control" placeholder="Enter password">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Select -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-select</h3>
+                    <p class="pg-help mb-4">Select dropdown styling</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-select">
+                            <select>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layout Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Layout Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Columns -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-columns</h3>
+                    <p class="pg-help mb-4">Responsive column layout</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-columns">
+                            <div class="pg-column bg-base-200 p-4 rounded">Column 1</div>
+                            <div class="pg-column bg-base-200 p-4 rounded">Column 2</div>
+                            <div class="pg-column bg-base-200 p-4 rounded">Column 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column Sizing -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Column Sizing</h3>
+                    <p class="pg-help mb-4">Fixed-width columns</p>
+                    <div class="space-y-4">
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-columns">
+                                <div class="pg-column-one-quarter bg-base-200 p-4 rounded">1/4</div>
+                                <div class="pg-column bg-base-200 p-4 rounded">Auto</div>
+                            </div>
+                        </div>
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-columns">
+                                <div class="pg-column-one-third bg-base-200 p-4 rounded">1/3</div>
+                                <div class="pg-column bg-base-200 p-4 rounded">Auto</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reversed Columns -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-columns-reversed</h3>
+                    <p class="pg-help mb-4">Reversed column order on desktop</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-columns pg-columns-reversed">
+                            <div class="pg-column bg-base-200 p-4 rounded">First in source (right on desktop)</div>
+                            <div class="pg-column bg-base-300 p-4 rounded">Second in source (left on desktop)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alignment -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Alignment Classes</h3>
+                    <p class="pg-help mb-4">Content and item alignment</p>
+                    <div class="space-y-4">
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="pg-columns pg-align-items-center">
+                                <div class="pg-column bg-base-200 p-4 rounded">
+                                    <h4 class="text-2xl">Large</h4>
+                                    <p>Content</p>
+                                </div>
+                                <div class="pg-column bg-base-200 p-4 rounded">Vertically centered</div>
+                            </div>
+                        </div>
+                        <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                            <div class="flex pg-justify-content-end gap-2">
+                                <button class="pg-button-primary">Right aligned</button>
+                                <button class="pg-button-secondary">Buttons</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Table Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Table Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Table -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-table</h3>
+                    <p class="pg-help mb-4">Zebra-striped table</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <table class="pg-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>john@example.com</td>
+                                    <td>Admin</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>jane@example.com</td>
+                                    <td>User</td>
+                                </tr>
+                                <tr>
+                                    <td>Bob Johnson</td>
+                                    <td>bob@example.com</td>
+                                    <td>Editor</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Responsive Table -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-table-responsive</h3>
+                    <p class="pg-help mb-4">Horizontally scrollable table container</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-table-responsive">
+                            <table class="pg-table">
+                                <thead>
+                                    <tr>
+                                        <th>Column 1</th>
+                                        <th>Column 2</th>
+                                        <th>Column 3</th>
+                                        <th>Column 4</th>
+                                        <th>Column 5</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Data 1</td>
+                                        <td>Data 2</td>
+                                        <td>Data 3</td>
+                                        <td>Data 4</td>
+                                        <td>Data 5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumbs Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Breadcrumb Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Breadcrumbs -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-breadcrumbs</h3>
+                    <p class="pg-help mb-4">Navigation breadcrumb trail</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <ul class="pg-breadcrumbs">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Category</a></li>
+                            <li><a href="#">Subcategory</a></li>
+                            <li><span class="pg-breadcrumb-active">Current Page</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Card Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Card -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-card & pg-card-body</h3>
+                    <p class="pg-help mb-4">Card container with shadow and body padding</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-card">
+                            <div class="pg-card-body">
+                                <h4 class="text-lg font-bold">Card Title</h4>
+                                <p>This is the card content area with appropriate padding.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratio -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">pg-ratio-3x2</h3>
+                    <p class="pg-help mb-4">3:2 aspect ratio</p>
+                    <div class="border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <div class="pg-ratio-3x2 bg-base-200 flex items-center justify-center">
+                            <span>3:2 Aspect Ratio Box</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Badge Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Badges -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Badge Variants</h3>
+                    <p class="pg-help mb-4">Different badge styles</p>
+                    <div class="flex flex-wrap gap-4 border-2 border-dashed border-base-300 p-4 rounded-lg">
+                        <span class="pg-badge-default">Default</span>
+                        <span class="pg-badge-success">Success</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Background Section -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2">Background Classes</h2>
+
+        <div class="space-y-8">
+            <!-- Background Colors -->
+            <div class="pg-card">
+                <div class="pg-card-body">
+                    <h3 class="text-xl font-semibold mb-2">Background Colors</h3>
+                    <p class="pg-help mb-4">Semantic background colors</p>
+                    <div class="space-y-4">
+                        <div class="pg-bg-danger p-4 rounded-lg">
+                            <strong>Danger Background</strong> - Used for error states or warnings
+                        </div>
+                        <div class="pg-bg-success p-4 rounded-lg">
+                            <strong>Success Background</strong> - Used for success states
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock body %}

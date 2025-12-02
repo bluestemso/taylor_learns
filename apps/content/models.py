@@ -36,7 +36,7 @@ class BaseContentPage(Page):
 
 class ContentPage(BaseContentPage):
     """
-    A page of generic content.
+    A page of generic content, for example an 'About' or 'Contact' page.
     """
 
     body = StreamField(_get_default_block_types())
@@ -63,7 +63,7 @@ class BlogPage(BaseContentPage):
     """
 
     date = models.DateField("Post date")
-    intro = models.CharField(max_length=250)
+    intro = models.CharField(max_length=250, blank=True, null=True)
     body = StreamField(_get_default_block_types())
 
     search_fields = Page.search_fields + [

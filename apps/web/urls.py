@@ -6,6 +6,7 @@ from . import views
 app_name = "web"
 urlpatterns = [
     path("", views.home, name="home"),
+    path("typography/", TemplateView.as_view(template_name="web/typography.html"), name="typography"),
     path("terms/", TemplateView.as_view(template_name="web/terms.html"), name="terms"),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots.txt"),
     # these views are just for testing error pages
