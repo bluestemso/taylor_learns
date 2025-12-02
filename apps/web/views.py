@@ -3,20 +3,28 @@ from django.http import Http404
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from health_check.views import MainView
+from wagtail.models import Page
+
+from apps.content.models import BlogIndexPage
 
 
 def home(request):
-    if request.user.is_authenticated:
-        return render(
-            request,
-            "web/app_home.html",
-            context={
-                "active_tab": "dashboard",
-                "page_title": _("Dashboard"),
-            },
-        )
-    else:
-        return render(request, "web/landing_page.html")
+    # Get the blog index page and its posts
+    blog_index = BlogIndexPage.objects.live().first()
+    blog_posts = []
+
+    if blog_index:
+        blog_posts = blog_index.get_ordered_blog_posts()
+
+    return render(
+        request,
+        "web/home.html",
+        context={
+            "blog_posts": blog_posts,
+            "site_name": settings.PROJECT_METADATA.get("NAME", "Taylor Learns"),
+            "page_title": _("Home"),
+        },
+    )
 
 
 def simulate_error(request):

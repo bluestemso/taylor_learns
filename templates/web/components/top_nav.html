@@ -12,39 +12,50 @@
         {% block mobile_nav %}
         <li>
           <a class="{% if request.path == '/' %}active{% endif %}" href="{% url 'web:home' %}">
-            <div>{{project_meta.NAME}}</div>
-          </a>
-        </li>
-        {% slugurl 'blog' as blog_url %}
-        <li>
-          <a class="{% if blog_url in request.path %}active{% endif %}" href="{{ blog_url }}">
             {% translate "Blog" %}
           </a>
         </li>
+        {% slugurl 'portfolio' as portfolio_url %}
+        {% if portfolio_url %}
+        <li>
+          <a class="{% if portfolio_url in request.path %}active{% endif %}" href="{{ portfolio_url }}">
+            {% translate "Portfolio" %}
+          </a>
+        </li>
+        {% endif %}
         {% endblock %}
       </ul>
     </div>
+    <a class="btn btn-ghost normal-case text-xl" href="{% url 'web:home' %}">
+      {{project_meta.NAME}}
+    </a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <div role="tablist" class="tabs p-0">
       <a class="tab {% if request.path == '/' %}tab-active{% endif %}" href="{% url 'web:home' %}">
-        <div>{{project_meta.NAME}}</div>
-      </a>
-      {% slugurl 'blog' as blog_url %}
-      <a class="tab {% if blog_url in request.path %}tab-active{% endif %}" href="{{ blog_url }}">
         {% translate "Blog" %}
       </a>
+      {% slugurl 'portfolio' as portfolio_url %}
+      {% if portfolio_url %}
+      <a class="tab {% if portfolio_url in request.path %}tab-active{% endif %}" href="{{ portfolio_url }}">
+        {% translate "Portfolio" %}
+      </a>
+      {% endif %}
     </div>
   </div>
   <div class="navbar-end">
     {% if user.is_authenticated %}
-    {% else %}
-    <a href="{% url 'account_signup' %}" class="btn btn-primary">
-      {% translate "Sign Up" %}
-    </a>
-    <a href="{% url 'account_login' %}" class="btn btn-outline ml-2">
-      {% translate "Sign In" %}
-    </a>
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-ghost btn-circle avatar placeholder">
+        <div class="bg-neutral text-neutral-content rounded-full w-10">
+          <span class="text-xl">{{ user.email|slice:":1"|upper }}</span>
+        </div>
+      </label>
+      <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 z-10">
+        <li><a href="{% url 'users:user_profile' %}">{% translate "Profile" %}</a></li>
+        <li><a href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a></li>
+      </ul>
+    </div>
     {% endif %}
     {% include "web/components/dark_mode_selector.html" %}
   </div>
