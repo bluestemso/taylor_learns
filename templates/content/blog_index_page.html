@@ -10,7 +10,7 @@
   <div class="pg-columns">
     <div class="pg-column">
       {# Title - displayed for all page types #}
-      <h2 class="pg-title"><a class="pg-link" href="{% pageurl post %}">{{ post.title }}</a></h2>
+      <h2 class="pg-title"><a href="{% pageurl post %}">{{ post.title }}</a></h2>
 
       {# Date - displayed for all page types #}
       <div class="pg-text-muted mb-2">{{ post.date }}</div>
