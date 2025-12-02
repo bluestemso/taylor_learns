@@ -1,0 +1,20 @@
+{% extends "content/base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<article class="prose lg:prose-xl mx-auto my-8">
+    <div class="text-sm text-gray-500 mb-2">{{ page.date }}</div>
+    <div class="micro-post-body">
+        {{ page.body }}
+    </div>
+    {% if page.tags.all %}
+    <div class="mt-4">
+        Tags:
+        {% for tag in page.tags.all %}
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{
+            tag }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</article>
+{% endblock %}
