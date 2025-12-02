@@ -69,10 +69,10 @@ registry:
 accessories:
   # docker hostname will be "taylor_learns-postgres"
   postgres:
-    image: postgres:latest
+    image: postgres:17
     host: 46.62.221.199
     directories:
-      - data:/var/lib/postgresql
+      - data:/var/lib/postgresql/data
     env:
       clear:
         POSTGRES_USER: taylor_learns
