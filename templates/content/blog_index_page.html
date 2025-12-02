@@ -9,20 +9,55 @@
 <div class="app-card">
   <div class="pg-columns">
     <div class="pg-column">
+      {# Title - displayed for all page types #}
       <h2 class="pg-title"><a class="pg-link" href="{% pageurl post %}">{{ post.title }}</a></h2>
-      {% if post.intro %}
-      <div class="pg-subtitle">{{ post.intro }}</div>
+
+      {# Date - displayed for all page types #}
+      <div class="pg-text-muted mb-2">{{ post.date }}</div>
+
+      {# Tags - displayed for all page types #}
+      {% if post.tags.all %}
+      <div class="mb-3">
+        {% for tag in post.tags.all %}
+        <span class="badge badge-outline mr-2 mb-1">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Content varies by page type #}
+      {% if post.get_template_type == "blog" %}
+      {# BlogPage: Show intro with Read More link #}
+      <div class="pg-subtitle mb-2">{{ post.intro }}</div>
       <div class="mt-2"><a class="pg-link" href="{% pageurl post %}">Read More</a></div>
-      {% else %}
+
+      {% elif post.get_template_type == "micropost" %}
+      {# MicroPostPage: Show entire body content #}
       <div class="pg-content">{% include_block post.body %}</div>
+
+      {% elif post.get_template_type == "external_link" %}
+      {# ExternalLinkPage: Show quote and commentary #}
+      {% if post.quote %}
+      <blockquote class="border-l-4 border-base-content/30 pl-4 italic mb-3">
+        {{ post.quote|richtext }}
+      </blockquote>
+      {% endif %}
+      <div class="pg-content mb-2">{{ post.commentary|richtext }}</div>
+      <div class="mt-2">
+        <a class="pg-link" href="{{ post.link_url }}" target="_blank" rel="noopener noreferrer">
+          View External Link →
+        </a>
+      </div>
       {% endif %}
     </div>
+
+    {# Main image for BlogPages only #}
+    {% if post.get_template_type == "blog" %}
     {% with post.main_image as main_image %}{% if main_image %}
     <div class="pg-column-one-quarter">
       {% image main_image fill-300x200 %}
     </div>
     {% endif %}{% endwith %}
-    <div> {{ post.date }}</div>
+    {% endif %}
   </div>
 </div>
 {% endwith %}{% endfor %}

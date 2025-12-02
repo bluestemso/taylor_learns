@@ -101,6 +101,9 @@ class BlogPage(BaseContentPage):
         else:
             return None
 
+    def get_template_type(self):
+        return "blog"
+
 
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(BlogPage, on_delete=models.CASCADE, related_name="gallery_images")
@@ -133,6 +136,9 @@ class MicroPostPage(BaseContentPage):
 
     parent_page_types = ["content.BlogIndexPage"]
 
+    def get_template_type(self):
+        return "micropost"
+
 
 class ExternalLinkPage(BaseContentPage):
     """
@@ -152,6 +158,9 @@ class ExternalLinkPage(BaseContentPage):
     ]
 
     parent_page_types = ["content.BlogIndexPage"]
+
+    def get_template_type(self):
+        return "external_link"
 
 
 class PortfolioIndexPage(BaseContentPage):

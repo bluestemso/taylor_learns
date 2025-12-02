@@ -1,5 +1,5 @@
 module.exports = {
-  darkMode: ["class", '[data-theme="dark"]'],
+  darkMode: ["class", '[data-theme="forest"]'],
   content: [],
   safelist: [
     'alert-success',
