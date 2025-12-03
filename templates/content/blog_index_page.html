@@ -7,7 +7,7 @@
 </div>
 
 {% for post in page.get_ordered_blog_posts %}{% with post.specific as post %}
-<div class="card bg-base-100 shadow-xl mb-6">
+<div class="card bg-base-100 shadow-xl border border-primary/20 mb-8">
 
   {# Main image for BlogPages only - displayed at top of card #}
   {% if post.get_template_type == "blog" %}
@@ -18,51 +18,58 @@
   {% endif %}{% endwith %}
   {% endif %}
 
+  {# Title, date, and content displayed for all page types #}
   <div class="card-body">
-    {# Title - displayed for all page types #}
-    <h2 class="card-title">
-      <a href="{% pageurl post %}" class="hover:text-primary">{{ post.title }}</a>
-    </h2>
-
-    {# Date - displayed for all page types #}
-    <div class="text-sm text-base-content/70 mb-2">{{ post.date }}</div>
-
-    {# Tags - displayed for all page types #}
-    {% if post.tags.all %}
-    <div class="mb-3">
-      {% for tag in post.tags.all %}
-      <span class="badge badge-outline mr-2 mb-1">{{ tag }}</span>
-      {% endfor %}
+    {# First line: Title (left) and Date (right) #}
+    <div class="flex justify-between items-start gap-4 mb-4">
+      <h2 class="card-title">
+        <a href="{% pageurl post %}" class="hover:text-primary">{{ post.title }}</a>
+      </h2>
+      <div class="text-sm text-base-content/70 whitespace-nowrap">{{ post.date }}</div>
     </div>
-    {% endif %}
 
     {# Content varies by page type #}
+    <div class="mb-4">
+      
+      {% if post.get_template_type == "blog" %}
+      {# BlogPage: Show intro #}
+      <p>{{ post.intro }}</p>
 
-    {% if post.get_template_type == "blog" %}
-    {# BlogPage: Show intro with Read More link #}
-    <p class="mb-2">{{ post.intro }}</p>
-    <div class="card-actions justify-end">
-      <a class="btn btn-primary btn-sm" href="{% pageurl post %}">Read More</a>
+      {% elif post.get_template_type == "micropost" %}
+      {# MicroPostPage: Show entire body content #}
+      <div class="prose max-w-none">{% include_block post.body %}</div>
+
+      {% elif post.get_template_type == "external_link" %}
+      {# ExternalLinkPage: Show quote and commentary #}
+      {% if post.quote %}
+      <blockquote class="border-l-4 border-base-content/30 pl-4 italic mb-3">
+        {{ post.quote|richtext }}
+      </blockquote>
+      {% endif %}
+      <div class="prose max-w-none">{{ post.commentary|richtext }}</div>
+      {% endif %}
     </div>
 
-    {% elif post.get_template_type == "micropost" %}
-    {# MicroPostPage: Show entire body content #}
-    <div class="prose max-w-none">{% include_block post.body %}</div>
+    {# Bottom line: Tags (left) and Buttons (right) #}
+    <div class="flex justify-between items-center gap-4">
+      <div class="flex flex-wrap gap-2">
+        {% if post.tags.all %}
+        {% for tag in post.tags.all %}
+        <span class="badge badge-outline">{{ tag }}</span>
+        {% endfor %}
+        {% endif %}
+      </div>
 
-    {% elif post.get_template_type == "external_link" %}
-    {# ExternalLinkPage: Show quote and commentary #}
-    {% if post.quote %}
-    <blockquote class="border-l-4 border-base-content/30 pl-4 italic mb-3">
-      {{ post.quote|richtext }}
-    </blockquote>
-    {% endif %}
-    <div class="prose max-w-none mb-2">{{ post.commentary|richtext }}</div>
-    <div class="card-actions justify-end">
-      <a class="btn btn-primary btn-sm" href="{{ post.link_url }}" target="_blank" rel="noopener noreferrer">
-        View External Link ↗
-      </a>
+      <div class="card-actions">
+        {% if post.get_template_type == "blog" %}
+        <a class="btn btn-primary btn-sm" href="{% pageurl post %}">Read More</a>
+        {% elif post.get_template_type == "external_link" %}
+        <a class="btn btn-primary btn-sm" href="{{ post.link_url }}" target="_blank" rel="noopener noreferrer">
+          View External Link ↗
+        </a>
+        {% endif %}
+      </div>
     </div>
-    {% endif %}
   </div>
 </div>
 {% endwith %}
