@@ -29,3 +29,5 @@ _dist/
 static/css/
 static/js/
 static/.vite/
+# database backups
+backups/
