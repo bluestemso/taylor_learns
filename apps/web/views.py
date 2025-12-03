@@ -9,20 +9,27 @@ from apps.content.models import BlogIndexPage
 
 
 def home(request):
-    # Get the blog index page and its posts
+    # Get the blog index page to use as home page
     blog_index = BlogIndexPage.objects.live().first()
-    blog_posts = []
 
-    if blog_index:
-        blog_posts = blog_index.get_ordered_blog_posts()
+    if not blog_index:
+        # Fallback if no blog index exists
+        return render(
+            request,
+            "web/home.html",
+            context={
+                "blog_posts": [],
+                "site_name": settings.PROJECT_METADATA.get("NAME", "Taylor Learns"),
+                "page_title": _("Home"),
+            },
+        )
 
     return render(
         request,
-        "web/home.html",
+        "content/blog_index_page.html",
         context={
-            "blog_posts": blog_posts,
-            "site_name": settings.PROJECT_METADATA.get("NAME", "Taylor Learns"),
-            "page_title": _("Home"),
+            "page": blog_index,
+            "page_title": blog_index.title,
         },
     )
 
