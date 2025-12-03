@@ -11,32 +11,32 @@
 {% endwith %}
 {% endblock %}
 {% block content %}
-<nav aria-label="breadcrumbs">
+<nav aria-label="breadcrumbs" class="mb-4">
   <ol class="pg-breadcrumbs">
-    <li class=""><a href="{{ page.get_parent.url }}">{{ page.get_parent.title }}</a></li>
+    <li><a href="{{ page.get_parent.url }}">{{ page.get_parent.title }}</a></li>
     <li class="pg-breadcrumb-active" aria-current="page">{{ page.title }}</li>
   </ol>
 </nav>
-<div class="py-4">
-  <h1 class="pg-title">{{ page.title }}</h1>
-  {% if page.intro %}<h2 class="pg-subtitle">{{ page.intro }}</h2>{% endif %}
-  <p><small>{{ page.date }}</small></p>
-  <div class="my-2 pg-content">
+<article class="prose prose-sm mx-auto my-8">
+  <h1>{{ page.title }}</h1>
+  {% if page.intro %}<h2 class="text-base-content/70">{{ page.intro }}</h2>{% endif %}
+  <p class="text-sm text-base-content/70">{{ page.date }}</p>
+  <div class="my-4">
     {% include_block page.body %}
   </div>
   {% for item in page.gallery_images.all %}
   {% if forloop.first %}
-  <hr>
-  <h2 class="pg-subtitle mt-5">{% translate 'Image Gallery' %}</h2>
-  <div class="pg-columns">
+  <hr class="my-8">
+  <h2>{% translate 'Image Gallery' %}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     {% endif %}
-    <div class="pg-column">
+    <div>
       {% image item.image fill-320x240 %}
-      <p>{{ item.caption }}</p>
+      <p class="text-sm text-base-content/70 mt-2">{{ item.caption }}</p>
     </div>
     {% if forloop.last %}
   </div>
   {% endif %}
   {% endfor %}
-</div>
+</article>
 {% endblock %}

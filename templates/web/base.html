@@ -52,7 +52,7 @@
     {% block page_head %}
     {% endblock %}
 </head>
-<body class="bg-base-100" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="bg-base-100 min-h-screen flex flex-col" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% block body_wrapper %}
 {% block top_nav %}
   {% include 'web/components/top_nav.html' %}
@@ -60,8 +60,10 @@
 {% block messages %}
   {% include 'web/components/messages.html' %}
 {% endblock messages %}
+<div class="flex-1">
 {% block body %}
 {% endblock body %}
+</div>
 {% block footer %}
   {% include 'web/components/footer.html' %}
 {% endblock footer %}

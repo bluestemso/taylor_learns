@@ -2,15 +2,15 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<article class="prose lg:prose-xl mx-auto my-8">
+<article class="prose prose-sm mx-auto my-8">
     <header>
         <h1><a href="{{ page.link_url }}" target="_blank" rel="noopener noreferrer"
-                class="text-blue-600 hover:underline">{{ page.title }} ↗</a></h1>
-        <div class="text-sm text-gray-500">{{ page.date }}</div>
+                class="text-primary hover:underline">{{ page.title }} ↗</a></h1>
+        <div class="text-sm text-base-content/70">{{ page.date }}</div>
     </header>
 
     {% if page.quote %}
-    <blockquote class="border-l-4 border-gray-300 pl-4 italic my-4">
+    <blockquote class="border-l-4 border-base-content/30 pl-4 italic my-4">
         {{ page.quote|richtext }}
     </blockquote>
     {% endif %}
@@ -20,11 +20,9 @@
     </div>
 
     {% if page.tags.all %}
-    <div class="mt-4">
-        Tags:
+    <div class="flex flex-wrap gap-2 mt-4">
         {% for tag in page.tags.all %}
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{
-            tag }}</span>
+        <span class="badge badge-outline">{{ tag }}</span>
         {% endfor %}
     </div>
     {% endif %}
