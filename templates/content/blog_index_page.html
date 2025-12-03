@@ -21,7 +21,7 @@
   {# Title, date, and content displayed for all page types #}
   <div class="card-body">
     {# First line: Title (left) and Date (right) #}
-    <div class="flex justify-between items-start gap-4 mb-4">
+    <div class="flex justify-between items-start gap-4">
       <h2 class="card-title">
         <a href="{% pageurl post %}" class="hover:text-primary">{{ post.title }}</a>
       </h2>
@@ -33,11 +33,11 @@
       
       {% if post.get_template_type == "blog" %}
       {# BlogPage: Show intro #}
-      <p>{{ post.intro }}</p>
+      <p class="prose prose-sm">{{ post.intro }}</p>
 
       {% elif post.get_template_type == "micropost" %}
       {# MicroPostPage: Show entire body content #}
-      <div class="prose max-w-none">{% include_block post.body %}</div>
+      <div class="prose prose-sm">{% include_block post.body %}</div>
 
       {% elif post.get_template_type == "external_link" %}
       {# ExternalLinkPage: Show quote and commentary #}
@@ -46,7 +46,7 @@
         {{ post.quote|richtext }}
       </blockquote>
       {% endif %}
-      <div class="prose max-w-none">{{ post.commentary|richtext }}</div>
+      <div class="prose prose-sm">{{ post.commentary|richtext }}</div>
       {% endif %}
     </div>
 
