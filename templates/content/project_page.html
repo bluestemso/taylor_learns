@@ -1,55 +1,60 @@
 {% extends "content/base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
+{% load i18n %}
 
 {% block content %}
-<article class="prose lg:prose-xl mx-auto my-8">
-    <header class="mb-8">
-        <h1>{{ page.title }}</h1>
-        <div class="text-sm text-gray-500 mb-4">{{ page.date }}</div>
+<article class="prose mx-auto my-8">
 
-        <div class="flex gap-4">
-            {% if page.project_url %}
-            <a href="{{ page.project_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View
-                Project</a>
-            {% endif %}
-            {% if page.repo_url %}
-            <a href="{{ page.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View
-                Code</a>
-            {% endif %}
-        </div>
-    </header>
+  <div class="flex items-center justify-between">
+    <h1 class="mb-0">{{ page.title }}</h1>
+    <p class="text-sm text-base-content/70 mb-0">{{ page.date }}</p>
+  </div>
 
-    <div class="description mb-8">
-        {{ page.description|richtext }}
+  {% if page.project_images.all %}
+  <div class="carousel rounded-box w-full mt-4">
+    {% for item in page.project_images.all %}
+    <div class="carousel-item w-full flex-col">
+      {% image item.image width-1200 as img %}
+      <img src="{{ img.url }}" class="w-full max-h-[75vh] object-contain" alt="{{ item.image.title }}" />
+      {% if item.caption %}
+      <p class="text-sm text-base-content/70 mt-2 text-center">{{ item.caption }}</p>
+      {% endif %}
     </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    <div class="project-body mb-8">
-        {{ page.body }}
-    </div>
-
-    {% if page.project_images.all %}
-    <div class="gallery grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        {% for item in page.project_images.all %}
-        <figure>
-            {% image item.image fill-800x600 as img %}
-            <img src="{{ img.url }}" alt="{{ item.image.title }}" class="rounded-lg shadow-md">
-            {% if item.caption %}
-            <figcaption class="text-center text-sm text-gray-500 mt-2">{{ item.caption }}</figcaption>
-            {% endif %}
-        </figure>
-        {% endfor %}
-    </div>
+  {% if page.project_url or page.repo_url %}
+  <div class="flex gap-4 my-4">
+    {% if page.project_url %}
+    <a href="{{ page.project_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Project</a>
     {% endif %}
-
-    {% if page.tags.all %}
-    <div class="mt-4">
-        Tags:
-        {% for tag in page.tags.all %}
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #{{ tag.name }}
-        </span>
-        {% endfor %}
-    </div>
+    {% if page.repo_url %}
+    <a href="{{ page.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">View Code</a>
     {% endif %}
+  </div>
+  {% endif %}
+
+  {% if page.description %}
+  <div class="my-4">
+    {{ page.description|richtext }}
+  </div>
+  {% endif %}
+
+  <div class="my-4">
+    {% include_block page.body %}
+  </div>
+
+  {% if page.tags.all %}
+  <div class="mt-4">
+    {% translate 'Tags' %}:
+    {% for tag in page.tags.all %}
+    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+      #{{ tag.name }}
+    </span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
 </article>
 {% endblock %}
