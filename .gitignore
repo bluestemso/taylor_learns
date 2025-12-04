@@ -25,6 +25,7 @@ _dist/
 .direnv
 .envrc
 .kamal/secrets
+.playwright-mcp/
 # compiled static files are built in dev/deploy
 static/css/
 static/js/

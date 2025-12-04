@@ -6,7 +6,7 @@
   {% if page.intro %}<div class="pg-subtitle">{{ page.intro|richtext }}</div>{% endif %}
 </div>
 
-<div>
+<div class="max-w-2xl mx-auto">
 {% for post in page.get_ordered_blog_posts %}{% with post.specific as post %}
 <div class="card bg-base-100 shadow-xl border border-primary/20 mb-8">
 
