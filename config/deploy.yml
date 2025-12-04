@@ -9,7 +9,9 @@ env:
     DJANGO_SETTINGS_MODULE: taylor_learns.settings_production
     ALLOWED_HOSTS: "taylorlearns.com"
     USE_S3_MEDIA: "True"
-    AWS_STORAGE_BUCKET_NAME: "taylor-learns-media"
+    AWS_STORAGE_BUCKET_NAME: "taylor-learns"
+    AWS_S3_ENDPOINT_URL: "https://023f756e193f3f7fc0d9d6e443b2f8d5.r2.cloudflarestorage.com"
+    AWS_S3_CUSTOM_DOMAIN: "media.taylorlearns.com"
     DEFAULT_FROM_EMAIL: "taylor@bluestem.solutions"
     SERVER_EMAIL: "noreply@taylorlearns.com"
     # uncomment and set to your preferred production email backend

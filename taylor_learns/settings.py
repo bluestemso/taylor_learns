@@ -384,13 +384,21 @@ MEDIA_URL = "/media/"
 
 USE_S3_MEDIA = env.bool("USE_S3_MEDIA", default=False)
 if USE_S3_MEDIA:
-    # Media file storage in S3
-    # Using this will require configuration of the S3 bucket
-    # See https://docs.saaspegasus.com/configuration/#storing-media-files
+    # Media file storage in Cloudflare R2 (S3-compatible)
+    # See https://django-storages.readthedocs.io/en/latest/backends/cloudflare-r2.html
     AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", default="")
     AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="taylor_learns-media")
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="taylor_learns")
+    # R2 endpoint URL - find your account ID at: https://developers.cloudflare.com/r2/api/s3/api/
+    AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL", default="https://023f756e193f3f7fc0d9d6e443b2f8d5.r2.cloudflarestorage.com")
+    # Custom domain configured in Cloudflare R2 dashboard (without https://)
+    AWS_S3_CUSTOM_DOMAIN = env("AWS_S3_CUSTOM_DOMAIN", default="media.taylorlearns.com")
+    # R2-specific settings
+    AWS_S3_REGION_NAME = "auto"  # R2 uses "auto" for region
+    AWS_DEFAULT_ACL = None  # R2 doesn't support ACLs
+    AWS_S3_OBJECT_PARAMETERS = {}  # Disable ACL-related object parameters
+    # When using a custom domain, we don't need signed URLs
+    AWS_QUERYSTRING_AUTH = False
     PUBLIC_MEDIA_LOCATION = "media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
     STORAGES["default"] = {

@@ -5,8 +5,12 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 class PublicMediaStorage(S3Boto3Storage):
     location = "media"
-    default_acl = "public-read"
+    # R2 doesn't support ACLs - all objects in R2 are private by default
+    # and access is controlled via the custom domain
+    default_acl = None
     file_overwrite = False
+    # R2 doesn't use ACLs, so we need to disable object parameters that try to set them
+    object_parameters = {}
 
 
 class PrivateMediaStorage(S3Boto3Storage):
