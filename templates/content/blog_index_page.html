@@ -50,9 +50,9 @@
       {% endif %}
     </div>
 
-    {# Bottom line: Tags (left) and Buttons (right) #}
-    <div class="flex justify-between items-center gap-4">
-      <div class="flex flex-wrap gap-2">
+    {# Bottom section: Tags and Buttons #}
+    <div class="flex flex-wrap items-center gap-4">
+      <div class="flex flex-wrap gap-2 flex-1 min-w-0">
         {% if post.tags.all %}
         {% for tag in post.tags.all %}
         <span class="badge badge-outline">{{ tag }}</span>
@@ -60,7 +60,7 @@
         {% endif %}
       </div>
 
-      <div class="card-actions">
+      <div class="card-actions flex-shrink-0">
         {% if post.get_template_type == "blog" %}
         <a class="btn btn-primary btn-sm" href="{% pageurl post %}">Read More</a>
         {% elif post.get_template_type == "external_link" %}
