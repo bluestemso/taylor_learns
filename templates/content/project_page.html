@@ -15,7 +15,7 @@
     {% for item in page.project_images.all %}
     <div class="carousel-item w-full flex-col">
       {% image item.image width-1200 as img %}
-      <img src="{{ img.url }}" class="w-full max-h-[75vh] object-contain" alt="{{ item.image.title }}" />
+      <img src="{{ img.url }}" class="w-full max-h-[75vh] object-contain" alt="{{ item.image.title }}" loading="lazy" />
       {% if item.caption %}
       <p class="text-sm text-base-content/70 mt-2 text-center">{{ item.caption }}</p>
       {% endif %}

@@ -62,7 +62,7 @@
         {% if post.get_template_type == "blog" %}
         {% with post.main_image as main_image %}{% if main_image %}
         <div class="pg-column-one-quarter">
-          {% image main_image fill-300x200 %}
+          {% image main_image fill-300x200 loading="lazy" width="300" height="200" %}
         </div>
         {% endif %}{% endwith %}
         {% endif %}

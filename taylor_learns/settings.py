@@ -396,7 +396,9 @@ if USE_S3_MEDIA:
     # R2-specific settings
     AWS_S3_REGION_NAME = "auto"  # R2 uses "auto" for region
     AWS_DEFAULT_ACL = None  # R2 doesn't support ACLs
-    AWS_S3_OBJECT_PARAMETERS = {}  # Disable ACL-related object parameters
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=31536000, immutable",  # 1 year cache
+    }
     # When using a custom domain, we don't need signed URLs
     AWS_QUERYSTRING_AUTH = False
     PUBLIC_MEDIA_LOCATION = "media"
@@ -404,6 +406,19 @@ if USE_S3_MEDIA:
     STORAGES["default"] = {
         "BACKEND": "apps.web.storage_backends.PublicMediaStorage",
     }
+
+# Wagtail Image Optimization Settings
+WAGTAILIMAGES_FORMAT_CONVERSIONS = {
+    "jpeg": "webp",
+    "jpg": "webp",
+    "png": "webp",
+}
+
+# Set WebP quality (75-85 is optimal balance)
+WAGTAILIMAGES_WEBP_QUALITY = 82
+
+# Set JPEG quality for fallbacks
+WAGTAILIMAGES_JPEG_QUALITY = 85
 
 # Vite Integration
 DJANGO_VITE = {

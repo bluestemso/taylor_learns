@@ -14,7 +14,7 @@
   {% if post.get_template_type == "blog" %}
   {% with post.main_image as main_image %}{% if main_image %}
   <figure>
-    {% image main_image fill-800x400 %}
+    {% image main_image fill-800x400 loading="lazy" width="800" height="400" %}
   </figure>
   {% endif %}{% endwith %}
   {% endif %}
