@@ -173,7 +173,13 @@ class PortfolioIndexPage(BaseContentPage):
     content_panels = Page.content_panels + [FieldPanel("intro", classname="full")]
 
     def get_projects(self):
-        return self.get_children().live().order_by("-first_published_at")
+        return (
+            self.get_children()
+            .live()
+            .specific()
+            .select_related("content_type")
+            .order_by("-first_published_at")
+        )
 
 
 class ProjectPage(BaseContentPage):

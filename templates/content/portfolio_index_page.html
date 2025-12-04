@@ -2,7 +2,7 @@
 {% load wagtailcore_tags wagtailimages_tags i18n %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8" style="max-width: 1024px;">
+<div class="container mx-auto px-4 py-8">
   <header class="text-center mb-8">
     <h1 class="text-4xl font-bold mb-2">{{ page.title }}</h1>
     {% if page.intro %}
@@ -14,6 +14,7 @@
 
   {# Portfolio grid #}
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
     {% for project in page.get_projects %}
     <a href="{{ project.url }}" class="block group">
       <article class="app-card overflow-hidden hover:shadow-md transition-shadow duration-200">
@@ -29,10 +30,6 @@
 
         <div class="p-6">
           <h2 class="text-xl font-bold mb-2 group-hover:text-info transition-colors">{{ project.title }}</h2>
-          <div class="text-sm pg-text-muted mb-4">{{ project.date }}</div>
-          <div class="prose prose-sm line-clamp-3">
-            {{ project.description|richtext }}
-          </div>
         </div>
       </article>
     </a>
