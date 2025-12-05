@@ -65,7 +65,7 @@ urlpatterns = [
     path("cms/login/", RedirectView.as_view(pattern_name="account_login")),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("content/", include(wagtail_urls)),
+    path("", include(wagtail_urls)),
     path("chat/", include("apps.chat.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
