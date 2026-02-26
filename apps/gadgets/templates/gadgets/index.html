@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gadgets</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Space Grotesk', 'Avenir Next', 'Trebuchet MS', sans-serif;
+        color: #1b2a24;
+        background:
+          radial-gradient(circle at 10% 10%, #dceee7 0%, transparent 35%),
+          radial-gradient(circle at 100% 0%, #f6dbc6 0%, transparent 40%),
+          linear-gradient(170deg, #f4f8f4 0%, #eef4f8 100%);
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem 3rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 2.7rem);
+      }
+
+      .lede {
+        margin-top: 0.75rem;
+        color: #4d5f58;
+        max-width: 60ch;
+      }
+
+      ul {
+        list-style: none;
+        margin: 1.5rem 0 0;
+        padding: 0;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid #d8e0da;
+        border-radius: 14px;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 12px 28px rgba(21, 38, 33, 0.08);
+      }
+
+      .title {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .description {
+        margin: 0.45rem 0 0;
+        color: #586a63;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Gadgets</h1>
+      <p class="lede">
+        Small, self-contained experiments and practical tools. Built as independent pages so each gadget can evolve
+        on its own.
+      </p>
+      <ul>
+        {% for gadget in gadgets %}
+          <li>
+            <a href="/{{ gadget.slug }}/">
+              <p class="title">{{ gadget.title }}</p>
+              <p class="description">{{ gadget.description }}</p>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </main>
+  </body>
+</html>

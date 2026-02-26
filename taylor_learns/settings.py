@@ -34,6 +34,7 @@ ENABLE_DEBUG_TOOLBAR = env.bool("ENABLE_DEBUG_TOOLBAR", default=False) and "test
 
 # Note: It is not recommended to set ALLOWED_HOSTS to "*" in production
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
+GADGETS_HOSTS = env.list("GADGETS_HOSTS", default=["gadgets.taylorlearns.com"])
 
 
 # Application definition
@@ -104,6 +105,7 @@ PROJECT_APPS = [
     "apps.users.apps.UserConfig",
     "apps.dashboard.apps.DashboardConfig",
     "apps.api.apps.APIConfig",
+    "apps.gadgets.apps.GadgetsConfig",
     "apps.web",
     "apps.chat",
     "apps.ai.apps.AiConfig",
@@ -117,6 +119,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     "apps.web.middleware.healthchecks.HealthCheckMiddleware",
+    "apps.web.middleware.subdomains.SubdomainURLRoutingMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -390,7 +393,9 @@ if USE_S3_MEDIA:
     AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="taylor_learns")
     # R2 endpoint URL - find your account ID at: https://developers.cloudflare.com/r2/api/s3/api/
-    AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL", default="https://023f756e193f3f7fc0d9d6e443b2f8d5.r2.cloudflarestorage.com")
+    AWS_S3_ENDPOINT_URL = env(
+        "AWS_S3_ENDPOINT_URL", default="https://023f756e193f3f7fc0d9d6e443b2f8d5.r2.cloudflarestorage.com"
+    )
     # Custom domain configured in Cloudflare R2 dashboard (without https://)
     AWS_S3_CUSTOM_DOMAIN = env("AWS_S3_CUSTOM_DOMAIN", default="media.taylorlearns.com")
     # R2-specific settings

@@ -1,0 +1,10 @@
+{
+  "title": "Tmux Dojo",
+  "description": "Practice tmux key sequences and import your own .tmux.conf bindings.",
+  "status": "published",
+  "tags": [
+    "terminal",
+    "tmux",
+    "learning"
+  ]
+}

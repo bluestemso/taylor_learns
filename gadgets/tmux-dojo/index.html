@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tmux Shortcut Dojo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape bg-shape-a" aria-hidden="true"></div>
+    <div class="bg-shape bg-shape-b" aria-hidden="true"></div>
+
+    <main class="layout">
+      <header class="hero card">
+        <p class="eyebrow">tmux practice lab</p>
+        <h1>Tmux Shortcut Dojo</h1>
+        <p>
+          Import your <code>.tmux.conf</code>, practice real key sequences, and get feedback on what your
+          input actually does.
+        </p>
+      </header>
+
+      <section class="card practice" aria-labelledby="practice-heading">
+        <div class="card-head">
+          <h2 id="practice-heading">Drill Mode</h2>
+          <div class="head-actions">
+            <label class="inline-toggle" for="mnemonic-mode">
+              <input id="mnemonic-mode" type="checkbox" checked />
+              <span>Mnemonic prompt</span>
+            </label>
+            <button id="next-btn" class="btn" type="button">Next (Shift+N)</button>
+          </div>
+        </div>
+
+        <p id="challenge-label" class="challenge-eyebrow">Perform:</p>
+        <div class="challenge" id="challenge-text"></div>
+        <p id="challenge-subtext" class="meta"></p>
+
+        <div
+          id="capture-panel"
+          class="capture"
+          tabindex="0"
+          role="button"
+          aria-label="Keyboard capture area"
+        >
+          <p class="capture-title">Press the tmux key sequence here</p>
+          <p id="captured-sequence" class="captured">(nothing captured)</p>
+          <p class="hint-inline">
+            Shortcuts: Shift+H hint, Shift+R reveal, Shift+N next, Esc clear, Enter submit
+          </p>
+        </div>
+
+        <div class="controls">
+          <button id="submit-btn" class="btn" type="button">Submit (Enter)</button>
+          <button id="clear-btn" class="btn ghost" type="button">Clear (Esc)</button>
+          <button id="hint-btn" class="btn ghost" type="button">Hint (Shift+H)</button>
+          <button id="reveal-btn" class="btn ghost" type="button">Reveal (Shift+R)</button>
+        </div>
+
+        <div id="hint-text" class="hint-box" aria-live="polite"></div>
+        <div id="result-box" class="result" aria-live="polite"></div>
+
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <section id="setup-section" class="card setup" aria-labelledby="setup-heading">
+        <div class="card-head">
+          <h2 id="setup-heading">Setup your bindings</h2>
+          <div class="head-actions">
+            <button id="toggle-setup" class="btn ghost" type="button">Minimize setup</button>
+            <button id="reset-defaults" class="btn ghost" type="button">Reset defaults</button>
+          </div>
+        </div>
+
+        <p id="parse-summary" class="meta setup-summary" role="status">Using default tmux bindings.</p>
+
+        <div id="setup-body" class="setup-body">
+          <div class="upload-row">
+            <label class="btn" for="config-upload">Upload .tmux.conf</label>
+            <input id="config-upload" type="file" accept=".conf,.tmux.conf,text/plain" />
+          </div>
+
+          <div class="imported-bindings" aria-live="polite">
+            <h3>Imported binding lines</h3>
+            <p class="help">Recognized lines from your tmux config and what they do.</p>
+            <ul id="imported-binding-list" class="imported-binding-list"></ul>
+          </div>
+
+          <div class="field-grid">
+            <label for="prefix-input">Prefix</label>
+            <input id="prefix-input" type="text" autocomplete="off" spellcheck="false" />
+            <p class="help">Use format like <code>Ctrl+Space</code> or <code>C-Space</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="bindings-section" class="card bindings-card" aria-labelledby="bindings-heading">
+        <div class="card-head">
+          <h2 id="bindings-heading">Core action bindings</h2>
+          <button id="toggle-bindings" class="btn ghost" type="button">Minimize bindings</button>
+        </div>
+
+        <div id="bindings-body" class="bindings-body">
+          <p class="help">Sequence format example: <code>Ctrl+Space then c</code></p>
+          <div id="binding-list" class="binding-list" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
