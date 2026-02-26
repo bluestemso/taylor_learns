@@ -217,3 +217,39 @@ find . -name '*.py' | entr docker compose exec web uv run manage.py test apps.we
 ```bash
 find . -name '*.py' | entr uv run manage.py test apps.web.tests.test_basic_views
 ```
+
+## Production Deployment (Coolify)
+
+Production is deployed with Coolify, and releases are triggered from GitHub Actions.
+
+### Standard release flow
+
+1. Merge to `main`.
+2. GitHub Actions runs:
+   - `Run Django Tests`
+   - `Build Front End`
+3. If both pass, `Deploy to Coolify`:
+   - builds and pushes `ghcr.io/bluestemso/taylor_learns` (`latest` and commit SHA tags)
+   - triggers the Coolify deploy webhook
+
+### Required GitHub repository secrets
+
+- `COOLIFY_DEPLOY_WEBHOOK_URL`: Coolify app deploy webhook URL.
+- `COOLIFY_API_TOKEN`: Coolify API token with deploy permissions.
+- `GHCR_TOKEN`: GitHub token/PAT with package write access for `ghcr.io/bluestemso/taylor_learns`.
+
+### Required Coolify app settings
+
+- Domains include both:
+  - `https://taylorlearns.com`
+  - `https://gadgets.taylorlearns.com`
+- `ALLOWED_HOSTS` includes both hosts.
+- `GADGETS_HOSTS=gadgets.taylorlearns.com`
+- Health check path is `/up`.
+
+### Manual fallback
+
+If you need to bypass GitHub Actions, deploy directly from Coolify:
+
+- Redeploy `taylor-learns-web` in Coolify UI, or
+- Use the Coolify CLI deploy command for that app UUID.
