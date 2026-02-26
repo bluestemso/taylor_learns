@@ -1,14 +1,13 @@
 from django.db import models
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
+from taggit.models import TaggedItemBase
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Orderable, Page
 from wagtail.search import index
-
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase
 
 from apps.content.blocks import CaptionBlock
 
@@ -64,12 +63,7 @@ class BlogIndexPage(BaseContentPage):
     content_panels = Page.content_panels + [FieldPanel("intro", classname="full")]
 
     def get_ordered_blog_posts(self):
-        return (
-            Page.objects.live()
-            .descendant_of(self)
-            .specific()
-            .order_by("-first_published_at")
-        )
+        return Page.objects.live().descendant_of(self).specific().order_by("-first_published_at")
 
 
 class BlogPage(BaseContentPage):
@@ -173,13 +167,7 @@ class PortfolioIndexPage(BaseContentPage):
     content_panels = Page.content_panels + [FieldPanel("intro", classname="full")]
 
     def get_projects(self):
-        return (
-            self.get_children()
-            .live()
-            .specific()
-            .select_related("content_type")
-            .order_by("-first_published_at")
-        )
+        return self.get_children().live().specific().select_related("content_type").order_by("-first_published_at")
 
 
 class ProjectPage(BaseContentPage):
@@ -191,23 +179,15 @@ class ProjectPage(BaseContentPage):
     description = RichTextField()
     project_url = models.URLField(blank=True)
     repo_url = models.URLField(blank=True)
-    
-    # We can use a StreamField for mixed media (images/videos) or separate InlinePanels.
-    # The user mentioned "images, gifs, videos".
-    # Let's use a StreamField for flexibility in the main content area, 
-    # or specific fields if they want a structured gallery.
-    # Given "images, gifs, videos", a StreamField is often best for mixing them.
-    # But let's stick to the plan: "gallery_images (InlinePanel) ... videos (InlinePanel or StreamField)"
-    # I'll add a gallery and a video block to the body or separate fields.
-    # Let's add a `gallery` StreamField block or just use the existing `body` concept but tailored.
-    # Actually, the plan said: "gallery_images (InlinePanel) for images/gifs. videos (InlinePanel or StreamField) for videos."
-    
-    body = StreamField([
-        ("paragraph", blocks.RichTextBlock()),
-        ("image", ImageChooserBlock()),
-        ("video", blocks.URLBlock(help_text="URL to a video (e.g. YouTube, Vimeo)")),
-        ("html", blocks.RawHTMLBlock()),
-    ])
+
+    body = StreamField(
+        [
+            ("paragraph", blocks.RichTextBlock()),
+            ("image", ImageChooserBlock()),
+            ("video", blocks.URLBlock(help_text="URL to a video (e.g. YouTube, Vimeo)")),
+            ("html", blocks.RawHTMLBlock()),
+        ]
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("date"),
