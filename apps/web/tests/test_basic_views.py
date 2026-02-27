@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
 
@@ -17,6 +18,24 @@ class TestBasicViews(TestCase):
 
     def test_robots(self):
         self._assert_200(reverse("web:robots.txt"))
+
+    def test_top_nav_includes_gadgets_link(self):
+        response = self.client.get(reverse("web:home"))
+        gadgets_host = settings.GADGETS_HOSTS[0]
+        expected_url = gadgets_host if gadgets_host.startswith(("http://", "https://")) else f"http://{gadgets_host}"
+
+        self.assertContains(response, f'href="{expected_url}"')
+        self.assertContains(response, "Gadgets")
+
+    def test_gadgets_bridge_redirects_to_gadgets_subdomain(self):
+        response = self.client.get(reverse("web:gadgets"))
+        gadgets_host = settings.GADGETS_HOSTS[0]
+        expected_url = gadgets_host if gadgets_host.startswith(("http://", "https://")) else f"http://{gadgets_host}"
+        self.assertRedirects(response, f"{expected_url}/", fetch_redirect_response=False)
+
+    def test_gadgets_bridge_preserves_non_default_port(self):
+        response = self.client.get(reverse("web:gadgets"), HTTP_HOST="localhost:8000")
+        self.assertRedirects(response, "http://gadgets.localhost:8000/", fetch_redirect_response=False)
 
     def _assert_200(self, url):
         response = self.client.get(url)

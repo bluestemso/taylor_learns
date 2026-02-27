@@ -1,10 +1,12 @@
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from health_check.views import MainView
 
 from apps.content.models import BlogIndexPage
+
+from .gadgets import get_gadgets_url
 
 
 def home(request):
@@ -35,6 +37,13 @@ def home(request):
 
 def simulate_error(request):
     raise Exception("This is a simulated error.")
+
+
+def gadgets_bridge(request):
+    gadgets_url = get_gadgets_url(request)
+    if not gadgets_url:
+        raise Http404
+    return HttpResponseRedirect(f"{gadgets_url}/")
 
 
 class HealthCheck(MainView):

@@ -23,6 +23,13 @@
           </a>
         </li>
         {% endif %}
+        {% if gadgets_url %}
+        <li>
+          <a class="{% if request.get_host in gadgets_url %}active{% endif %}" href="{{ gadgets_url }}">
+            {% translate "Gadgets" %}
+          </a>
+        </li>
+        {% endif %}
         {% endblock %}
       </ul>
     </div>
@@ -39,6 +46,11 @@
       {% if portfolio_url %}
       <a class="tab {% if portfolio_url in request.path %}tab-active{% endif %}" href="{{ portfolio_url }}">
         {% translate "Portfolio" %}
+      </a>
+      {% endif %}
+      {% if gadgets_url %}
+      <a class="tab {% if request.get_host in gadgets_url %}tab-active{% endif %}" href="{{ gadgets_url }}">
+        {% translate "Gadgets" %}
       </a>
       {% endif %}
     </div>

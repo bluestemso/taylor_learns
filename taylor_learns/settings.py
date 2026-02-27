@@ -34,7 +34,10 @@ ENABLE_DEBUG_TOOLBAR = env.bool("ENABLE_DEBUG_TOOLBAR", default=False) and "test
 
 # Note: It is not recommended to set ALLOWED_HOSTS to "*" in production
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
-GADGETS_HOSTS = env.list("GADGETS_HOSTS", default=["gadgets.taylorlearns.com"])
+GADGETS_HOSTS = env.list(
+    "GADGETS_HOSTS",
+    default=["gadgets.localhost"] if DEBUG else ["gadgets.taylorlearns.com"],
+)
 
 
 # Application definition

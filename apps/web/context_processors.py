@@ -2,6 +2,7 @@ from copy import copy
 
 from django.conf import settings
 
+from .gadgets import get_gadgets_url
 from .meta import absolute_url, get_server_root
 
 
@@ -16,6 +17,7 @@ def project_meta(request):
         "page_title": "",
         "page_description": "",
         "page_image": "",
+        "gadgets_url": get_gadgets_url(request),
         "light_theme": settings.LIGHT_THEME,
         "dark_theme": settings.DARK_THEME,
         "current_theme": request.COOKIES.get("theme", ""),

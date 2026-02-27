@@ -4,14 +4,20 @@ from pathlib import Path
 
 from django.conf import settings
 from django.http import FileResponse, Http404, HttpRequest, HttpResponse, HttpResponseBase
-from django.template.loader import render_to_string
+from django.shortcuts import render
 
 GADGETS_ROOT = settings.BASE_DIR / "gadgets"
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    html = render_to_string("gadgets/index.html", {"gadgets": _list_gadgets()})
-    return HttpResponse(html)
+    main_site_url = str(settings.PROJECT_METADATA.get("URL", "")).rstrip("/")
+    context = {
+        "gadgets": _list_gadgets(),
+        "main_site_url": main_site_url,
+        "blog_url": f"{main_site_url}/" if main_site_url else "/",
+        "portfolio_url": f"{main_site_url}/portfolio/" if main_site_url else "/portfolio/",
+    }
+    return render(request, "gadgets/index.html", context)
 
 
 def detail(request: HttpRequest, slug: str) -> HttpResponseBase:

@@ -1,90 +1,86 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gadgets</title>
-    <style>
-      :root {
-        color-scheme: light;
-      }
+{% extends "web/base.html" %}
+{% load i18n %}
 
-      body {
-        margin: 0;
-        font-family: 'Space Grotesk', 'Avenir Next', 'Trebuchet MS', sans-serif;
-        color: #1b2a24;
-        background:
-          radial-gradient(circle at 10% 10%, #dceee7 0%, transparent 35%),
-          radial-gradient(circle at 100% 0%, #f6dbc6 0%, transparent 40%),
-          linear-gradient(170deg, #f4f8f4 0%, #eef4f8 100%);
-        min-height: 100vh;
-      }
+{% block page_title %}{% translate "Gadgets" %} | {{ project_meta.NAME }}{% endblock %}
 
-      main {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem 1rem 3rem;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(2rem, 4vw, 2.7rem);
-      }
-
-      .lede {
-        margin-top: 0.75rem;
-        color: #4d5f58;
-        max-width: 60ch;
-      }
-
-      ul {
-        list-style: none;
-        margin: 1.5rem 0 0;
-        padding: 0;
-        display: grid;
-        gap: 0.8rem;
-      }
-
-      a {
-        display: block;
-        text-decoration: none;
-        color: inherit;
-        background: rgba(255, 255, 255, 0.88);
-        border: 1px solid #d8e0da;
-        border-radius: 14px;
-        padding: 1rem 1.1rem;
-        box-shadow: 0 12px 28px rgba(21, 38, 33, 0.08);
-      }
-
-      .title {
-        margin: 0;
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
-
-      .description {
-        margin: 0.45rem 0 0;
-        color: #586a63;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Gadgets</h1>
-      <p class="lede">
-        Small, self-contained experiments and practical tools. Built as independent pages so each gadget can evolve
-        on its own.
-      </p>
-      <ul>
-        {% for gadget in gadgets %}
-          <li>
-            <a href="/{{ gadget.slug }}/">
-              <p class="title">{{ gadget.title }}</p>
-              <p class="description">{{ gadget.description }}</p>
-            </a>
-          </li>
-        {% endfor %}
+{% block top_nav %}
+<div class="navbar shadow-md">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div class="lg:hidden">
+        <label tabindex="0" class="btn btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+      </div>
+      <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow-2xs bg-base-100 rounded-box w-52 z-10">
+        <li>
+          <a href="{{ blog_url }}">
+            {% translate "Blog" %}
+          </a>
+        </li>
+        <li>
+          <a href="{{ portfolio_url }}">
+            {% translate "Portfolio" %}
+          </a>
+        </li>
+        <li>
+          <a class="active" href="/">
+            {% translate "Gadgets" %}
+          </a>
+        </li>
       </ul>
-    </main>
-  </body>
-</html>
+    </div>
+    <a class="btn btn-ghost normal-case text-xl" href="/">
+      {{ project_meta.NAME }}
+    </a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <div role="tablist" class="tabs p-0">
+      <a class="tab" href="{{ blog_url }}">
+        {% translate "Blog" %}
+      </a>
+      <a class="tab" href="{{ portfolio_url }}">
+        {% translate "Portfolio" %}
+      </a>
+      <a class="tab tab-active" href="/">
+        {% translate "Gadgets" %}
+      </a>
+    </div>
+  </div>
+  <div class="navbar-end">
+    {% include "web/components/dark_mode_selector.html" %}
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8" style="max-width: 960px">
+  <header class="text-center mb-8">
+    <h1 class="text-4xl font-bold mb-2">{% translate "Gadgets" %}</h1>
+    <p class="text-lg text-base-content/70 mx-auto max-w-2xl">
+      {% translate "Small, self-contained experiments and practical tools. Each gadget lives on its own page so it can evolve independently." %}
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% for gadget in gadgets %}
+    <a href="/{{ gadget.slug }}/" class="card bg-base-100 shadow-xl border border-primary/20 hover:border-primary/40 transition-colors">
+      <div class="card-body">
+        <h2 class="card-title">{{ gadget.title }}</h2>
+        {% if gadget.description %}
+        <p class="text-base-content/70">{{ gadget.description }}</p>
+        {% else %}
+        <p class="text-base-content/70">{% translate "Open this gadget." %}</p>
+        {% endif %}
+      </div>
+    </a>
+    {% empty %}
+    <div class="card bg-base-100 shadow border border-primary/20 md:col-span-2">
+      <div class="card-body">
+        <p class="text-base-content/70">{% translate "No gadgets published yet. Check back soon!" %}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
