@@ -247,6 +247,21 @@ Production is deployed with Coolify, and releases are triggered from GitHub Acti
 - `GADGETS_HOSTS=gadgets.taylorlearns.com`
 - Health check path is `/up`.
 
+### Gadget sync from external repositories
+
+Gadgets can be authored in separate public GitHub repositories and synced into this site.
+
+- Configure discovery settings:
+  - `GADGETS_SYNC_ENABLED=true`
+  - `GADGETS_SYNC_TOPICS=taylor-learns-gadget`
+  - `GADGETS_SYNC_OWNERS=bluestemso`
+  - `GADGETS_GITHUB_TOKEN=<github-token>` (recommended to avoid API rate limits)
+- Run sync on demand:
+  - `make manage ARGS='sync_gadgets'`
+  - optional filters: `--slug`, `--repo`, `--topic`, `--owner`, `--dry-run`, `--force`
+- Open Django admin for display controls and manual sync:
+  - `Gadget Sources` includes `hidden`, `blocked`, `featured`, ordering, and a `Sync now` action.
+
 ### Manual fallback
 
 If you need to bypass GitHub Actions, deploy directly from Coolify:

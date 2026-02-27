@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 import environ
+from celery import schedules
 from corsheaders.defaults import default_headers
 from django.utils.translation import gettext_lazy
 
@@ -38,6 +39,10 @@ GADGETS_HOSTS = env.list(
     "GADGETS_HOSTS",
     default=["gadgets.localhost"] if DEBUG else ["gadgets.taylorlearns.com"],
 )
+GADGETS_SYNC_ENABLED = env.bool("GADGETS_SYNC_ENABLED", default=False)
+GADGETS_SYNC_TOPICS = env.list("GADGETS_SYNC_TOPICS", default=["taylor-learns-gadget"])
+GADGETS_SYNC_OWNERS = env.list("GADGETS_SYNC_OWNERS", default=["bluestemso"])
+GADGETS_GITHUB_TOKEN = env("GADGETS_GITHUB_TOKEN", default="")
 
 
 # Application definition
@@ -536,12 +541,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 # Add tasks to this dict and run `python manage.py bootstrap_celery_tasks` to create them
 SCHEDULED_TASKS = {
-    # Example of a crontab schedule
-    # from celery import schedules
-    # "daily-4am-task": {
-    #     "task": "some.task.path",
-    #     "schedule": schedules.crontab(minute=0, hour=4),
-    # },
+    "gadgets-hourly-sync": {
+        "task": "apps.gadgets.tasks.sync_gadgets_task",
+        "schedule": schedules.crontab(minute=0),
+        "enabled": GADGETS_SYNC_ENABLED,
+    },
 }
 
 # Channels / Daphne setup
