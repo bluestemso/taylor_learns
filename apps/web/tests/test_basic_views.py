@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 
@@ -36,6 +36,17 @@ class TestBasicViews(TestCase):
     def test_gadgets_bridge_preserves_non_default_port(self):
         response = self.client.get(reverse("web:gadgets"), HTTP_HOST="localhost:8000")
         self.assertRedirects(response, "http://gadgets.localhost:8000/", fetch_redirect_response=False)
+
+    def test_top_nav_does_not_mark_gadgets_active_on_main_site(self):
+        response = self.client.get(reverse("web:home"), HTTP_HOST="localhost:8000")
+        self.assertFalse(response.context["gadgets_is_active"])
+        self.assertNotContains(response, '<a class="tab tab-active" href="http://gadgets.localhost:8000">')
+
+    @override_settings(GADGETS_HOSTS=["gadgets.taylorlearns.com"])
+    def test_top_nav_gadgets_link_does_not_reuse_internal_app_port(self):
+        response = self.client.get(reverse("web:home"), HTTP_HOST="taylorlearns.com:8000", secure=True)
+        self.assertContains(response, 'href="https://gadgets.taylorlearns.com"')
+        self.assertNotContains(response, 'href="https://gadgets.taylorlearns.com:8000"')
 
     def _assert_200(self, url):
         response = self.client.get(url)
