@@ -236,7 +236,8 @@ Production is deployed with Coolify, and releases are triggered from GitHub Acti
 
 - `COOLIFY_DEPLOY_WEBHOOK_URL`: Coolify app deploy webhook URL.
 - `COOLIFY_API_TOKEN`: Coolify API token with deploy permissions.
-- `GHCR_TOKEN`: GitHub token/PAT with package write access for `ghcr.io/bluestemso/taylor_learns`.
+
+GitHub Actions uses the built-in `GITHUB_TOKEN` to authenticate to GHCR.
 
 ### Required Coolify app settings
 
