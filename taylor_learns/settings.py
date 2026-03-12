@@ -577,7 +577,7 @@ PROJECT_METADATA = {
     "NAME": gettext_lazy("Taylor Learns"),
     "URL": "http://taylorlearns.com",
     "DESCRIPTION": gettext_lazy("The personal blog and portfolio of Taylor Schaack"),  # noqa: E501
-    "IMAGE": "https://upload.wikimedia.org/wikipedia/commons/2/20/PEO-pegasus_black.svg",
+    "IMAGE": "http://taylorlearns.com/static/images/favicons/web-app-manifest-512x512.png",
     "KEYWORDS": "SaaS, django",
     "CONTACT_EMAIL": "taylor@bluestem.solutions",
 }
