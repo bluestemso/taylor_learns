@@ -70,26 +70,78 @@
 {% endblock body_wrapper %}
   {% include 'web/components/messages-js.html' %}
   <script>
+    function getCookieValue(name) {
+      const encodedName = `${name}=`;
+      const cookies = document.cookie ? document.cookie.split(';') : [];
+
+      for (const cookie of cookies) {
+        const trimmedCookie = cookie.trim();
+        if (trimmedCookie.startsWith(encodedName)) {
+          return decodeURIComponent(trimmedCookie.substring(encodedName.length));
+        }
+      }
+
+      return '';
+    }
+
+    function setCookieValue(name, value, themeCookieDomain) {
+      const cookieParts = [
+        `${name}=${encodeURIComponent(value)}`,
+        'path=/',
+        'max-age=31536000',
+        'samesite=lax',
+      ];
+
+      if (themeCookieDomain) {
+        cookieParts.push(`domain=${themeCookieDomain}`);
+      }
+
+      if (window.location.protocol === 'https:') {
+        cookieParts.push('secure');
+      }
+
+      document.cookie = cookieParts.join(';');
+    }
+
+    function getStoredThemePreference(systemTheme) {
+      const localThemePreference = localStorage.getItem('theme');
+      if (localThemePreference) {
+        return localThemePreference;
+      }
+
+      return getCookieValue('theme_preference') || systemTheme;
+    }
+
     function syncDarkMode() {
       // change the dark and light theme values in settings.py to match the DaisyUI theme names
       // to use for dark and light mode, and they will get updated here.
       const darkTheme = '{{ dark_theme }}' || 'dark';
       const lightTheme = '{{ light_theme }}' || 'light';
       const systemTheme = 'system';
+      const themeCookieDomain = '{{ theme_cookie_domain|default_if_none:""|escapejs }}';
+      const validThemes = [lightTheme, darkTheme, systemTheme];
 
-      const theme = localStorage.getItem('theme') || systemTheme;
+      let themePreference = getStoredThemePreference(systemTheme);
+      if (!validThemes.includes(themePreference)) {
+        themePreference = systemTheme;
+      }
+
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const usesDarkTheme = themePreference === darkTheme || (themePreference === systemTheme && prefersDark);
+      const resolvedTheme = usesDarkTheme ? darkTheme : lightTheme;
 
-      if (theme === darkTheme || (theme === systemTheme && prefersDark)) {
+      if (usesDarkTheme) {
         document.documentElement.classList.add('dark');
         document.documentElement.setAttribute('data-theme', darkTheme);
-        // set a cookie and use it during server rendering to avoid a flicker across page loads
-        document.cookie = `theme=${darkTheme};path=/;max-age=31536000`;
       } else {
         document.documentElement.classList.remove('dark');
         document.documentElement.setAttribute('data-theme', lightTheme);
-        document.cookie = `theme=${lightTheme};path=/;max-age=31536000`;
       }
+
+      // set cookies and localStorage during server rendering to avoid a flicker across page loads
+      setCookieValue('theme', resolvedTheme, themeCookieDomain);
+      setCookieValue('theme_preference', themePreference, themeCookieDomain);
+      localStorage.setItem('theme', themePreference);
     }
     syncDarkMode();
     document.addEventListener('DOMContentLoaded', () => {

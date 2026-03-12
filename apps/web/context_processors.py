@@ -21,6 +21,7 @@ def project_meta(request):
         "gadgets_is_active": is_gadgets_request(request),
         "light_theme": settings.LIGHT_THEME,
         "dark_theme": settings.DARK_THEME,
+        "theme_cookie_domain": getattr(settings, "THEME_COOKIE_DOMAIN", None),
         "current_theme": request.COOKIES.get("theme", ""),
         "dark_mode": request.COOKIES.get("theme", "") == settings.DARK_THEME,
         "turnstile_key": getattr(settings, "TURNSTILE_KEY", None),
