@@ -25,20 +25,15 @@ export default defineConfig({
         'chat-ws-initialize': path.resolve(__dirname, './assets/javascript/chat/ws_initialize.ts'),
       },
       output: {
-        // Output JS bundles to js/ directory with -bundle suffix
-        entryFileNames: `js/[name]-bundle.js`,
-        // For shared chunks, keep hash for cache busting
+        // Use hashed entry names to prevent stale browser/CDN caches
+        entryFileNames: `js/[name]-[hash].js`,
+        // Shared chunks stay hashed
         chunkFileNames: `js/[name]-[hash].js`,
-        // For CSS and other assets
+        // Keep CSS in css/ with hashed names; hash all other assets
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-            // Try to name CSS files like css/[entry_name].css, removing potential hash
-            let baseName = path.basename(assetInfo.name, '.css');
-            const hashPattern = /\.[0-9a-fA-F]{8}$/;
-            baseName = baseName.replace(hashPattern, '');
-            return `css/${baseName}.css`;
+            return `css/[name]-[hash][extname]`;
           }
-          // Default for other assets (fonts, images, etc.)
           return `assets/[name]-[hash][extname]`;
         },
       },
