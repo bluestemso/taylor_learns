@@ -8,7 +8,7 @@ on:
       - completed
 
 concurrency:
-  group: coolify-deploy-${{ github.event.workflow_run.head_sha }}
+  group: coolify-deploy-${{ github.event.workflow_run.head_branch }}
   cancel-in-progress: true
 
 jobs:
