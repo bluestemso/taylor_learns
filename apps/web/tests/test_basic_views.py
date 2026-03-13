@@ -1,6 +1,6 @@
 from django.conf import settings
-from django.test import TestCase, override_settings
 from django.templatetags.static import static
+from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
 
 
