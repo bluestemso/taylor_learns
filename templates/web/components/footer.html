@@ -14,25 +14,29 @@
         {% if blog_url %}
         <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Index" %}</a>
         {% else %}
-        <a class="ei-mono ei-link" href="{% url 'web:home' %}">{% translate "Index" %}</a>
+        <a class="ei-mono ei-link" href="/">{% translate "Index" %}</a>
         {% endif %}
 
         {% if blog_url %}
         <a class="ei-mono ei-link" href="{{ blog_url }}about/">{% translate "About" %}</a>
         {% elif about_page_url %}
         <a class="ei-mono ei-link" href="{{ about_page_url }}">{% translate "About" %}</a>
+        {% else %}
+        <a class="ei-mono ei-link" href="/about/">{% translate "About" %}</a>
         {% endif %}
 
         {% if portfolio_url %}
         <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
         {% elif portfolio_page_url %}
         <a class="ei-mono ei-link" href="{{ portfolio_page_url }}">{% translate "Portfolio" %}</a>
+        {% else %}
+        <a class="ei-mono ei-link" href="/portfolio/">{% translate "Portfolio" %}</a>
         {% endif %}
 
         {% if main_site_url %}
         <a class="ei-mono ei-link" href="{{ main_site_url }}/terms/">{% translate "Terms" %}</a>
         {% else %}
-        <a class="ei-mono ei-link" href="{% url 'web:terms' %}">{% translate "Terms" %}</a>
+        <a class="ei-mono ei-link" href="/terms/">{% translate "Terms" %}</a>
         {% endif %}
       </div>
     </div>
