@@ -1,81 +1,94 @@
 name: Deploy to Coolify
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - Run Django Tests
+      - Build Front End
+    types:
+      - completed
 
 concurrency:
-  group: coolify-deploy-${{ github.ref }}
+  group: coolify-deploy-${{ github.event.workflow_run.head_sha }}
   cancel-in-progress: true
 
 jobs:
+  gate:
+    name: Gate deploy on required workflows
+    if: github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      should_deploy: ${{ steps.gate.outputs.should_deploy }}
+      target_sha: ${{ steps.gate.outputs.target_sha }}
+    steps:
+      - name: Confirm required workflows succeeded for this commit
+        id: gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const sha = context.payload.workflow_run.head_sha;
+            const requiredWorkflows = ['Run Django Tests', 'Build Front End'];
+
+            core.setOutput('target_sha', sha);
+
+            const response = await github.rest.actions.listWorkflowRunsForRepo({
+              owner,
+              repo,
+              head_sha: sha,
+              event: 'push',
+              per_page: 100,
+            });
+
+            const runs = response.data.workflow_runs;
+            const latestByName = Object.fromEntries(
+              requiredWorkflows.map((name) => {
+                const latest = runs
+                  .filter((run) => run.name === name)
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+                return [name, latest || null];
+              })
+            );
+
+            const missing = requiredWorkflows.filter((name) => !latestByName[name]);
+            const pending = requiredWorkflows.filter((name) => {
+              const run = latestByName[name];
+              return run && run.status !== 'completed';
+            });
+
+            if (missing.length > 0 || pending.length > 0) {
+              core.info(
+                `Skipping deploy for ${sha}. Missing: ${missing.join(', ') || 'none'}. ` +
+                  `Pending: ${pending.join(', ') || 'none'}.`
+              );
+              core.setOutput('should_deploy', 'false');
+              return;
+            }
+
+            const failed = requiredWorkflows.filter((name) => latestByName[name].conclusion !== 'success');
+            if (failed.length > 0) {
+              core.info(`Skipping deploy for ${sha}. Failed: ${failed.join(', ')}`);
+              core.setOutput('should_deploy', 'false');
+              return;
+            }
+
+            core.info(`All required workflows succeeded for ${sha}. Proceeding with deploy.`);
+            core.setOutput('should_deploy', 'true');
+
   deploy:
-    name: Wait for CI and trigger Coolify
+    name: Build image and trigger Coolify
+    needs: gate
+    if: needs.gate.outputs.should_deploy == 'true'
     runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
       packages: write
     steps:
-      - name: Wait for required workflows on this commit
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const owner = context.repo.owner;
-            const repo = context.repo.repo;
-            const sha = context.sha;
-            const requiredWorkflows = ['Run Django Tests', 'Build Front End'];
-
-            const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-            for (let attempt = 1; attempt <= 45; attempt += 1) {
-              const response = await github.rest.actions.listWorkflowRunsForRepo({
-                owner,
-                repo,
-                head_sha: sha,
-                event: 'push',
-                per_page: 100,
-              });
-
-              const runs = response.data.workflow_runs;
-              const latestByName = Object.fromEntries(
-                requiredWorkflows.map((name) => {
-                  const latest = runs
-                    .filter((run) => run.name === name)
-                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-                  return [name, latest || null];
-                })
-              );
-
-              const missing = requiredWorkflows.filter((name) => !latestByName[name]);
-              const pending = requiredWorkflows.filter((name) => {
-                const run = latestByName[name];
-                return run && run.status !== 'completed';
-              });
-
-              if (missing.length === 0 && pending.length === 0) {
-                const failed = requiredWorkflows.filter((name) => latestByName[name].conclusion !== 'success');
-
-                if (failed.length > 0) {
-                  core.setFailed(`Required workflows failed for ${sha}: ${failed.join(', ')}`);
-                  return;
-                }
-
-                core.info(`All required workflows succeeded for ${sha}.`);
-                return;
-              }
-
-              core.info(
-                `Waiting for required workflows (attempt ${attempt}/45). Missing: ${missing.join(', ') || 'none'}. ` +
-                  `Pending: ${pending.join(', ') || 'none'}.`
-              );
-
-              await sleep(20000);
-            }
-
-            core.setFailed(`Timed out waiting for required workflows for ${sha}.`);
-
       - name: Check out repository
         uses: actions/checkout@v4
 
@@ -84,6 +97,8 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
 
       - name: Validate GHCR token secret
         env:
@@ -109,9 +124,11 @@ jobs:
           file: Dockerfile.web
           platforms: linux/arm64
           push: true
+          cache-from: type=gha,scope=taylor-learns-web-arm64
+          cache-to: type=gha,mode=max,scope=taylor-learns-web-arm64
           tags: |
             ghcr.io/bluestemso/taylor_learns:latest
-            ghcr.io/bluestemso/taylor_learns:${{ github.sha }}
+            ghcr.io/bluestemso/taylor_learns:${{ needs.gate.outputs.target_sha }}
 
       - name: Trigger Coolify deployment webhook
         env:
