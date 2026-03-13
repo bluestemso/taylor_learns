@@ -1,30 +1,40 @@
 {% extends "content/base.html" %}
+{% load i18n %}
 {% load wagtailcore_tags %}
 
 {% block content %}
-<article class="prose prose-sm mx-auto my-8">
-    <header>
-        <h1><a href="{{ page.link_url }}" target="_blank" rel="noopener noreferrer"
-                class="text-primary hover:underline">{{ page.title }} ↗</a></h1>
-        <div class="text-sm text-base-content/70">{{ page.date }}</div>
-    </header>
+<article class="mx-auto max-w-5xl ei-border bg-[var(--ei-surface)]">
+  <header class="ei-border-b px-6 py-8 md:px-10">
+    <p class="ei-mono mb-3 text-[11px] text-[var(--ei-primary)]">LINK NOTE</p>
+    <h1 class="ei-display text-3xl font-bold md:text-4xl">
+      <a class="ei-link" href="{{ page.link_url }}" rel="noopener noreferrer" target="_blank">{{ page.title }} ↗</a>
+    </h1>
+    <p class="ei-mono mt-3 text-[11px] text-[var(--ei-muted)]">{{ page.date|date:"Y.m.d" }}</p>
+  </header>
 
-    {% if page.quote %}
-    <blockquote class="border-l-4 border-base-content/30 pl-4 italic my-4">
+  <div class="grid gap-0 lg:grid-cols-3">
+    <section class="px-6 py-8 md:px-10 lg:col-span-2 lg:ei-border-r">
+      {% if page.quote %}
+      <blockquote class="mb-8 border-l-4 border-[var(--ei-primary)] pl-5 text-2xl italic leading-[1.4]">
         {{ page.quote|richtext }}
-    </blockquote>
-    {% endif %}
+      </blockquote>
+      {% endif %}
+      <div class="ei-reading">{{ page.commentary|richtext }}</div>
+    </section>
 
-    <div class="commentary mt-4">
-        {{ page.commentary|richtext }}
-    </div>
-
-    {% if page.tags.all %}
-    <div class="flex flex-wrap gap-2 mt-4">
-        {% for tag in page.tags.all %}
-        <span class="badge badge-outline">{{ tag }}</span>
-        {% endfor %}
-    </div>
-    {% endif %}
+    <aside class="px-6 py-8">
+      <a class="ei-button w-full" href="{{ page.link_url }}" rel="noopener noreferrer" target="_blank">{% translate "Open Source" %}</a>
+      {% if page.tags.all %}
+      <div class="mt-6">
+        <p class="ei-mono mb-2 text-[10px] text-[var(--ei-muted)]">TAGS</p>
+        <div class="flex flex-wrap gap-2">
+          {% for tag in page.tags.all %}
+          <span class="ei-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </aside>
+  </div>
 </article>
 {% endblock %}

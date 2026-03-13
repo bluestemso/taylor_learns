@@ -1,47 +1,64 @@
 {% extends "content/base.html" %}
-{% load wagtailcore_tags wagtailimages_tags i18n %}
+{% load i18n %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-2">{{ page.title }}</h1>
-    {% if page.intro %}
-    <div class="text-lg text-base-content/70">
-      {{ page.intro|richtext }}
+<header class="ei-border bg-[var(--ei-surface)]">
+  <div class="grid gap-0 md:grid-cols-12">
+    <div class="p-8 md:col-span-8 md:p-12 md:ei-border-r">
+      <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Archive v.2026" %}</p>
+      <h1 class="ei-display text-5xl font-bold leading-[0.9] md:text-7xl">{{ page.title }}</h1>
     </div>
-    {% endif %}
-  </header>
+    <div class="p-8 md:col-span-4 md:p-10">
+      {% if page.intro %}
+      <div class="text-xl italic leading-relaxed">{{ page.intro|richtext }}</div>
+      {% else %}
+      <p class="text-xl italic leading-relaxed">{% translate "A curated archive of projects, systems, and visual experiments." %}</p>
+      {% endif %}
+    </div>
+  </div>
+</header>
 
-  {# Portfolio grid #}
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
+<section class="mt-8 ei-border bg-[var(--ei-surface)]">
+  <div class="grid gap-0 md:grid-cols-2">
     {% for project in page.get_projects %}
-    <div class="card lg:card-side bg-base-100 border border-primary/20 shadow-lg">
-      <figure>
-        {% if project.project_images.first %}
-        {% image project.project_images.first.image fill-600x400 as img %}
-        <img src="{{ img.url }}" alt="{{ project.title }}" class="w-full h-full object-cover" loading="lazy" width="600" height="400">
-        {% else %}
-        <div class="w-full h-48 lg:h-full bg-base-200 flex items-center justify-center text-base-content/40">
-          No Image
-        </div>
-        {% endif %}
-      </figure>
-      <div class="card-body lg:w-1/2">
-        <h2 class="card-title">{{ project.title }}</h2>
-        {% if project.description %}
-        <p>{{ project.description|striptags|truncatewords:20 }}</p>
-        {% endif %}
-        <div class="card-actions justify-end">
-          <a href="{{ project.url }}" class="btn btn-primary">{% translate "View Project" %}</a>
+    <article class="group ei-hover-invert {% if forloop.counter|divisibleby:2 %}md:ei-border-l{% endif %} {% if not forloop.last %}ei-border-b{% endif %}">
+      <div class="ei-border-b p-5">
+        <div class="flex items-center justify-between">
+          <span class="ei-mono text-[10px]">{% blocktranslate with project_id=forloop.counter|stringformat:"03d" %}ID: PRJ-{{ project_id }}{% endblocktranslate %}</span>
+          {% if project.date %}
+          <span class="ei-mono text-[10px]">{{ project.date|date:"M Y"|upper }}</span>
+          {% endif %}
         </div>
       </div>
-    </div>
+
+      {% if project.project_images.first %}
+      <div class="aspect-[16/10] overflow-hidden bg-neutral-200">
+        {% image project.project_images.first.image fill-1200x760 as project_img %}
+        <img alt="{{ project.title }}" class="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0" height="760" loading="lazy" src="{{ project_img.url }}" width="1200">
+      </div>
+      {% endif %}
+
+      <div class="p-7">
+        <h2 class="ei-display mb-4 text-3xl font-bold">{{ project.title }}</h2>
+        {% if project.description %}
+        <div class="mb-6 text-lg leading-relaxed opacity-80">{{ project.description|striptags|truncatewords:24 }}</div>
+        {% endif %}
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex flex-wrap gap-2">
+            {% for tag in project.tags.all|slice:":3" %}
+            <span class="ei-tag">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+          <a class="ei-mono text-[11px] group-hover:text-[var(--ei-primary)]" href="{{ project.url }}">[{% translate "View Case" %}]</a>
+        </div>
+      </div>
+    </article>
     {% empty %}
-    <div class="col-span-full text-center py-12">
-      <p class="text-lg text-base-content/70">{% translate "No projects yet. Check back soon!" %}</p>
+    <div class="p-10 text-center md:col-span-2">
+      <p class="ei-mono text-xs">{% translate "No projects yet. Check back soon." %}</p>
     </div>
     {% endfor %}
   </div>
-</div>
+</section>
 {% endblock %}

@@ -1,81 +1,76 @@
 {% extends "content/base.html" %}
+{% load i18n %}
 {% load wagtailcore_tags wagtailimages_tags %}
+
 {% block content %}
-<div class="pg-text-centered my-4">
-  <h1 class="pg-title">{{ page.title }}</h1>
-  {% if page.intro %}<div class="pg-subtitle">{{ page.intro|richtext }}</div>{% endif %}
-</div>
-
-<div class="max-w-2xl mx-auto">
-{% for post in page.get_ordered_blog_posts %}{% with post.specific as post %}
-<div class="card bg-base-100 shadow-xl border border-primary/20 mb-8">
-
-  {# Main image for BlogPages only - displayed at top of card #}
-  {% if post.get_template_type == "blog" %}
-  {% with post.main_image as main_image %}{% if main_image %}
-  <figure>
-    {% image main_image fill-800x400 loading="lazy" width="800" height="400" %}
-  </figure>
-  {% endif %}{% endwith %}
+{% with posts=page.get_ordered_blog_posts %}
+<section class="ei-border bg-[var(--ei-surface)] p-6 md:p-10">
+  <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Stream" %}</p>
+  <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{{ page.title }}</h1>
+  {% if page.intro %}
+  <div class="mt-5 max-w-[60ch] text-xl italic leading-[1.45]">{{ page.intro|richtext }}</div>
   {% endif %}
+  <p class="ei-mono mt-6 text-[11px] text-[var(--ei-muted)]">{% blocktranslate with total=posts|length %}Total Records: {{ total }}{% endblocktranslate %}</p>
+</section>
 
-  {# Title, date, and content displayed for all page types #}
-  <div class="card-body">
-    {# First line: Title (left) and Date (right) #}
-    <div class="flex justify-between items-start gap-4">
-      <h2 class="card-title">
-        <a href="{% pageurl post %}" class="hover:text-primary">{{ post.title }}</a>
+<section class="mx-auto mt-8 max-w-5xl space-y-6">
+  {% for post in posts %}
+  {% with post.specific as feed_post %}
+  <article class="ei-border bg-[var(--ei-surface)]">
+    <header class="flex flex-wrap items-center justify-between gap-3 px-6 py-4 md:px-8 ei-border-b">
+      <p class="ei-mono text-[11px] text-[var(--ei-muted)]">{{ feed_post.date|date:"Y.m.d" }}</p>
+      <p class="ei-mono text-[11px] text-[var(--ei-primary)]">{{ feed_post.get_template_type|upper }}</p>
+    </header>
+
+    <div class="px-6 py-6 md:px-8 md:py-8">
+      <h2 class="ei-display mb-4 text-3xl font-bold leading-[1.02]">
+        <a class="ei-link" href="{% pageurl feed_post %}">{{ feed_post.title }}</a>
       </h2>
-      <div class="text-sm text-base-content/70 whitespace-nowrap">{{ post.date }}</div>
-    </div>
 
-    {# Content varies by page type #}
-    <div class="mb-4">
-      
-      {% if post.get_template_type == "blog" %}
-      {# BlogPage: Show intro #}
-      <p class="prose">{{ post.intro }}</p>
+      {% if feed_post.get_template_type == "blog" %}
+      {% with feed_post.main_image as main_image %}
+      {% if main_image %}
+      <figure class="mb-6 overflow-hidden ei-border bg-neutral-200">
+        {% image main_image fill-1200x640 loading="lazy" width="1200" height="640" class="h-auto w-full object-cover" %}
+      </figure>
+      {% endif %}
+      {% endwith %}
 
-      {% elif post.get_template_type == "micropost" %}
-      {# MicroPostPage: Show entire body content #}
-      <div class="prose">{% include_block post.body %}</div>
+      {% if feed_post.intro %}
+      <p class="mb-6 text-xl leading-relaxed">{{ feed_post.intro }}</p>
+      {% endif %}
+      <a class="ei-button" href="{% pageurl feed_post %}">{% translate "Read Full" %}</a>
 
-      {% elif post.get_template_type == "external_link" %}
-      {# ExternalLinkPage: Show quote and commentary #}
-      {% if post.quote %}
-      <div class="prose">
-        <blockquote class="border-l-4 border-base-content/30 pl-4 italic mb-3">
-          {{ post.quote|richtext }}
-        </blockquote>
+      {% elif feed_post.get_template_type == "micropost" %}
+      <div class="ei-reading max-w-none text-2xl italic leading-[1.45]">{% include_block feed_post.body %}</div>
+
+      {% elif feed_post.get_template_type == "external_link" %}
+      {% if feed_post.quote %}
+      <blockquote class="mb-6 border-l-4 border-[var(--ei-primary)] pl-5 text-2xl italic leading-[1.4]">
+        {{ feed_post.quote|richtext }}
+      </blockquote>
+      {% endif %}
+      <div class="ei-reading max-w-none">{{ feed_post.commentary|richtext }}</div>
+      <div class="mt-6">
+        <a class="ei-button" href="{{ feed_post.link_url }}" target="_blank" rel="noopener noreferrer">{% translate "View External Link" %}</a>
       </div>
       {% endif %}
-      <div class="prose">{{ post.commentary|richtext }}</div>
-      {% endif %}
-    </div>
 
-    {# Bottom section: Tags and Buttons #}
-    <div class="flex flex-wrap items-center gap-4">
-      <div class="flex flex-wrap gap-2 flex-1 min-w-0">
-        {% if post.tags.all %}
-        {% for tag in post.tags.all %}
-        <span class="badge badge-outline">{{ tag }}</span>
+      {% if feed_post.tags.all %}
+      <div class="mt-6 flex flex-wrap gap-2">
+        {% for tag in feed_post.tags.all %}
+        <span class="ei-tag">{{ tag }}</span>
         {% endfor %}
-        {% endif %}
       </div>
-
-      <div class="card-actions flex-shrink-0">
-        {% if post.get_template_type == "blog" %}
-        <a class="btn btn-primary btn-sm" href="{% pageurl post %}">Read More</a>
-        {% elif post.get_template_type == "external_link" %}
-        <a class="btn btn-primary btn-sm" href="{{ post.link_url }}" target="_blank" rel="noopener noreferrer">
-          View External Link ↗
-        </a>
-        {% endif %}
-      </div>
+      {% endif %}
     </div>
+  </article>
+  {% endwith %}
+  {% empty %}
+  <div class="ei-border bg-[var(--ei-surface)] p-10 text-center">
+    <p class="ei-mono text-xs text-[var(--ei-muted)]">{% translate "No transmissions yet." %}</p>
   </div>
-</div>
+  {% endfor %}
+</section>
 {% endwith %}
-{% endfor %}
-</div>
 {% endblock %}

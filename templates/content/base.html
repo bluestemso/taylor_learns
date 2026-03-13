@@ -1,9 +1,7 @@
 {% extends "web/base.html" %}
 {% load wagtailcore_tags %}
 {% block body %}
-<div class="section">
-  <div class="container max-w-full">
-    {% block content %}{% endblock %}
-  </div>
-</div>
+<main class="ei-shell py-6 md:py-10">
+  {% block content %}{% endblock %}
+</main>
 {% endblock %}

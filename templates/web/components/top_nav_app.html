@@ -1,8 +1,22 @@
 {% extends 'web/components/top_nav.html' %}
-{% block mobile_nav %}
-<li class="menu-title">
-  <span>Site</span>
-</li>
+{% load i18n %}
+
+{% block desktop_nav %}
 {{ block.super }}
-{% include 'web/components/app_nav_menu_items.html' %}
+<a class="ei-mono ei-link {% if active_tab == 'dashboard' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
+  {% translate "Dashboard" %}
+</a>
+<a class="ei-mono ei-link {% if active_tab == 'ai-chat' %}ei-link-active{% endif %}" href="{% url 'chat:chat_home' %}">
+  {% translate "AI Chat" %}
+</a>
+{% endblock %}
+
+{% block mobile_nav %}
+{{ block.super }}
+<a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if active_tab == 'dashboard' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
+  {% translate "Dashboard" %}
+</a>
+<a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if active_tab == 'ai-chat' %}ei-link-active{% endif %}" href="{% url 'chat:chat_home' %}">
+  {% translate "AI Chat" %}
+</a>
 {% endblock %}

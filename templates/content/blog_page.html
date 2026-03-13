@@ -1,6 +1,7 @@
 {% extends "content/base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
 {% load i18n %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
 {% block meta %}
 {% with page.seo_title|default:page.title as page_title %}
 {% with page.search_description|default:page.intro as page_description %}
@@ -10,33 +11,97 @@
 {% endwith %}
 {% endwith %}
 {% endblock %}
+
 {% block content %}
-<nav aria-label="breadcrumbs" class="mb-4">
-  <ol class="pg-breadcrumbs">
-    <li><a href="{{ page.get_parent.url }}">{{ page.get_parent.title }}</a></li>
-    <li class="pg-breadcrumb-active" aria-current="page">{{ page.title }}</li>
-  </ol>
-</nav>
-<article class="prose prose-sm mx-auto my-8">
-  <h1>{{ page.title }}</h1>
-  {% if page.intro %}<h2 class="text-base-content/70">{{ page.intro }}</h2>{% endif %}
-  <p class="text-sm text-base-content/70">{{ page.date }}</p>
-  <div class="my-4">
-    {% include_block page.body %}
-  </div>
-  {% for item in page.gallery_images.all %}
-  {% if forloop.first %}
-  <hr class="my-8">
-  <h2>{% translate 'Image Gallery' %}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    {% endif %}
-    <div>
-      {% image item.image fill-320x240 loading="lazy" width="320" height="240" %}
-      <p class="text-sm text-base-content/70 mt-2">{{ item.caption }}</p>
+<article class="ei-border bg-[var(--ei-surface)]">
+  <header class="ei-border-b bg-[var(--ei-background)] px-6 py-10 md:px-10 lg:px-14 lg:py-14">
+    <div class="mx-auto max-w-[70ch]">
+      <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Essay" %}</p>
+      <h1 class="ei-display mb-6 text-4xl font-bold leading-[1.02] md:text-5xl lg:text-6xl">{{ page.title }}</h1>
+      <div class="ei-mono flex flex-wrap gap-x-6 gap-y-2 text-[11px] text-[var(--ei-muted)]">
+        <span>{% blocktranslate with date=page.date|date:"Y.m.d" %}Date: {{ date }}{% endblocktranslate %}</span>
+        {% if page.owner %}
+        <span>
+          {% if page.owner.get_full_name %}
+          {% blocktranslate with author=page.owner.get_full_name %}Author: {{ author }}{% endblocktranslate %}
+          {% else %}
+          {% blocktranslate with author=page.owner.username %}Author: {{ author }}{% endblocktranslate %}
+          {% endif %}
+        </span>
+        {% endif %}
+      </div>
+      {% if page.intro %}
+      <p class="mt-8 max-w-[52ch] text-xl italic leading-[1.45]">{{ page.intro }}</p>
+      {% endif %}
     </div>
-    {% if forloop.last %}
+  </header>
+
+  <div class="grid xl:grid-cols-5">
+    <aside class="hidden xl:block xl:ei-border-r">
+      <div class="sticky top-[80px] p-6">
+        <p class="ei-mono mb-4 text-[10px] text-[var(--ei-muted)]">{% translate "Index" %}</p>
+        <nav class="space-y-3 text-[11px]">
+          <a class="ei-mono ei-link block" href="#intro">{% translate "01 Intro" %}</a>
+          <a class="ei-mono ei-link block" href="#reading">{% translate "02 Reading" %}</a>
+          {% if page.gallery_images.all %}
+          <a class="ei-mono ei-link block" href="#gallery">{% translate "03 Gallery" %}</a>
+          {% endif %}
+        </nav>
+      </div>
+    </aside>
+
+    <div class="px-6 py-10 md:px-10 lg:px-14 xl:col-span-3" id="reading">
+      <div class="ei-reading">
+        {% if page.intro %}
+        <p id="intro">{{ page.intro }}</p>
+        {% endif %}
+        {% include_block page.body %}
+      </div>
+
+      {% if page.gallery_images.all %}
+      <section class="mt-14" id="gallery">
+        <h2 class="ei-display mb-5 text-3xl font-bold">{% translate "Image Gallery" %}</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          {% for item in page.gallery_images.all %}
+          <figure class="ei-border bg-[var(--ei-background)] p-2">
+            {% image item.image fill-800x500 loading="lazy" width="800" height="500" class="h-auto w-full" %}
+            {% if item.caption %}
+            <figcaption class="ei-mono mt-2 px-1 text-[10px] text-[var(--ei-muted)]">{{ item.caption }}</figcaption>
+            {% endif %}
+          </figure>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+    </div>
+
+    <aside class="hidden xl:block xl:ei-border-l">
+      <div class="sticky top-[80px] space-y-5 p-6">
+        <div>
+          <p class="ei-mono mb-3 text-[10px] text-[var(--ei-muted)]">{% translate "Meta" %}</p>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex items-center justify-between ei-border-t pt-2">
+              <span class="ei-mono text-[var(--ei-muted)]">{% translate "Date" %}</span>
+              <span class="ei-mono">{{ page.date|date:"Y.m.d" }}</span>
+            </div>
+            <div class="flex items-center justify-between ei-border-t pt-2">
+              <span class="ei-mono text-[var(--ei-muted)]">{% translate "Type" %}</span>
+              <span class="ei-mono">{% translate "Essay" %}</span>
+            </div>
+          </div>
+        </div>
+        {% if page.tags.all %}
+        <div>
+          <p class="ei-mono mb-3 text-[10px] text-[var(--ei-muted)]">{% translate "Tags" %}</p>
+          <div class="flex flex-wrap gap-2">
+            {% for tag in page.tags.all %}
+            <span class="ei-tag">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </aside>
   </div>
-  {% endif %}
-  {% endfor %}
 </article>
 {% endblock %}

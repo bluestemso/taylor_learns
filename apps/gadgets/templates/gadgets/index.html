@@ -4,83 +4,72 @@
 {% block page_title %}{% translate "Gadgets" %} | {{ project_meta.NAME }}{% endblock %}
 
 {% block top_nav %}
-<div class="navbar shadow-md">
-  <div class="navbar-start">
-    <div class="dropdown">
-      <div class="lg:hidden">
-        <label tabindex="0" class="btn btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-        </label>
+<header class="sticky top-0 z-50 bg-[var(--ei-background)] ei-border-b">
+  <div class="ei-shell flex h-[60px] items-center justify-between gap-4">
+    <a class="ei-display text-lg font-bold tracking-[-0.02em] ei-link" href="{{ blog_url }}">{{ project_meta.NAME }}</a>
+
+    <div class="flex items-center gap-4">
+      <nav class="hidden items-center gap-6 text-xs md:flex">
+        <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Index" %}</a>
+        <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
+        <a class="ei-mono ei-link ei-link-active" href="{% url 'index' %}">{% translate "Gadgets" %}</a>
+      </nav>
+
+      <div class="hidden items-center md:flex">
+        {% include "web/components/dark_mode_selector.html" %}
       </div>
-      <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow-2xs bg-base-100 rounded-box w-52 z-10">
-        <li>
-          <a href="{{ blog_url }}">
-            {% translate "Blog" %}
-          </a>
-        </li>
-        <li>
-          <a href="{{ portfolio_url }}">
-            {% translate "Portfolio" %}
-          </a>
-        </li>
-        <li>
-          <a class="active" href="/">
-            {% translate "Gadgets" %}
-          </a>
-        </li>
-      </ul>
-    </div>
-    <a class="btn btn-ghost normal-case text-xl" href="/">
-      {{ project_meta.NAME }}
-    </a>
-  </div>
-  <div class="navbar-center hidden lg:flex">
-    <div role="tablist" class="tabs p-0">
-      <a class="tab" href="{{ blog_url }}">
-        {% translate "Blog" %}
-      </a>
-      <a class="tab" href="{{ portfolio_url }}">
-        {% translate "Portfolio" %}
-      </a>
-      <a class="tab tab-active" href="/">
-        {% translate "Gadgets" %}
-      </a>
+
+      <div class="flex items-center gap-2 md:hidden">
+        {% include "web/components/dark_mode_selector.html" %}
+        <details class="relative">
+          <summary class="ei-mono cursor-pointer list-none border border-[var(--ei-border)] px-3 py-2 text-[11px]">
+            {% translate "Menu" %}
+          </summary>
+          <nav class="absolute right-0 top-[48px] z-50 w-56 bg-[var(--ei-surface)] ei-border">
+            <div class="flex flex-col p-3 text-[11px]">
+              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2" href="{{ blog_url }}">{% translate "Index" %}</a>
+              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
+              <a class="ei-mono ei-link px-2 py-2 ei-link-active" href="{% url 'index' %}">{% translate "Gadgets" %}</a>
+            </div>
+          </nav>
+        </details>
+      </div>
     </div>
   </div>
-  <div class="navbar-end">
-    {% include "web/components/dark_mode_selector.html" %}
-  </div>
-</div>
+</header>
 {% endblock %}
 
 {% block body %}
-<div class="container mx-auto px-4 py-8" style="max-width: 960px">
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-bold mb-2">{% translate "Gadgets" %}</h1>
-    <p class="text-lg text-base-content/70 mx-auto max-w-2xl">
+<main class="ei-shell py-8 md:py-10">
+  <header class="ei-border bg-[var(--ei-surface)] p-6 md:p-10">
+    <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Experimental Lab" %}</p>
+    <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{% translate "Gadgets" %}</h1>
+    <p class="mt-5 max-w-[70ch] text-xl italic leading-[1.45]">
       {% translate "Small, self-contained experiments and practical tools. Each gadget lives on its own page so it can evolve independently." %}
     </p>
   </header>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {% for gadget in gadgets %}
-    <a href="/{{ gadget.slug }}/" class="card bg-base-100 shadow-xl border border-primary/20 hover:border-primary/40 transition-colors">
-      <div class="card-body">
-        <h2 class="card-title">{{ gadget.title }}</h2>
-        {% if gadget.description %}
-        <p class="text-base-content/70">{{ gadget.description }}</p>
-        {% else %}
-        <p class="text-base-content/70">{% translate "Open this gadget." %}</p>
-        {% endif %}
+  <section class="mt-8 ei-border bg-[var(--ei-surface)]">
+    <div class="grid gap-0 md:grid-cols-2">
+      {% for gadget in gadgets %}
+      <a class="group ei-hover-invert block {% if forloop.counter|divisibleby:2 %}md:ei-border-l{% endif %} {% if not forloop.last %}ei-border-b{% endif %}" href="{% url 'detail' slug=gadget.slug %}">
+        <article class="p-6 md:p-8">
+          <p class="ei-mono text-[10px] text-[var(--ei-muted)]">ID: {{ forloop.counter|stringformat:"03d" }}</p>
+          <h2 class="ei-display mt-3 text-3xl font-bold leading-[1.02] transition-transform duration-150 group-hover:translate-x-2">{{ gadget.title }}</h2>
+          {% if gadget.description %}
+          <p class="mt-4 text-lg leading-relaxed opacity-85">{{ gadget.description }}</p>
+          {% else %}
+          <p class="mt-4 text-lg leading-relaxed opacity-85">{% translate "Open this gadget." %}</p>
+          {% endif %}
+          <p class="ei-mono mt-6 text-[11px]">[{% translate "Open" %}]</p>
+        </article>
+      </a>
+      {% empty %}
+      <div class="p-10 md:col-span-2">
+        <p class="ei-mono text-xs text-[var(--ei-muted)]">{% translate "No gadgets published yet. Check back soon!" %}</p>
       </div>
-    </a>
-    {% empty %}
-    <div class="card bg-base-100 shadow border border-primary/20 md:col-span-2">
-      <div class="card-body">
-        <p class="text-base-content/70">{% translate "No gadgets published yet. Check back soon!" %}</p>
-      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-</div>
+  </section>
+</main>
 {% endblock %}

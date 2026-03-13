@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Newsreader:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /*
    add custom components using imports, as described here:
@@ -40,4 +41,165 @@
   --primary: var(--color-primary);
   --danger: var(--color-error);
   --success: var(--color-success);
+
+  --ei-primary: #FF5A00;
+  --ei-background: #F4F4F0;
+  --ei-surface: #FFFFFF;
+  --ei-text: #111111;
+  --ei-muted: #888888;
+  --ei-border: #000000;
+
+  --ei-font-display: 'Space Grotesk', sans-serif;
+  --ei-font-body: 'Newsreader', serif;
+  --ei-font-mono: 'JetBrains Mono', monospace;
+
+  --ei-spacing-sm: 16px;
+  --ei-spacing-md: 32px;
+  --ei-spacing-lg: 64px;
+}
+
+html.dark,
+html[data-theme='forest'],
+html[data-theme='dark'] {
+  --ei-background: #101010;
+  --ei-surface: #181818;
+  --ei-text: #f4f4f0;
+  --ei-muted: #b5b5b2;
+  --ei-border: #f4f4f0;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--ei-background);
+    color: var(--ei-text);
+  }
+
+  body {
+    font-family: var(--ei-font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--ei-font-display);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  a {
+    transition: color 120ms ease;
+  }
+}
+
+@layer components {
+  .ei-shell {
+    @apply mx-auto w-full max-w-[1600px] px-4 md:px-6;
+  }
+
+  .ei-display {
+    font-family: var(--ei-font-display);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .ei-body {
+    font-family: var(--ei-font-body);
+  }
+
+  .ei-mono {
+    font-family: var(--ei-font-mono);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ei-border {
+    border: 1px solid var(--ei-border);
+    border-radius: 0;
+  }
+
+  .ei-border-b {
+    border-bottom: 1px solid var(--ei-border);
+  }
+
+  .ei-border-r {
+    border-right: 1px solid var(--ei-border);
+  }
+
+  .ei-border-l {
+    border-left: 1px solid var(--ei-border);
+  }
+
+  .ei-border-t {
+    border-top: 1px solid var(--ei-border);
+  }
+
+  .ei-link {
+    color: var(--ei-text);
+  }
+
+  .ei-link:hover,
+  .ei-link-active {
+    color: var(--ei-primary);
+  }
+
+  .ei-button {
+    @apply inline-flex h-12 items-center justify-center px-6 text-xs font-medium;
+    background-color: var(--ei-surface);
+    border: 1px solid var(--ei-border);
+    border-radius: 0;
+    color: var(--ei-text);
+    font-family: var(--ei-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+
+  .ei-button:hover {
+    background-color: var(--ei-primary);
+    color: #000000;
+  }
+
+  .ei-grid-bg {
+    background-size: 36px 36px;
+    background-image:
+      linear-gradient(to right, rgb(0 0 0 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.06) 1px, transparent 1px);
+  }
+
+  .ei-tag {
+    @apply inline-flex items-center px-2 py-1 text-[10px];
+    border: 1px solid var(--ei-border);
+    border-radius: 0;
+    font-family: var(--ei-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ei-hover-invert {
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+
+  .ei-hover-invert:hover {
+    background-color: var(--ei-text);
+    color: var(--ei-surface);
+  }
+
+  .ei-reading {
+    @apply mx-auto max-w-[65ch] text-[18px] leading-[1.55];
+    color: var(--ei-text);
+    font-family: var(--ei-font-body);
+  }
+
+  .ei-reading p {
+    margin: 0 0 24px;
+  }
+
+  .ei-reading blockquote {
+    @apply my-8 border-l-4 pl-6 text-[22px] italic;
+    border-color: var(--ei-primary);
+  }
 }

@@ -1,18 +1,33 @@
 {% extends "content/base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
 {% load i18n %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
 {% block content %}
-  <div class="pg-text-centered my-4">
-    <h1 class="pg-title">{{ page.title }}</h1>
-  </div>
-  <div class="app-card">
-    <div class="pg-content">
-      {% include_block page.body %}
-      <ul>
-      {% for child in page.get_children %}
-        <li><a href="{% pageurl child %}">{{ child.title }}</a></li>
-      {% endfor %}
-      </ul>
+<section class="ei-border bg-[var(--ei-surface)]">
+  <div class="grid gap-0 lg:grid-cols-10">
+    <aside class="p-6 md:p-8 lg:col-span-3 lg:ei-border-r">
+      <div class="aspect-square w-full max-w-[340px] ei-border bg-[var(--ei-background)] p-4 transition-colors duration-150 hover:border-[var(--ei-primary)]">
+        <svg class="h-full w-full" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect height="98" stroke="currentColor" width="98" x="1" y="1"></rect>
+          <line stroke="currentColor" x1="0" x2="100" y1="0" y2="100"></line>
+          <line stroke="currentColor" x1="100" x2="0" y1="0" y2="100"></line>
+        </svg>
+      </div>
+      <p class="ei-mono mt-4 text-[11px] text-[var(--ei-muted)]">{% blocktranslate with title=page.title %}Manifesto // {{ title }}{% endblocktranslate %}</p>
+    </aside>
+
+    <div class="p-6 md:p-10 lg:col-span-7 lg:p-14">
+      <h1 class="ei-display mb-8 text-4xl font-bold leading-[0.95] md:text-6xl">{{ page.title }}</h1>
+      <div class="ei-display space-y-6 text-2xl font-medium leading-[1.25] md:text-3xl [&_p]:uppercase [&_p]:text-justify">{% include_block page.body %}</div>
+
+      {% if page.get_children %}
+      <div class="mt-12 grid gap-0 sm:grid-cols-2 lg:grid-cols-3">
+        {% for child in page.get_children %}
+        <a class="ei-mono ei-link ei-border px-4 py-3 text-[11px]" href="{% pageurl child %}">[{{ child.title }}]</a>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </div>
+</section>
 {% endblock %}
