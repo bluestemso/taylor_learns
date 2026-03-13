@@ -23,36 +23,38 @@
   <div class="grid gap-0 md:grid-cols-2">
     {% for project in page.get_projects %}
     <article class="group ei-hover-invert {% if forloop.counter|divisibleby:2 %}md:border-l md:border-[var(--ei-border)]{% endif %} {% if not forloop.last %}ei-border-b{% endif %}">
-      <div class="ei-border-b p-5">
-        <div class="flex items-center justify-between">
-          <span class="ei-mono text-[10px]">{% blocktranslate with project_id=forloop.counter|stringformat:"03d" %}ID: PRJ-{{ project_id }}{% endblocktranslate %}</span>
-          {% if project.date %}
-          <span class="ei-mono text-[10px]">{{ project.date|date:"M Y"|upper }}</span>
-          {% endif %}
-        </div>
-      </div>
-
-      {% if project.project_images.first %}
-      <div class="aspect-[16/10] overflow-hidden bg-neutral-200">
-        {% image project.project_images.first.image fill-1200x760 as project_img %}
-        <img alt="{{ project.title }}" class="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0" height="760" loading="lazy" src="{{ project_img.url }}" width="1200">
-      </div>
-      {% endif %}
-
-      <div class="p-7">
-        <h2 class="ei-display mb-4 text-3xl font-bold">{{ project.title }}</h2>
-        {% if project.description %}
-        <div class="mb-6 text-lg leading-relaxed opacity-80">{{ project.description|striptags|truncatewords:24 }}</div>
-        {% endif %}
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex flex-wrap gap-2">
-            {% for tag in project.tags.all|slice:":3" %}
-            <span class="ei-tag">{{ tag.name }}</span>
-            {% endfor %}
+      <a class="block h-full" href="{{ project.url }}">
+        <div class="ei-border-b p-5">
+          <div class="flex items-center justify-between">
+            <span class="ei-mono text-[10px]">{% blocktranslate with project_id=forloop.counter|stringformat:"03d" %}ID: PRJ-{{ project_id }}{% endblocktranslate %}</span>
+            {% if project.date %}
+            <span class="ei-mono text-[10px]">{{ project.date|date:"M Y"|upper }}</span>
+            {% endif %}
           </div>
-          <a class="ei-mono text-[11px] group-hover:text-[var(--ei-primary)]" href="{{ project.url }}">[{% translate "View Case" %}]</a>
         </div>
-      </div>
+
+        {% if project.project_images.first %}
+        <div class="aspect-[16/10] overflow-hidden bg-neutral-200">
+          {% image project.project_images.first.image fill-1200x760 as project_img %}
+          <img alt="{{ project.title }}" class="h-full w-full object-cover grayscale transition duration-300 group-hover:grayscale-0" height="760" loading="lazy" src="{{ project_img.url }}" width="1200">
+        </div>
+        {% endif %}
+
+        <div class="p-7">
+          <h2 class="ei-display mb-4 text-3xl font-bold">{{ project.title }}</h2>
+          {% if project.description %}
+          <div class="mb-6 text-lg leading-relaxed opacity-80">{{ project.description|striptags|truncatewords:24 }}</div>
+          {% endif %}
+          <div class="flex items-center justify-between gap-4">
+            <div class="flex flex-wrap gap-2">
+              {% for tag in project.tags.all|slice:":3" %}
+              <span class="ei-tag">{{ tag.name }}</span>
+              {% endfor %}
+            </div>
+            <span class="ei-mono text-[11px] group-hover:text-[var(--ei-primary)]">[{% translate "View Case" %}]</span>
+          </div>
+        </div>
+      </a>
     </article>
     {% empty %}
     <div class="p-10 text-center md:col-span-2">
