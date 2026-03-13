@@ -1,7 +1,4 @@
 {% load i18n %}
-{% load wagtailcore_tags %}
-{% slugurl 'portfolio' as portfolio_page_url %}
-{% slugurl 'about' as about_page_url %}
 
 <footer class="mt-16 bg-[var(--ei-surface)] ei-border-t">
   <div class="ei-shell grid gap-0 md:grid-cols-2">
@@ -19,16 +16,12 @@
 
         {% if blog_url %}
         <a class="ei-mono ei-link" href="{{ blog_url }}about/">{% translate "About" %}</a>
-        {% elif about_page_url %}
-        <a class="ei-mono ei-link" href="{{ about_page_url }}">{% translate "About" %}</a>
         {% else %}
         <a class="ei-mono ei-link" href="/about/">{% translate "About" %}</a>
         {% endif %}
 
         {% if portfolio_url %}
         <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
-        {% elif portfolio_page_url %}
-        <a class="ei-mono ei-link" href="{{ portfolio_page_url }}">{% translate "Portfolio" %}</a>
         {% else %}
         <a class="ei-mono ei-link" href="/portfolio/">{% translate "Portfolio" %}</a>
         {% endif %}
