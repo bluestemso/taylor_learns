@@ -4,7 +4,7 @@
 
 {% block content %}
 {% with posts=page.get_ordered_blog_posts %}
-<section class="ei-border bg-[var(--ei-surface)] p-6 md:p-10">
+<section class="ei-content-narrow ei-border bg-[var(--ei-surface)] p-6 md:p-10">
   <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Stream" %}</p>
   <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{{ page.title }}</h1>
   {% if page.intro %}
@@ -13,7 +13,7 @@
   <p class="ei-mono mt-6 text-[11px] text-[var(--ei-muted)]">{% blocktranslate with total=posts|length %}Total Records: {{ total }}{% endblocktranslate %}</p>
 </section>
 
-<section class="mx-auto mt-8 max-w-5xl space-y-6">
+<section class="ei-content-narrow mt-8 space-y-6">
   {% for post in posts %}
   {% with post.specific as feed_post %}
   <article class="ei-border bg-[var(--ei-surface)]">
