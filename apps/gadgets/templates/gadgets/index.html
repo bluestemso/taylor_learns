@@ -10,9 +10,10 @@
 
     <div class="flex items-center gap-4">
       <nav class="hidden items-center gap-6 text-xs md:flex">
-        <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Index" %}</a>
+        <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Feed" %}</a>
         <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
-        <a class="ei-mono ei-link ei-link-active" href="{% url 'index' %}">{% translate "Gadgets" %}</a>
+        <a class="ei-mono ei-link ei-link-active" href="{% url "index" %}">{% translate "Gadgets" %}</a>
+        <a class="ei-mono ei-link" href="{{ profile_url }}">{% translate "Profile" %}</a>
       </nav>
 
       <div class="hidden items-center md:flex">
@@ -27,9 +28,10 @@
           </summary>
           <nav class="absolute right-0 top-[48px] z-50 w-56 bg-[var(--ei-surface)] ei-border">
             <div class="flex flex-col p-3 text-[11px]">
-              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2" href="{{ blog_url }}">{% translate "Index" %}</a>
+              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2" href="{{ blog_url }}">{% translate "Feed" %}</a>
               <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
-              <a class="ei-mono ei-link px-2 py-2 ei-link-active" href="{% url 'index' %}">{% translate "Gadgets" %}</a>
+              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 ei-link-active" href="{% url "index" %}">{% translate "Gadgets" %}</a>
+              <a class="ei-mono ei-link px-2 py-2" href="{{ profile_url }}">{% translate "Profile" %}</a>
             </div>
           </nav>
         </details>

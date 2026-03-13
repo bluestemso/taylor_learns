@@ -1,38 +1,37 @@
 {% load i18n %}
 
 <footer class="mt-16 bg-[var(--ei-surface)] ei-border-t">
-  <div class="ei-shell grid gap-0 md:grid-cols-2">
-    <div class="p-6 md:p-8 md:border-r md:border-[var(--ei-border)]">
-      <div class="ei-display text-2xl font-bold">{{ project_meta.NAME }}</div>
-      <p class="mt-3 ei-mono text-[10px] text-[var(--ei-muted)]">&copy; <span id="copyright-year">2024</span></p>
+  <div class="ei-shell flex flex-col gap-4 p-3 md:flex-row md:items-center md:justify-between md:gap-6 md:p-4">
+    <div class="flex items-baseline gap-3">
+      <div class="ei-display text-xl font-bold">{{ project_meta.NAME }}</div>
+      <p class="ei-mono text-[10px] text-[var(--ei-muted)]">&copy; <span id="copyright-year">2024</span></p>
     </div>
-    <div class="p-6 md:p-8">
-      <div class="grid grid-cols-2 gap-3 text-xs md:grid-cols-4">
-        {% if blog_url %}
-        <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Index" %}</a>
-        {% else %}
-        <a class="ei-mono ei-link" href="/">{% translate "Index" %}</a>
-        {% endif %}
+    <nav class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs md:flex md:items-center md:gap-5">
+      {% if blog_url %}
+      <a class="ei-mono ei-link" href="{{ blog_url }}">{% translate "Feed" %}</a>
+      {% else %}
+      <a class="ei-mono ei-link" href="/">{% translate "Feed" %}</a>
+      {% endif %}
 
-        {% if blog_url %}
-        <a class="ei-mono ei-link" href="{{ blog_url }}about/">{% translate "About" %}</a>
-        {% else %}
-        <a class="ei-mono ei-link" href="/about/">{% translate "About" %}</a>
-        {% endif %}
+      {% if portfolio_url %}
+      <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
+      {% else %}
+      <a class="ei-mono ei-link" href="/portfolio/">{% translate "Portfolio" %}</a>
+      {% endif %}
 
-        {% if portfolio_url %}
-        <a class="ei-mono ei-link" href="{{ portfolio_url }}">{% translate "Portfolio" %}</a>
-        {% else %}
-        <a class="ei-mono ei-link" href="/portfolio/">{% translate "Portfolio" %}</a>
-        {% endif %}
+      {% if gadgets_url %}
+      <a class="ei-mono ei-link" href="{{ gadgets_url }}">{% translate "Gadgets" %}</a>
+      {% else %}
+      <a class="ei-mono ei-link" href="/gadgets/">{% translate "Gadgets" %}</a>
+      {% endif %}
 
-        {% if main_site_url %}
-        <a class="ei-mono ei-link" href="{{ main_site_url }}/terms/">{% translate "Terms" %}</a>
-        {% else %}
-        <a class="ei-mono ei-link" href="/terms/">{% translate "Terms" %}</a>
-        {% endif %}
-      </div>
-    </div>
+      {% if blog_url %}
+      <a class="ei-mono ei-link" href="{{ blog_url }}profile/">{% translate "Profile" %}</a>
+      {% else %}
+      <a class="ei-mono ei-link" href="/profile/">{% translate "Profile" %}</a>
+      {% endif %}
+
+    </nav>
   </div>
 </footer>
 <script>

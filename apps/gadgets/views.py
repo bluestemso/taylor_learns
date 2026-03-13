@@ -24,6 +24,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "main_site_url": main_site_url,
         "blog_url": f"{main_site_url}/" if main_site_url else "/",
         "portfolio_url": f"{main_site_url}/portfolio/" if main_site_url else "/portfolio/",
+        "profile_url": f"{main_site_url}/profile/" if main_site_url else "/profile/",
     }
     return render(request, "gadgets/index.html", context)
 
