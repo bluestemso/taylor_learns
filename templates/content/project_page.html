@@ -4,57 +4,95 @@
 
 {% block content %}
 <article class="ei-border bg-[var(--ei-surface)]">
-  <header class="ei-border-b px-6 py-10 md:px-10 lg:px-14">
-    <div class="flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <p class="ei-mono mb-3 text-[11px] text-[var(--ei-primary)]">{% translate "Project File" %}</p>
-        <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{{ page.title }}</h1>
-      </div>
+  <header class="ei-border-b px-6 py-8 md:px-10 md:py-10 lg:px-14">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <a class="ei-mono ei-link text-[11px]" href="{{ page.get_parent.url }}">[{% translate "Back to Portfolio" %}]</a>
       <p class="ei-mono text-[11px] text-[var(--ei-muted)]">{{ page.date|date:"Y.m.d" }}</p>
     </div>
 
-    {% if page.description %}
-    <div class="mt-8 max-w-[60ch] text-xl leading-relaxed">{{ page.description|richtext }}</div>
-    {% endif %}
+    <div class="mt-8 grid gap-7 lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)] lg:gap-10">
+      <div>
+        <p class="ei-mono mb-3 text-[11px] text-[var(--ei-primary)]">{% translate "Project File" %}</p>
+        <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{{ page.title }}</h1>
 
-    {% if page.project_url or page.repo_url %}
-    <div class="mt-8 flex flex-wrap gap-3">
-      {% if page.project_url %}
-      <a class="ei-button" href="{{ page.project_url }}" rel="noopener noreferrer" target="_blank">{% translate "View Project" %}</a>
+        {% if page.description %}
+        <div class="mt-8 max-w-[60ch] text-xl leading-relaxed">{{ page.description|richtext }}</div>
+        {% endif %}
+      </div>
+
+      <aside class="ei-border bg-[var(--ei-background)] p-5 md:p-6">
+        <div>
+          <p class="ei-mono text-[10px] text-[var(--ei-muted)]">{% translate "Published" %}</p>
+          <p class="ei-display mt-2 text-2xl font-bold leading-none">{{ page.date|date:"M Y"|upper }}</p>
+        </div>
+
+        {% if page.tags.all %}
+        <div class="ei-border-t mt-5 pt-5">
+          <p class="ei-mono text-[10px] text-[var(--ei-muted)]">{% translate "Stack" %}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            {% for tag in page.tags.all %}
+            <span class="ei-tag">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if page.project_url or page.repo_url %}
+        <div class="ei-border-t mt-5 pt-5">
+          <p class="ei-mono text-[10px] text-[var(--ei-muted)]">{% translate "Links" %}</p>
+          <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            {% if page.project_url %}
+            <a class="ei-button w-full" href="{{ page.project_url }}" rel="noopener noreferrer" target="_blank">{% translate "View Project" %}</a>
+            {% endif %}
+            {% if page.repo_url %}
+            <a class="ei-button w-full" href="{{ page.repo_url }}" rel="noopener noreferrer" target="_blank">{% translate "View Code" %}</a>
+            {% endif %}
+          </div>
+        </div>
       {% endif %}
-      {% if page.repo_url %}
-      <a class="ei-button" href="{{ page.repo_url }}" rel="noopener noreferrer" target="_blank">{% translate "View Code" %}</a>
-      {% endif %}
+      </aside>
     </div>
-    {% endif %}
   </header>
 
-  {% if page.project_images.all %}
+  {% with image_count=page.project_images.count %}
+  {% if image_count %}
   <section class="ei-border-b px-6 py-8 md:px-10 lg:px-14">
+    {% if image_count == 1 %}
+    {% for item in page.project_images.all %}
+    <figure class="ei-border bg-[var(--ei-background)] p-2">
+      {% image item.image fill-1600x900 as project_image %}
+      <img alt="{{ item.image.title }}" class="h-auto w-full object-cover" height="900" loading="lazy" src="{{ project_image.url }}" width="1600">
+      {% if item.caption %}
+      <figcaption class="ei-mono mt-3 text-[10px] text-[var(--ei-muted)]">{{ item.caption }}</figcaption>
+      {% endif %}
+    </figure>
+    {% endfor %}
+    {% else %}
     <div class="grid gap-4 md:grid-cols-2">
       {% for item in page.project_images.all %}
       <figure class="ei-border bg-[var(--ei-background)] p-2">
         {% image item.image fill-1200x760 as project_image %}
         <img alt="{{ item.image.title }}" class="h-auto w-full object-cover" height="760" loading="lazy" src="{{ project_image.url }}" width="1200">
         {% if item.caption %}
-        <figcaption class="ei-mono mt-2 text-[10px] text-[var(--ei-muted)]">{{ item.caption }}</figcaption>
+        <figcaption class="ei-mono mt-3 text-[10px] text-[var(--ei-muted)]">{{ item.caption }}</figcaption>
         {% endif %}
       </figure>
       {% endfor %}
     </div>
+    {% endif %}
   </section>
   {% endif %}
+  {% endwith %}
 
   <section class="px-6 py-10 md:px-10 lg:px-14">
-    <div class="ei-reading">{% include_block page.body %}</div>
+    <div class="ei-case-reading">{% include_block page.body %}</div>
 
-    {% if page.tags.all %}
-    <div class="mt-8 flex flex-wrap gap-2">
-      {% for tag in page.tags.all %}
-      <span class="ei-tag">{{ tag.name }}</span>
-      {% endfor %}
+    <div class="ei-border-t mt-10 flex flex-wrap items-center justify-between gap-4 pt-6">
+      <a class="ei-mono ei-link text-[11px]" href="{{ page.get_parent.url }}">[{% translate "Back to Portfolio" %}]</a>
+      {% if page.project_url %}
+      <a class="ei-mono ei-link text-[11px]" href="{{ page.project_url }}" rel="noopener noreferrer" target="_blank">[{% translate "Open Live Project" %}]</a>
+      {% endif %}
     </div>
-    {% endif %}
   </section>
 </article>
 {% endblock %}
