@@ -10,7 +10,10 @@ class TestPortfolioTemplate(SimpleTestCase):
         self.assertIn('<a class="block h-full" href="{{ project.url }}">', template)
         self.assertIn('[{% translate "View Case" %}]</span>', template)
         self.assertNotIn(
-            '<a class="ei-mono text-[11px] group-hover:text-[var(--ei-primary)]" href="{{ project.url }}">[{% translate "View Case" %}]</a>',
+            (
+                '<a class="ei-mono text-[11px] group-hover:text-[var(--ei-primary)]" '
+                'href="{{ project.url }}">[{% translate "View Case" %}]</a>'
+            ),
             template,
         )
 
