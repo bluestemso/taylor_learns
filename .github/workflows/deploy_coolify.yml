@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows:
       - Run Django Tests
-      - Build Front End
     types:
       - completed
 
@@ -33,51 +32,58 @@ jobs:
             const repo = context.repo.repo;
             const sha = context.payload.workflow_run.head_sha;
             const requiredWorkflows = ['Run Django Tests', 'Build Front End'];
+            const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            const maxAttempts = 18;
 
             core.setOutput('target_sha', sha);
 
-            const response = await github.rest.actions.listWorkflowRunsForRepo({
-              owner,
-              repo,
-              head_sha: sha,
-              event: 'push',
-              per_page: 100,
-            });
+            for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+              const response = await github.rest.actions.listWorkflowRunsForRepo({
+                owner,
+                repo,
+                head_sha: sha,
+                event: 'push',
+                per_page: 100,
+              });
 
-            const runs = response.data.workflow_runs;
-            const latestByName = Object.fromEntries(
-              requiredWorkflows.map((name) => {
-                const latest = runs
-                  .filter((run) => run.name === name)
-                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-                return [name, latest || null];
-              })
-            );
-
-            const missing = requiredWorkflows.filter((name) => !latestByName[name]);
-            const pending = requiredWorkflows.filter((name) => {
-              const run = latestByName[name];
-              return run && run.status !== 'completed';
-            });
-
-            if (missing.length > 0 || pending.length > 0) {
-              core.info(
-                `Skipping deploy for ${sha}. Missing: ${missing.join(', ') || 'none'}. ` +
-                  `Pending: ${pending.join(', ') || 'none'}.`
+              const runs = response.data.workflow_runs;
+              const latestByName = Object.fromEntries(
+                requiredWorkflows.map((name) => {
+                  const latest = runs
+                    .filter((run) => run.name === name)
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+                  return [name, latest || null];
+                })
               );
-              core.setOutput('should_deploy', 'false');
-              return;
+
+              const missing = requiredWorkflows.filter((name) => !latestByName[name]);
+              const pending = requiredWorkflows.filter((name) => {
+                const run = latestByName[name];
+                return run && run.status !== 'completed';
+              });
+
+              if (missing.length === 0 && pending.length === 0) {
+                const failed = requiredWorkflows.filter((name) => latestByName[name].conclusion !== 'success');
+                if (failed.length > 0) {
+                  core.info(`Skipping deploy for ${sha}. Failed: ${failed.join(', ')}`);
+                  core.setOutput('should_deploy', 'false');
+                  return;
+                }
+
+                core.info(`All required workflows succeeded for ${sha}. Proceeding with deploy.`);
+                core.setOutput('should_deploy', 'true');
+                return;
+              }
+
+              core.info(
+                `Waiting for required workflows on ${sha} (attempt ${attempt}/${maxAttempts}). ` +
+                  `Missing: ${missing.join(', ') || 'none'}. Pending: ${pending.join(', ') || 'none'}.`
+              );
+              await sleep(10000);
             }
 
-            const failed = requiredWorkflows.filter((name) => latestByName[name].conclusion !== 'success');
-            if (failed.length > 0) {
-              core.info(`Skipping deploy for ${sha}. Failed: ${failed.join(', ')}`);
-              core.setOutput('should_deploy', 'false');
-              return;
-            }
-
-            core.info(`All required workflows succeeded for ${sha}. Proceeding with deploy.`);
-            core.setOutput('should_deploy', 'true');
+            core.info(`Skipping deploy for ${sha}. Timed out waiting for required workflows.`);
+            core.setOutput('should_deploy', 'false');
 
   deploy:
     name: Build image and trigger Coolify
@@ -91,6 +97,29 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.gate.outputs.target_sha }}
+          fetch-depth: 2
+
+      - name: Determine cache export policy
+        id: cache-policy
+        run: |
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+            changed_files="$(git diff --name-only HEAD^ HEAD)"
+          else
+            changed_files="$(git show --pretty='' --name-only HEAD)"
+          fi
+
+          echo "Changed files in deploy commit:"
+          printf '%s\n' "$changed_files"
+
+          if printf '%s\n' "$changed_files" | grep -Eq '^(uv\.lock|pyproject\.toml|package\.json|package-lock\.json|npm-shrinkwrap\.json|api-client/package\.json|Dockerfile\.web)$'; then
+            echo "refresh_cache=true" >> "$GITHUB_OUTPUT"
+            echo "Cache export enabled (dependency/build input changes detected)."
+          else
+            echo "refresh_cache=false" >> "$GITHUB_OUTPUT"
+            echo "Cache export disabled (no dependency/build input changes)."
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -117,7 +146,8 @@ jobs:
           username: bluestemso
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Build and push app image
+      - name: Build and push app image (cache refresh)
+        if: steps.cache-policy.outputs.refresh_cache == 'true'
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -126,6 +156,19 @@ jobs:
           push: true
           cache-from: type=gha,scope=taylor-learns-web-arm64
           cache-to: type=gha,mode=max,scope=taylor-learns-web-arm64
+          tags: |
+            ghcr.io/bluestemso/taylor_learns:latest
+            ghcr.io/bluestemso/taylor_learns:${{ needs.gate.outputs.target_sha }}
+
+      - name: Build and push app image (cache read only)
+        if: steps.cache-policy.outputs.refresh_cache != 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.web
+          platforms: linux/arm64
+          push: true
+          cache-from: type=gha,scope=taylor-learns-web-arm64
           tags: |
             ghcr.io/bluestemso/taylor_learns:latest
             ghcr.io/bluestemso/taylor_learns:${{ needs.gate.outputs.target_sha }}
