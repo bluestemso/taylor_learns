@@ -53,7 +53,7 @@ test: ## Run Django tests
 	@docker compose run --rm web python manage.py test ${ARGS}
 
 verify-release: ## Run production-like template and asset checks
-	@docker compose run --rm --no-deps web python scripts/check_template_classes.py
+	@docker compose run --rm --no-deps web python -m scripts.check_template_classes
 	@docker compose run --rm --no-deps vite npm run build
 	@docker compose run --rm web python manage.py check
 

@@ -1,7 +1,6 @@
 import re
 from collections.abc import Iterable
 
-
 RESPONSIVE_CUSTOM_CLASS_PATTERN = re.compile(r"\b(?:sm|md|lg|xl|2xl):ei-[a-z0-9-]+\b")
 
 

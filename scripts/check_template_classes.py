@@ -5,9 +5,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(REPO_ROOT))
-
 from apps.web.template_checks import (
     find_invalid_responsive_custom_classes_by_line,
     normalize_template_paths,
@@ -34,7 +31,7 @@ def _provided_template_files(repo_root: Path, args: list[str]) -> list[Path]:
 
 
 def main() -> int:
-    repo_root = REPO_ROOT
+    repo_root = Path(__file__).resolve().parents[1]
     targets = _provided_template_files(repo_root, sys.argv[1:]) or _default_template_files(repo_root)
 
     violations: list[str] = []
