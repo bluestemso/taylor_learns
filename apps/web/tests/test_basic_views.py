@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.test import TestCase, override_settings
-from django.urls import reverse
+from django.templatetags.static import static
+from django.urls import resolve, reverse
 
 
 class TestBasicViews(TestCase):
@@ -15,6 +16,19 @@ class TestBasicViews(TestCase):
 
     def test_terms(self):
         self._assert_200(reverse("web:terms"))
+
+    def test_public_profile_page(self):
+        response = self.client.get("/profile/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Taylor Schaack - an operator turned software builder.")
+        self.assertContains(response, static("images/web/taylor-profile-art.png"))
+        self.assertContains(response, 'alt="Taylor Schaack profile illustration"')
+
+    def test_public_profile_page_is_served_by_wagtail(self):
+        match = resolve("/profile/")
+
+        self.assertEqual(match.url_name, "wagtail_serve")
 
     def test_robots(self):
         self._assert_200(reverse("web:robots.txt"))

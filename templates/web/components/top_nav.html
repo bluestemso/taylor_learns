@@ -2,6 +2,7 @@
 {% load wagtailcore_tags %}
 {% slugurl 'portfolio' as portfolio_url %}
 {% slugurl 'about' as about_url %}
+{% slugurl 'profile' as profile_url %}
 
 <header class="sticky top-0 z-50 bg-[var(--ei-background)] ei-border-b">
   <div class="ei-shell flex h-[60px] items-center justify-between gap-4">
@@ -15,6 +16,11 @@
         <a class="ei-mono ei-link {% if request.path == '/' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
           {% translate "Index" %}
         </a>
+        {% if profile_url %}
+        <a class="ei-mono ei-link {% if request.path == profile_url %}ei-link-active{% endif %}" href="{{ profile_url }}">
+          {% translate "Profile" %}
+        </a>
+        {% endif %}
         {% if about_url %}
         <a class="ei-mono ei-link {% if about_url in request.path %}ei-link-active{% endif %}" href="{{ about_url }}">
           {% translate "About" %}
@@ -55,6 +61,11 @@
               <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if request.path == '/' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
                 {% translate "Index" %}
               </a>
+              {% if profile_url %}
+              <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if request.path == profile_url %}ei-link-active{% endif %}" href="{{ profile_url }}">
+                {% translate "Profile" %}
+              </a>
+              {% endif %}
               {% if about_url %}
               <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if about_url in request.path %}ei-link-active{% endif %}" href="{{ about_url }}">
                 {% translate "About" %}

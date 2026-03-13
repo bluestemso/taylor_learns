@@ -1,0 +1,34 @@
+{% extends "content/base.html" %}
+{% load static %}
+{% load wagtailimages_tags %}
+
+{% block content %}
+<section class="mx-auto max-w-3xl ei-border bg-[var(--ei-surface)] p-8 md:p-12">
+  <h1 class="ei-display text-4xl font-bold tracking-[-0.02em] md:text-5xl">{{ page.title }}</h1>
+  <figure class="mt-8">
+    {% if page.hero_image %}
+    {% image page.hero_image width-1400 as profile_image %}
+    <img
+      class="h-auto w-full ei-border"
+      src="{{ profile_image.url }}"
+      width="{{ profile_image.width }}"
+      height="{{ profile_image.height }}"
+      alt="{{ page.hero_image.title }}"
+    >
+    {% else %}
+    <img
+      class="h-auto w-full ei-border"
+      src="{% static 'images/web/taylor-profile-art.png' %}"
+      alt="Taylor Schaack profile illustration"
+    >
+    {% endif %}
+  </figure>
+
+  <div class="mt-8 space-y-5 text-base leading-7 text-[var(--ei-text)] md:text-lg md:leading-8">
+    <p>{{ page.intro }}</p>
+    <p>{{ page.background }}</p>
+    <p>{{ page.focus }}</p>
+    <p>{{ page.connect }}</p>
+  </div>
+</section>
+{% endblock %}

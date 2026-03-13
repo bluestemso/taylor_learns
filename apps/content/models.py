@@ -54,6 +54,44 @@ class ContentPage(BaseContentPage):
     ]
 
 
+class ProfilePage(BaseContentPage):
+    hero_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    intro = models.TextField(default="I'm Taylor Schaack - an operator turned software builder.")
+    background = models.TextField(
+        default=(
+            "My background is unusual by design: I've led operations, sales, and large cross-functional "
+            "initiatives, and now I apply that same ownership to software delivery. I'm strongest at turning "
+            "messy, real-world requirements into clear technical workflows that people actually use."
+        )
+    )
+    focus = models.TextField(
+        default=(
+            "I'm currently focused on full-stack agentic engineering and solutions/implementation roles where I "
+            "can keep shipping, keep learning, and contribute to products with real customer impact."
+        )
+    )
+    connect = models.TextField(
+        default=(
+            "If you're building something meaningful and need someone who can connect product, business, and "
+            "engineering execution, I'd love to connect."
+        )
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("hero_image"),
+        FieldPanel("intro"),
+        FieldPanel("background"),
+        FieldPanel("focus"),
+        FieldPanel("connect"),
+    ]
+
+
 class BlogIndexPage(BaseContentPage):
     """
     Index page for a blog
