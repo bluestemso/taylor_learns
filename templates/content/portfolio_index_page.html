@@ -5,7 +5,7 @@
 {% block content %}
 <header class="ei-border bg-[var(--ei-surface)]">
   <div class="grid gap-0 md:grid-cols-12">
-    <div class="p-8 md:col-span-8 md:p-12 md:ei-border-r">
+    <div class="p-8 md:col-span-8 md:border-r md:border-[var(--ei-border)] md:p-12">
       <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Archive v.2026" %}</p>
       <h1 class="ei-display text-5xl font-bold leading-[0.9] md:text-7xl">{{ page.title }}</h1>
     </div>
@@ -22,7 +22,7 @@
 <section class="mt-8 ei-border bg-[var(--ei-surface)]">
   <div class="grid gap-0 md:grid-cols-2">
     {% for project in page.get_projects %}
-    <article class="group ei-hover-invert {% if forloop.counter|divisibleby:2 %}md:ei-border-l{% endif %} {% if not forloop.last %}ei-border-b{% endif %}">
+    <article class="group ei-hover-invert {% if forloop.counter|divisibleby:2 %}md:border-l md:border-[var(--ei-border)]{% endif %} {% if not forloop.last %}ei-border-b{% endif %}">
       <div class="ei-border-b p-5">
         <div class="flex items-center justify-between">
           <span class="ei-mono text-[10px]">{% blocktranslate with project_id=forloop.counter|stringformat:"03d" %}ID: PRJ-{{ project_id }}{% endblocktranslate %}</span>

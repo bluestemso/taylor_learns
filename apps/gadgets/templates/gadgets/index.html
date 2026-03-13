@@ -52,7 +52,7 @@
   <section class="mt-8 ei-border bg-[var(--ei-surface)]">
     <div class="grid gap-0 md:grid-cols-2">
       {% for gadget in gadgets %}
-      <a class="group ei-hover-invert block {% if forloop.counter|divisibleby:2 %}md:ei-border-l{% endif %} {% if not forloop.last %}ei-border-b{% endif %}" href="{% url 'detail' slug=gadget.slug %}">
+      <a class="group ei-hover-invert block {% if forloop.counter|divisibleby:2 %}md:border-l md:border-[var(--ei-border)]{% endif %} {% if not forloop.last %}ei-border-b{% endif %}" href="{% url 'detail' slug=gadget.slug %}">
         <article class="p-6 md:p-8">
           <p class="ei-mono text-[10px] text-[var(--ei-muted)]">ID: {{ forloop.counter|stringformat:"03d" }}</p>
           <h2 class="ei-display mt-3 text-3xl font-bold leading-[1.02] transition-transform duration-150 group-hover:translate-x-2">{{ gadget.title }}</h2>
