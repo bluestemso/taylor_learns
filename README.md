@@ -218,6 +218,20 @@ find . -name '*.py' | entr docker compose exec web uv run manage.py test apps.we
 find . -name '*.py' | entr uv run manage.py test apps.web.tests.test_basic_views
 ```
 
+## Production-like verification before merge
+
+Use this to catch styling/build issues that can be missed in day-to-day local dev:
+
+```bash
+make verify-release
+```
+
+This command runs:
+
+- the template class guard (`scripts/check_template_classes.py`) to block invalid patterns like `md:ei-*`
+- a production front-end build
+- Django system checks
+
 ## Production Deployment (Coolify)
 
 Production is deployed with Coolify, and releases are triggered from GitHub Actions.

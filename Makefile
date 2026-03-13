@@ -52,6 +52,11 @@ dbshell: ## Get a Database shell
 test: ## Run Django tests
 	@docker compose run --rm web python manage.py test ${ARGS}
 
+verify-release: ## Run production-like template and asset checks
+	@docker compose run --rm --no-deps web python scripts/check_template_classes.py
+	@docker compose run --rm --no-deps vite npm run build
+	@docker compose run --rm web python manage.py check
+
 init: setup-env start-bg migrations migrate bootstrap_content  ## Quickly get up and running (start containers and bootstrap DB)
 
 uv: ## Run a uv command
