@@ -81,7 +81,7 @@ RUN sed -i '1c\#!/usr/bin/env python3' /code/manage.py
 
 # why this has to be here:
 # https://stackoverflow.com/questions/59719175/where-to-run-collectstatic-when-deploying-django-app-to-heroku-using-docker
-RUN DEBUG=False python /code/manage.py collectstatic --noinput --settings=taylor_learns.settings_production
+RUN DEBUG=False SECRET_KEY="dummy-key-for-collectstatic" python /code/manage.py collectstatic --noinput --settings=taylor_learns.settings_production
 RUN chown django:django -R static_root
 
 USER django
