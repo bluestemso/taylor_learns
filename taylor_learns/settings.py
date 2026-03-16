@@ -15,6 +15,7 @@ from pathlib import Path
 import environ
 from celery import schedules
 from corsheaders.defaults import default_headers
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
@@ -26,15 +27,31 @@ env.read_env(os.path.join(BASE_DIR, ".env"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/stable/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", default="django-insecure-jFhdNyBTr5RHCLqtMto47GN2nRmtKeo8zt6JrpAB")
-
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=True)
+DEBUG = env.bool("DEBUG", default="test" in sys.argv)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env("SECRET_KEY", default="")
+if not SECRET_KEY:
+    if DEBUG or "test" in sys.argv:
+        SECRET_KEY = "django-insecure-local-development-key"
+    else:
+        raise ImproperlyConfigured("SECRET_KEY environment variable must be set when DEBUG is disabled.")
+
 ENABLE_DEBUG_TOOLBAR = env.bool("ENABLE_DEBUG_TOOLBAR", default=False) and "test" not in sys.argv
 
 # Note: It is not recommended to set ALLOWED_HOSTS to "*" in production
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0",
+        "taylorlearns.com",
+        "gadgets.localhost",
+        "gadgets.taylorlearns.com",
+    ],
+)
 GADGETS_HOSTS = env.list(
     "GADGETS_HOSTS",
     default=["gadgets.localhost"] if DEBUG else ["gadgets.taylorlearns.com"],
@@ -568,7 +585,7 @@ HEALTH_CHECK_TOKENS = env.list("HEALTH_CHECK_TOKENS", default="")
 # Wagtail config
 
 WAGTAIL_SITE_NAME = "Taylor Learns Content"
-WAGTAILADMIN_BASE_URL = "http://taylorlearns.com"
+WAGTAILADMIN_BASE_URL = "https://taylorlearns.com"
 
 
 # Pegasus config
@@ -576,9 +593,9 @@ WAGTAILADMIN_BASE_URL = "http://taylorlearns.com"
 # replace any values below with specifics for your project
 PROJECT_METADATA = {
     "NAME": gettext_lazy("Taylor Learns"),
-    "URL": "http://taylorlearns.com",
+    "URL": "https://taylorlearns.com",
     "DESCRIPTION": gettext_lazy("The personal blog and portfolio of Taylor Schaack"),  # noqa: E501
-    "IMAGE": "http://taylorlearns.com/static/images/favicons/web-app-manifest-512x512.png",
+    "IMAGE": "https://taylorlearns.com/static/images/favicons/web-app-manifest-512x512.png",
     "KEYWORDS": "SaaS, django",
     "CONTACT_EMAIL": "taylor@bluestem.solutions",
 }

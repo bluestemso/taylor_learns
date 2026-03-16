@@ -33,6 +33,11 @@ class TestBasicViews(TestCase):
     def test_robots(self):
         self._assert_200(reverse("web:robots.txt"))
 
+    def test_simulate_error_route_is_not_public(self):
+        self.client.raise_request_exception = False
+        response = self.client.get("/simulate_error/")
+        self.assertEqual(response.status_code, 404)
+
     def test_top_nav_includes_gadgets_link(self):
         response = self.client.get(reverse("web:home"))
         gadgets_host = settings.GADGETS_HOSTS[0]

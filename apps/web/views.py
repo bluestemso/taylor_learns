@@ -35,10 +35,6 @@ def home(request):
     )
 
 
-def simulate_error(request):
-    raise Exception("This is a simulated error.")
-
-
 def gadgets_bridge(request):
     gadgets_url = get_gadgets_url(request)
     if not gadgets_url:

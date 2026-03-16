@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 from django.views.i18n import JavaScriptCatalog
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from wagtail import urls as wagtail_urls
@@ -65,6 +65,7 @@ urlpatterns = [
     path("cms/login/", RedirectView.as_view(pattern_name="account_login")),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("design/", TemplateView.as_view(template_name="web/design_showcase.html")),
     path("", include(wagtail_urls)),
     path("chat/", include("apps.chat.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

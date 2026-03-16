@@ -1,0 +1,209 @@
+{% extends "web/base.html" %}
+{% load i18n %}
+
+{% block page_title %}{% translate "Design System" %} | {{ project_meta.NAME }}{% endblock %}
+
+{% block top_nav %}
+<header class="sticky top-0 z-50 bg-[var(--ei-background)] ei-border-b">
+  <div class="ei-shell flex h-[60px] items-center justify-between gap-4">
+    <a class="ei-display text-lg font-bold tracking-[-0.02em] ei-link" href="/">{{ project_meta.NAME }}</a>
+
+    <div class="flex items-center gap-4">
+      <div class="hidden items-center md:flex">
+        {% include "web/components/dark_mode_selector.html" %}
+      </div>
+
+      <div class="flex items-center gap-2 md:hidden">
+        {% include "web/components/dark_mode_selector.html" %}
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<main class="ei-shell py-8 md:py-10 space-y-12">
+  <header class="ei-border bg-[var(--ei-surface)] p-6 md:p-10 ei-grid-bg">
+    <p class="ei-mono mb-4 text-[11px] text-[var(--ei-primary)]">{% translate "Reference" %}</p>
+    <h1 class="ei-display text-4xl font-bold leading-[0.95] md:text-6xl">{% translate "Design System" %}</h1>
+    <p class="mt-5 max-w-[70ch] text-xl italic leading-[1.45]">
+      A reference page for all custom UI components and typography styles defined in the styling system.
+    </p>
+  </header>
+
+  <!-- Typography -->
+  <section class="ei-border bg-[var(--ei-surface)]">
+    <header class="ei-border-b p-6">
+      <h2 class="ei-mono text-sm text-[var(--ei-muted)]">01. Typography & Headings</h2>
+    </header>
+    <div class="p-6 md:p-10 space-y-8">
+      <div>
+        <h1 class="ei-display text-5xl md:text-6xl font-bold">Heading 1 (Display)</h1>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-display text-6xl</p>
+      </div>
+      <div>
+        <h2 class="ei-display text-4xl md:text-5xl font-bold">Heading 2 (Display)</h2>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-display text-5xl</p>
+      </div>
+      <div>
+        <h3 class="ei-display text-3xl md:text-4xl font-bold">Heading 3 (Display)</h3>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-display text-4xl</p>
+      </div>
+      <div>
+        <h4 class="ei-display text-2xl md:text-3xl font-bold">Heading 4 (Display)</h4>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-display text-3xl</p>
+      </div>
+      
+      <div class="pt-6 ei-border-t">
+        <p class="ei-body text-xl leading-relaxed">
+          Body text uses the <b>Newsreader</b> font. It is designed for long-form reading, providing a comfortable and legible experience. <i>Italicized text</i> and <strong>bold text</strong> are fully supported.
+        </p>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-body text-xl</p>
+      </div>
+
+      <div class="pt-6 ei-border-t">
+        <p class="ei-mono text-sm">
+          Monospace text uses JetBrains Mono. It is ideal for code snippets, metadata, and technical details.
+        </p>
+        <p class="ei-mono mt-2 text-xs text-[var(--ei-muted)]">.ei-mono text-sm</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Elements -->
+  <section class="ei-border bg-[var(--ei-surface)]">
+    <header class="ei-border-b p-6">
+      <h2 class="ei-mono text-sm text-[var(--ei-muted)]">02. Interactive Elements</h2>
+    </header>
+    <div class="p-6 md:p-10 space-y-10">
+      
+      <!-- Links -->
+      <div>
+        <h3 class="ei-display mb-4 text-2xl font-bold">Links</h3>
+        <p class="ei-body text-lg">
+          This is an example of <a href="#" class="ei-link">an inline link</a> using the standard link class.
+          It changes to the primary color on hover.
+        </p>
+        <p class="mt-2 text-lg">
+          This is an example of an <a href="#" class="ei-link ei-link-active">active link</a> using the active modifier.
+        </p>
+        <p class="ei-mono mt-3 text-xs text-[var(--ei-muted)]">.ei-link / .ei-link-active</p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="ei-border-t pt-8">
+        <h3 class="ei-display mb-4 text-2xl font-bold">Buttons</h3>
+        <div class="flex flex-wrap gap-4">
+          <button class="ei-button">Standard Button</button>
+          <a href="#" class="ei-button">Link as Button</a>
+        </div>
+        <p class="ei-mono mt-4 text-xs text-[var(--ei-muted)]">.ei-button</p>
+      </div>
+
+      <!-- Tags -->
+      <div class="ei-border-t pt-8">
+        <h3 class="ei-display mb-4 text-2xl font-bold">Tags</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="ei-tag">Design</span>
+          <span class="ei-tag">Development</span>
+          <span class="ei-tag">AI Agent</span>
+        </div>
+        <p class="ei-mono mt-4 text-xs text-[var(--ei-muted)]">.ei-tag</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Reading Layouts -->
+  <section class="ei-border bg-[var(--ei-surface)]">
+    <header class="ei-border-b p-6">
+      <h2 class="ei-mono text-sm text-[var(--ei-muted)]">03. Reading Layouts</h2>
+    </header>
+    <div class="p-6 md:p-10 space-y-12">
+      
+      <!-- Standard Reading -->
+      <div>
+        <h3 class="ei-display mb-6 text-2xl font-bold">Standard Reading (.ei-reading)</h3>
+        <div class="ei-reading pb-4">
+          <p>
+            The reading class restricts the maximum width to 65 characters to ensure optimal readability for long-form content. 
+            It automatically handles paragraph spacing and font families.
+          </p>
+          <p>
+            It also includes special styling for blockquotes:
+          </p>
+          <blockquote>
+            "Simplicity is the ultimate sophistication."
+          </blockquote>
+          <p>
+            This layout is perfect for standard blog posts and articles.
+          </p>
+        </div>
+      </div>
+
+      <!-- Case Reading -->
+      <div class="ei-border-t pt-8">
+        <h3 class="ei-display mb-6 text-2xl font-bold">Case Reading (.ei-case-reading)</h3>
+        <div class="ei-case-reading pb-4">
+          <p>
+            The case reading class is slightly wider (72 characters) and is intended for case studies or deeper technical documentation.
+          </p>
+          <h2>Subheading Level 2</h2>
+          <p>
+            Notice how the headings within the case reading layout use the display font but maintain sentence case instead of full uppercase, providing a more formal structure without being overly aggressive.
+          </p>
+          <ul>
+            <li>It supports unstyled lists.</li>
+            <li>With custom indentation.</li>
+            <li>And proper spacing.</li>
+          </ul>
+          <h3>Subheading Level 3</h3>
+          <p>
+            Even deeper structures maintain the aesthetic balance.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Utilities -->
+  <section class="ei-border bg-[var(--ei-surface)]">
+    <header class="ei-border-b p-6">
+      <h2 class="ei-mono text-sm text-[var(--ei-muted)]">04. Structural Utilities</h2>
+    </header>
+    <div class="p-6 md:p-10 space-y-8">
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div class="ei-border p-4 text-center">
+          <p class="ei-mono text-xs">.ei-border</p>
+        </div>
+        <div class="ei-border p-4 text-center ei-grid-bg">
+          <p class="ei-mono text-xs">.ei-grid-bg</p>
+        </div>
+      </div>
+
+      <div class="flex ei-border">
+        <div class="flex-1 p-4 ei-border-r text-center">
+          <p class="ei-mono text-xs">.ei-border-r</p>
+        </div>
+        <div class="flex-1 p-4 ei-border-b text-center">
+          <p class="ei-mono text-xs">.ei-border-b</p>
+        </div>
+        <div class="flex-1 p-4 ei-border-l text-center">
+          <p class="ei-mono text-xs">.ei-border-l</p>
+        </div>
+      </div>
+
+      <div>
+        <a href="#" class="block ei-border p-8 text-center ei-hover-invert">
+          <h3 class="ei-display text-2xl font-bold">Hover Invert Block</h3>
+          <p class="ei-mono mt-2 text-xs">.ei-hover-invert</p>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+{% endblock %}
