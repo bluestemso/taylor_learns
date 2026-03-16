@@ -143,11 +143,17 @@ html[data-theme='dark'] {
 
   .ei-link {
     color: var(--ei-text);
+    text-decoration: none;
+    background-image: linear-gradient(transparent 60%, var(--ei-primary) 0);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease, color 0.2s ease;
   }
 
   .ei-link:hover,
   .ei-link-active {
-    color: var(--ei-primary);
+    background-image: linear-gradient(transparent 0%, var(--ei-primary) 0);
+    color: #111111;
   }
 
   .ei-button {
