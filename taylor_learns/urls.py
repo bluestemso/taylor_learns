@@ -55,9 +55,6 @@ urlpatterns = [
     path("celery-progress/", include("celery_progress.urls")),
     # API docs
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    # Optional UI - you may wish to remove one of these depending on your preference
-    path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
-    path("api/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # hijack urls for impersonation
     path("hijack/", include("hijack.urls", namespace="hijack")),
     # wagtail config
@@ -69,6 +66,13 @@ urlpatterns = [
     path("", include(wagtail_urls)),
     path("chat/", include("apps.chat.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [
+        # Optional API documentation UIs for local development
+        path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+        path("api/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    ]
 
 if settings.ENABLE_DEBUG_TOOLBAR:
     urlpatterns.append(path("__debug__/", include("debug_toolbar.urls")))
