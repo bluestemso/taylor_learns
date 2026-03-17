@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "UTC"
+    labels:
+      - dependencies
+      - security
+    open-pull-requests-limit: 10
+    groups:
+      python-patch-and-minor:
+        update-types:
+          - patch
+          - minor
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:15"
+      timezone: "UTC"
+    labels:
+      - dependencies
+      - security
+    open-pull-requests-limit: 10
+    groups:
+      npm-patch-and-minor:
+        update-types:
+          - patch
+          - minor
