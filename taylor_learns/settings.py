@@ -624,7 +624,6 @@ OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
 LLM_MODELS = {
     "gpt-5-nano": {"api_key": env("OPENAI_API_KEY", default="")},
     "gpt-4o": {"api_key": env("OPENAI_API_KEY", default="")},
-    "claude-sonnet-4-5-20250929": {"api_key": env("ANTHROPIC_API_KEY", default="")},
     "ollama_chat/llama3": {"api_base": env("OLLAMA_API_BASE", default="http://localhost:11434")},
 }
 DEFAULT_LLM_MODEL = env("DEFAULT_LLM_MODEL", default="gpt-4o")

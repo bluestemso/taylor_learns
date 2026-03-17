@@ -40,7 +40,6 @@ default_context:
   use_2fa: y
   use_admin_docs: y
   use_ai_rules_agents: y
-  use_ai_rules_claude: y
   use_ai_rules_cursor: n
   use_ai_rules_junie: n
   use_api_auth: y
