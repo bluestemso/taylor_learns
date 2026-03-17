@@ -32,8 +32,9 @@ name = "taylor-learns"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12,<3.13"
 dependencies = [
+    "aiohttp>=3.13.3",
     "Django>=5.2.8",
     "boto3",
     "celery",
@@ -41,6 +42,7 @@ dependencies = [
     "celery[redis]",
     "channels",
     "channels_redis",
+    "cryptography>=46.0.5",
     "django-allauth[socialaccount,mfa,headless]>=65.13.0",
     "django-anymail[mailgun]", # email services
     "django-browser-reload",
@@ -59,16 +61,21 @@ dependencies = [
     "djangorestframework-api-key",
     "docutils",
     "drf-spectacular",
+    "filelock>=3.20.3",
     "httpx>=0.28.1",
-    "litellm<1.82.4",
+    "litellm>=1.82.3",
     "markdown",
     "nh3>=0.2.21",
     "openai",
     "psycopg2-binary",
-    "pydantic-ai>=1.0",
+    "pydantic-ai>=1.56.0",
+    "protobuf>=6.33.5",
+    "python-multipart>=0.0.22",
     "redis",
     "requests",
     "sentry-sdk[django]>=2.33.2",
+    "urllib3>=2.6.3",
+    "virtualenv>=20.36.1",
     "wagtail",
     "whitenoise[brotli]",
 ]
