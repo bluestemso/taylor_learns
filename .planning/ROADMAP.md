@@ -45,7 +45,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Add deterministic Bluesky source-post mapping schema and contract tests for URI-keyed dedupe.
+- [x] 02-01-PLAN.md — Add deterministic Bluesky source-post mapping schema and contract tests for URI-keyed dedupe.
 - [ ] 02-02-PLAN.md — Implement facet-aware text/link transform and auto-publish upsert service for micro posts.
 - [ ] 02-03-PLAN.md — Wire listRecords client, reconcile orchestration, and manual `sync_bluesky` command with idempotent rerun behavior.
 
@@ -77,6 +77,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Source Setup and Import Scope | 3/3 | Complete   | 2026-03-19 |
-| 2. Deterministic Import and Auto-Publish | 0/3 | Not started | - |
+| 2. Deterministic Import and Auto-Publish | 1/3 | In Progress | - |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 0/TBD | Not started | - |
 | 4. Scheduled Sync and Concurrency Safety | 0/TBD | Not started | - |
