@@ -26,13 +26,18 @@ Publish in one place and reliably syndicate personal writing/activity so the sit
 - ✓ Site serves CMS-managed content via Django + Wagtail in `apps/content/` and `templates/` — existing
 - ✓ Background job infrastructure exists with Celery/Redis in `taylor_learns/celery.py` and `taylor_learns/settings.py` — existing
 - ✓ External content sync patterns already exist via gadgets pipeline in `apps/gadgets/sync.py` and `apps/gadgets/tasks.py` — existing
+- ✓ Bluesky account sync can fetch posts for the site owner and import them into microblog content. — Validated in Phase 2: Deterministic Import and Auto-Publish
+- ✓ Imported posts are auto-published and deduplicated by source post ID. — Validated in Phase 2: Deterministic Import and Auto-Publish
 
 ### Active
 
-- [ ] Bluesky account sync can fetch posts for the site owner and import them into microblog content.
 - [ ] Sync can run manually and on schedule using existing job infrastructure.
-- [ ] Imported posts are auto-published and deduplicated by source post ID.
 - [ ] Edit and delete events from Bluesky update or soft-remove corresponding microblog entries.
+
+## Current State
+
+Phase 2 is complete: deterministic import, text/link fidelity, and auto-publish dedupe behaviors are implemented and verified.
+Current focus is Phase 3: post lifecycle reconciliation and run visibility.
 
 ### Out of Scope
 
@@ -66,4 +71,4 @@ Publish in one place and reliably syndicate personal writing/activity so the sit
 | Sync edits and soft-delete removals | Keep mirrored feed aligned with source without hard data loss | — Pending |
 
 ---
-*Last updated: 2026-03-19 after milestone v1.0 initialization*
+*Last updated: 2026-03-19 after Phase 2 completion*
