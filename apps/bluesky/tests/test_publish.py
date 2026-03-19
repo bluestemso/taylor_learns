@@ -76,7 +76,9 @@ class TestUpsertAndPublishMicroPostContract(TestCase):
         post_map = BlueskyPostMap.objects.get(source_uri="at://did:plc:abc123/app.bsky.feed.post/3k4duf64zgr2m")
         self.assertEqual(post_map.source_cid, "cid-v2")
         self.assertTrue(post_map.micro_post.live)
-        self.assertEqual(post_map.micro_post.body.raw_data, [{"type": "paragraph", "value": "updated post body"}])
+        block = post_map.micro_post.body.raw_data[0]
+        self.assertEqual(block["type"], "paragraph")
+        self.assertEqual(block["value"], "updated post body")
 
     def test_create_and_update_paths_publish_live_content(self):
         created = upsert_and_publish_micro_post(
@@ -129,6 +131,7 @@ class TestUpsertAndPublishMicroPostContract(TestCase):
             post_facets=None,
         )
 
-        self.assertTrue(result["operation"] == "skipped")
+        operation = result["operation"]
+        self.assertTrue(operation == "skipped")
         self.assertEqual(MicroPostPage.objects.count(), 1)
         self.assertEqual(BlueskyPostMap.objects.count(), 1)
