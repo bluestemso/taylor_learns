@@ -8,6 +8,9 @@ from apps.bluesky.models import BlueskySourceSettings
 
 
 class TestBlueskySourceSettingsContract(SimpleTestCase):
+    def test_model_orders_by_updated_at_desc(self):
+        self.assertEqual(BlueskySourceSettings._meta.ordering, ["-updated_at"])
+
     def test_model_has_single_active_constraint_name(self):
         constraint_names = [constraint.name for constraint in BlueskySourceSettings._meta.constraints]
         self.assertIn("unique_active_bluesky_source", constraint_names)

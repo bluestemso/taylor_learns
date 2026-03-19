@@ -5,6 +5,7 @@ from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import ValidationError
 from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from apps.bluesky.admin import BlueskySourceSettingsAdmin
 from apps.bluesky.models import BlueskySourceSettings
@@ -106,3 +107,46 @@ class TestBlueskySourceSettingsAdminFlow(TestCase):
 
         self.assertFalse(admin_obj.has_add_permission(request))
         self.assertFalse(admin_obj.has_change_permission(request))
+
+
+class TestBlueskySourceSettingsAdminVisibility(TestCase):
+    def setUp(self):
+        self.superuser = CustomUser.objects.create_superuser(
+            username="admin2@example.com",
+            email="admin2@example.com",
+            password="pass12345",
+        )
+        self.client.force_login(self.superuser)
+
+        self.settings_obj = BlueskySourceSettings.objects.create(
+            handle="taylorlearns.com",
+            did="did:plc:abc123",
+            profile_url="https://bsky.app/profile/taylorlearns.com",
+            backfill_start_date=date(2024, 1, 1),
+            is_enabled=True,
+            is_active=True,
+            verified_at=timezone.now(),
+        )
+
+    def test_changelist_shows_required_columns_and_values(self):
+        response = self.client.get(reverse("admin:bluesky_blueskysourcesettings_changelist"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Handle")
+        self.assertContains(response, "Backfill start date")
+        self.assertContains(response, "Is enabled")
+        self.assertContains(response, "Did")
+        self.assertContains(response, "Verified at")
+        self.assertContains(response, "Updated at")
+        self.assertContains(response, "taylorlearns.com")
+        self.assertContains(response, "did:plc:abc123")
+
+    def test_change_view_shows_effective_settings_labels_and_values(self):
+        response = self.client.get(reverse("admin:bluesky_blueskysourcesettings_change", args=[self.settings_obj.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Handle: taylorlearns.com")
+        self.assertContains(response, "DID: did:plc:abc123")
+        self.assertContains(response, "Profile: https://bsky.app/profile/taylorlearns.com")
+        self.assertContains(response, "Backfill from: 2024-01-01 00:00:00 UTC")
+        self.assertContains(response, "Enabled: True")
