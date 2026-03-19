@@ -2,7 +2,6 @@ from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
 
 from apps.bluesky.models import BlueskySourceSettings
@@ -14,14 +13,9 @@ class TestBlueskySourceSettingsContract(SimpleTestCase):
         self.assertIn("unique_active_bluesky_source", constraint_names)
 
     def test_backfill_start_date_is_required(self):
-        settings_obj = BlueskySourceSettings(
-            handle="taylorlearns.com",
-            did="did:plc:abc123",
-            profile_url="https://bsky.app/profile/taylorlearns.com",
-        )
-
-        with self.assertRaises(ValidationError):
-            settings_obj.full_clean()
+        field = BlueskySourceSettings._meta.get_field("backfill_start_date")
+        self.assertFalse(field.blank)
+        self.assertFalse(field.null)
 
     def test_effective_backfill_start_at_returns_site_timezone_midnight(self):
         settings_obj = BlueskySourceSettings(

@@ -1,0 +1,36 @@
+from datetime import datetime, time
+from zoneinfo import ZoneInfo
+
+from django.conf import settings
+from django.db import models
+from django.db.models import Q
+
+from apps.utils.models import BaseModel
+
+
+class BlueskySourceSettings(BaseModel):
+    handle = models.CharField(max_length=253)
+    did = models.CharField(max_length=255)
+    profile_url = models.URLField()
+    backfill_start_date = models.DateField()
+    is_enabled = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
+    verified_at = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        app_label = "bluesky"
+        ordering = ["-updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["is_active"],
+                condition=Q(is_active=True),
+                name="unique_active_bluesky_source",
+            )
+        ]
+
+    def effective_backfill_start_at(self) -> datetime:
+        return datetime.combine(
+            self.backfill_start_date,
+            time.min,
+            tzinfo=ZoneInfo(settings.TIME_ZONE),
+        )

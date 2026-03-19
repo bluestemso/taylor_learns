@@ -1,5 +1,6 @@
 from unittest.mock import Mock, patch
 
+import httpx
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
 
@@ -40,14 +41,16 @@ class TestResolveHandleIdentityContract(SimpleTestCase):
 
     @patch("apps.bluesky.services.identity.httpx.get")
     def test_raises_validation_error_when_non_2xx(self, mock_get):
-        mock_get.side_effect = Exception("boom")
+        request = httpx.Request("GET", "https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle")
+        response = httpx.Response(500, request=request)
+        mock_get.side_effect = httpx.HTTPStatusError("server error", request=request, response=response)
 
         with self.assertRaises(ValidationError):
             resolve_handle_identity("taylorlearns.com")
 
     @patch("apps.bluesky.services.identity.httpx.get")
     def test_raises_validation_error_when_timeout(self, mock_get):
-        mock_get.side_effect = TimeoutError("timeout")
+        mock_get.side_effect = httpx.TimeoutException("timeout")
 
         with self.assertRaises(ValidationError):
             resolve_handle_identity("taylorlearns.com")
