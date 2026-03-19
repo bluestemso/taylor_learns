@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-03-19T19:39:09.795Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-19T19:50:15.118Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: `.planning/PROJECT.md` (updated 2026-03-19)
 ## Current Position
 
 Phase: 02 (deterministic-import-and-auto-publish) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Plan: 2 of 3
 | Phase 01-source-setup-and-import-scope P03 | 6m | 1 tasks | 3 files |
 | Phase 01-source-setup-and-import-scope P02 | 24m | 2 tasks | 4 files |
 | Phase 02-deterministic-import-and-auto-publish P01 | 2 min | 1 tasks | 3 files |
+| Phase 02 P02 | 7 min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,9 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 01]: Render read-only effective settings block with handle, DID, profile, backfill boundary, and enabled state.
 - [Phase 02-deterministic-import-and-auto-publish]: Use dedicated BlueskyPostMap model for source identity mapping
 - [Phase 02-deterministic-import-and-auto-publish]: Enforce unique source_uri constraint to guarantee idempotent sync reruns
+- [Phase 02]: Use Bluesky facet byteStart/byteEnd offsets over UTF-8 bytes and render only canonical link facets.
+- [Phase 02]: Select the first live BlogIndexPage ordered by id as deterministic micropost import parent.
+- [Phase 02]: Treat unchanged source_cid for existing source_uri as a no-op skip to prevent duplicate writes.
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-19T19:39:09.792Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-03-19T19:50:15.115Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

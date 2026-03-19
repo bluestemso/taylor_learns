@@ -25,9 +25,9 @@ Requirements committed for this milestone.
 
 ### Publishing
 
-- [ ] **PUBL-01**: User can see Bluesky post text rendered accurately in imported microblog entries.
-- [ ] **PUBL-02**: User can see Bluesky links preserved in imported microblog entries.
-- [ ] **PUBL-03**: User can have imported entries auto-published without manual review.
+- [x] **PUBL-01**: User can see Bluesky post text rendered accurately in imported microblog entries.
+- [x] **PUBL-02**: User can see Bluesky links preserved in imported microblog entries.
+- [x] **PUBL-03**: User can have imported entries auto-published without manual review.
 
 ## Future Requirements
 
@@ -64,9 +64,9 @@ Which phases cover which requirements. Populated during roadmap creation.
 | LIFE-02 | Phase 3 | Pending |
 | LIFE-03 | Phase 3 | Pending |
 | LIFE-04 | Phase 4 | Pending |
-| PUBL-01 | Phase 2 | Pending |
-| PUBL-02 | Phase 2 | Pending |
-| PUBL-03 | Phase 2 | Pending |
+| PUBL-01 | Phase 2 | Complete |
+| PUBL-02 | Phase 2 | Complete |
+| PUBL-03 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total
