@@ -94,7 +94,7 @@ None - plan executed exactly as written.
 
 ## Issues Encountered
 
-None.
+- `state advance-plan` returned `Cannot parse Current Plan or Total Plans in Phase from STATE.md`; state position and roadmap progress were updated explicitly after command execution to keep planning metadata correct.
 
 ## User Setup Required
 
