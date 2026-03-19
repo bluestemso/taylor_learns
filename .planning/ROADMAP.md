@@ -42,7 +42,12 @@ Plans:
   3. Imported entries display Bluesky text content accurately.
   4. Imported entries preserve Bluesky links in the rendered microblog content.
   5. Newly imported entries are auto-published without manual review.
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Add deterministic Bluesky source-post mapping schema and contract tests for URI-keyed dedupe.
+- [ ] 02-02-PLAN.md — Implement facet-aware text/link transform and auto-publish upsert service for micro posts.
+- [ ] 02-03-PLAN.md — Wire listRecords client, reconcile orchestration, and manual `sync_bluesky` command with idempotent rerun behavior.
 
 ### Phase 3: Post Lifecycle Reconciliation and Run Visibility
 **Goal**: User can trust the mirrored microblog feed to stay aligned with Bluesky post changes and can inspect what each sync run did.
@@ -72,6 +77,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Source Setup and Import Scope | 3/3 | Complete   | 2026-03-19 |
-| 2. Deterministic Import and Auto-Publish | 0/TBD | Not started | - |
+| 2. Deterministic Import and Auto-Publish | 0/3 | Not started | - |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 0/TBD | Not started | - |
 | 4. Scheduled Sync and Concurrency Safety | 0/TBD | Not started | - |
