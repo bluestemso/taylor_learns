@@ -34,3 +34,32 @@ class BlueskySourceSettings(BaseModel):
             time.min,
             tzinfo=ZoneInfo(settings.TIME_ZONE),
         )
+
+
+class BlueskyPostMap(BaseModel):
+    source_settings = models.ForeignKey(
+        "bluesky.BlueskySourceSettings",
+        on_delete=models.CASCADE,
+        related_name="post_maps",
+    )
+    micro_post = models.ForeignKey(
+        "content.MicroPostPage",
+        on_delete=models.CASCADE,
+        related_name="bluesky_post_maps",
+    )
+    source_uri = models.CharField(max_length=512, unique=True)
+    source_cid = models.CharField(max_length=128)
+    source_did = models.CharField(max_length=255)
+    source_rkey = models.CharField(max_length=255)
+    source_indexed_at = models.DateTimeField()
+    last_synced_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = "bluesky"
+        ordering = ["-source_indexed_at", "-updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["source_uri"],
+                name="unique_bluesky_post_map_source_uri",
+            )
+        ]

@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 
 from django.db import IntegrityError
 from django.test import TestCase
@@ -75,8 +75,8 @@ class TestBlueskyPostMapModelContract(TestCase):
 
         self.assertEqual(source_settings_field.remote_field.model, BlueskySourceSettings)
         self.assertEqual(micro_post_field.remote_field.model, MicroPostPage)
-        self.assertEqual(source_settings_field.related_query_name(), "post_map")
-        self.assertEqual(micro_post_field.related_query_name(), "bluesky_post_map")
+        self.assertEqual(source_settings_field.remote_field.related_name, "post_maps")
+        self.assertEqual(micro_post_field.remote_field.related_name, "bluesky_post_maps")
 
     def test_model_ordering_matches_source_index_recency(self):
         self.assertEqual(BlueskyPostMap._meta.ordering, ["-source_indexed_at", "-updated_at"])
