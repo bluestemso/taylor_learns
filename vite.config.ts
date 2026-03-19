@@ -16,7 +16,6 @@ export default defineConfig({
     manifest: true, // The manifest.json file is needed for django-vite
     outDir: path.resolve(__dirname, './static'), // Output directory for production build
     emptyOutDir: false, // Preserve the outDir to not clobber Django's other files.
-    cssMinify: 'esbuild',
     rollupOptions: {
       onwarn(warning, warn) {
         if (warning.code === 'EVAL' && warning.id?.includes('node_modules/htmx.org/')) {
