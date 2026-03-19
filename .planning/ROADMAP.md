@@ -25,7 +25,12 @@ This milestone delivers a reliable one-way mirror from Taylor's Bluesky account 
   1. User can connect exactly one owner Bluesky account as the active import source.
   2. User can configure a backfill window before first import to limit historical post ingestion.
   3. User can view the currently configured source and backfill settings used by sync runs.
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Create `apps/bluesky` source-settings contract (model, identity verification service, and contract tests).
+- [ ] 01-03-PLAN.md — Register the new app and add initial schema migration for single-source + backfill constraints.
+- [ ] 01-02-PLAN.md — Implement guided Django admin setup flow with replace confirmation and effective settings visibility.
 
 ### Phase 2: Deterministic Import and Auto-Publish
 **Goal**: User can run safe, repeatable imports that create published microblog entries with accurate text/link content and no duplicates.
@@ -66,7 +71,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Source Setup and Import Scope | 0/TBD | Not started | - |
+| 1. Source Setup and Import Scope | 0/3 | Not started | - |
 | 2. Deterministic Import and Auto-Publish | 0/TBD | Not started | - |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 0/TBD | Not started | - |
 | 4. Scheduled Sync and Concurrency Safety | 0/TBD | Not started | - |
