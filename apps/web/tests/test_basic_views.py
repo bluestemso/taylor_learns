@@ -35,7 +35,8 @@ class TestBasicViews(TestCase):
 
     def test_simulate_error_route_is_not_public(self):
         self.client.raise_request_exception = False
-        response = self.client.get("/simulate_error/")
+        with self.assertLogs("django.request", level="WARNING"):
+            response = self.client.get("/simulate_error/")
         self.assertEqual(response.status_code, 404)
 
     def test_top_nav_includes_gadgets_link(self):

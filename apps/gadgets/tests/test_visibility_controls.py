@@ -30,10 +30,12 @@ class TestGadgetVisibilityControls(TestCase):
         index_response = self.client.get("/", HTTP_HOST=self._gadgets_host())
         self.assertNotContains(index_response, "Tmux Dojo")
 
-        detail_response = self.client.get("/tmux-dojo/", HTTP_HOST=self._gadgets_host())
+        with self.assertLogs("django.request", level="WARNING"):
+            detail_response = self.client.get("/tmux-dojo/", HTTP_HOST=self._gadgets_host())
         self.assertEqual(detail_response.status_code, 404)
 
-        asset_response = self.client.get("/tmux-dojo/styles.css", HTTP_HOST=self._gadgets_host())
+        with self.assertLogs("django.request", level="WARNING"):
+            asset_response = self.client.get("/tmux-dojo/styles.css", HTTP_HOST=self._gadgets_host())
         self.assertEqual(asset_response.status_code, 404)
 
     def _gadgets_host(self) -> str:
