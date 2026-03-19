@@ -69,14 +69,17 @@ dependencies = [
     "openai",
     "psycopg2-binary",
     "pydantic-ai>=1.56.0",
+    "pyasn1>=0.6.3",
+    "pyopenssl>=26.0.0",
     "protobuf>=6.33.5",
     "python-multipart>=0.0.22",
     "redis",
     "requests",
     "sentry-sdk[django]>=2.33.2",
+    "sqlparse>=0.5.4",
     "urllib3>=2.6.3",
     "virtualenv>=20.36.1",
-    "wagtail",
+    "wagtail>=7.2.3",
     "whitenoise[brotli]",
 ]
 
