@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-19T19:50:15.118Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-19T20:03:14.122Z"
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-19)
 
 **Core value:** Publish in one place and reliably syndicate personal writing/activity so the site remains the canonical home for content.
-**Current focus:** Phase 02 — deterministic-import-and-auto-publish
+**Current focus:** Phase 03 — post-lifecycle-reconciliation-and-run-visibility
 
 ## Current Position
 
-Phase: 02 (deterministic-import-and-auto-publish) — EXECUTING
-Plan: 3 of 3
+Phase: 03 (post-lifecycle-reconciliation-and-run-visibility) — READY
+Plan: 1 of TBD
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Plan: 3 of 3
 | Phase 01-source-setup-and-import-scope P02 | 24m | 2 tasks | 4 files |
 | Phase 02-deterministic-import-and-auto-publish P01 | 2 min | 1 tasks | 3 files |
 | Phase 02 P02 | 7 min | 2 tasks | 4 files |
+| Phase 02 P03 | 7 min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,9 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 02]: Use Bluesky facet byteStart/byteEnd offsets over UTF-8 bytes and render only canonical link facets.
 - [Phase 02]: Select the first live BlogIndexPage ordered by id as deterministic micropost import parent.
 - [Phase 02]: Treat unchanged source_cid for existing source_uri as a no-op skip to prevent duplicate writes.
+- [Phase 02]: Normalize run_sync counters to imported/updated/skipped/failed and map created to imported for operator clarity.
+- [Phase 02]: Keep sync_bluesky as a thin command and delegate orchestration logic to run_sync.
+- [Phase 02]: Classify source_uri/source_cid before publish to enforce deterministic skip behavior on unchanged reruns.
 
 ### Pending Todos
 
@@ -81,6 +85,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-19T19:50:15.115Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-19T20:03:14.120Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None

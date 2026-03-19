@@ -11,7 +11,7 @@ This milestone delivers a reliable one-way mirror from Taylor's Bluesky account 
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Source Setup and Import Scope** - Bind the single owner source and define controlled historical import boundaries. (completed 2026-03-19)
-- [ ] **Phase 2: Deterministic Import and Auto-Publish** - Import new posts safely, deduplicate by source identity, and publish text/link content automatically.
+- [x] **Phase 2: Deterministic Import and Auto-Publish** - Import new posts safely, deduplicate by source identity, and publish text/link content automatically. (completed 2026-03-19)
 - [ ] **Phase 3: Post Lifecycle Reconciliation and Run Visibility** - Keep mirrored entries aligned with Bluesky edits/deletes and expose sync outcomes.
 - [ ] **Phase 4: Scheduled Sync and Concurrency Safety** - Automate recurring sync with overlap prevention for reliable operations.
 
@@ -46,8 +46,8 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Add deterministic Bluesky source-post mapping schema and contract tests for URI-keyed dedupe.
-- [ ] 02-02-PLAN.md — Implement facet-aware text/link transform and auto-publish upsert service for micro posts.
-- [ ] 02-03-PLAN.md — Wire listRecords client, reconcile orchestration, and manual `sync_bluesky` command with idempotent rerun behavior.
+- [x] 02-02-PLAN.md — Implement facet-aware text/link transform and auto-publish upsert service for micro posts.
+- [x] 02-03-PLAN.md — Wire listRecords client, reconcile orchestration, and manual `sync_bluesky` command with idempotent rerun behavior.
 
 ### Phase 3: Post Lifecycle Reconciliation and Run Visibility
 **Goal**: User can trust the mirrored microblog feed to stay aligned with Bluesky post changes and can inspect what each sync run did.
@@ -77,6 +77,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Source Setup and Import Scope | 3/3 | Complete   | 2026-03-19 |
-| 2. Deterministic Import and Auto-Publish | 2/3 | In Progress|  |
+| 2. Deterministic Import and Auto-Publish | 3/3 | Complete   | 2026-03-19 |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 0/TBD | Not started | - |
 | 4. Scheduled Sync and Concurrency Safety | 0/TBD | Not started | - |
