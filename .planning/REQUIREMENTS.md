@@ -55,23 +55,23 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SYNC-01 | TBD | Pending |
-| SYNC-02 | TBD | Pending |
-| SYNC-03 | TBD | Pending |
-| SYNC-04 | TBD | Pending |
-| SYNC-05 | TBD | Pending |
-| LIFE-01 | TBD | Pending |
-| LIFE-02 | TBD | Pending |
-| LIFE-03 | TBD | Pending |
-| LIFE-04 | TBD | Pending |
-| PUBL-01 | TBD | Pending |
-| PUBL-02 | TBD | Pending |
-| PUBL-03 | TBD | Pending |
+| SYNC-01 | Phase 1 | Pending |
+| SYNC-02 | Phase 2 | Pending |
+| SYNC-03 | Phase 4 | Pending |
+| SYNC-04 | Phase 2 | Pending |
+| SYNC-05 | Phase 1 | Pending |
+| LIFE-01 | Phase 3 | Pending |
+| LIFE-02 | Phase 3 | Pending |
+| LIFE-03 | Phase 3 | Pending |
+| LIFE-04 | Phase 4 | Pending |
+| PUBL-01 | Phase 2 | Pending |
+| PUBL-02 | Phase 2 | Pending |
+| PUBL-03 | Phase 2 | Pending |
 
 **Coverage:**
 - v1 requirements: 12 total
-- Mapped to phases: 0
-- Unmapped: 12 ⚠️
+- Mapped to phases: 12
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-19*
