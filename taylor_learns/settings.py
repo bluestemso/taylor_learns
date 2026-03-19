@@ -131,6 +131,7 @@ PROJECT_APPS = [
     "apps.dashboard.apps.DashboardConfig",
     "apps.api.apps.APIConfig",
     "apps.gadgets.apps.GadgetsConfig",
+    "apps.bluesky.apps.BlueskyConfig",
     "apps.web",
     "apps.chat",
     "apps.ai.apps.AiConfig",
