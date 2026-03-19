@@ -10,11 +10,11 @@ Requirements committed for this milestone.
 
 ### Ingestion
 
-- [ ] **SYNC-01**: User can connect exactly one owner Bluesky account as the import source for this milestone.
+- [x] **SYNC-01**: User can connect exactly one owner Bluesky account as the import source for this milestone.
 - [ ] **SYNC-02**: User can run a manual sync that imports new Bluesky posts into microblog entries.
 - [ ] **SYNC-03**: User can schedule recurring polling sync runs without manual intervention.
 - [ ] **SYNC-04**: User can re-run sync safely without creating duplicate microblog entries.
-- [ ] **SYNC-05**: User can configure a backfill window to limit initial historical import scope.
+- [x] **SYNC-05**: User can configure a backfill window to limit initial historical import scope.
 
 ### Lifecycle
 
@@ -55,11 +55,11 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SYNC-01 | Phase 1 | Pending |
+| SYNC-01 | Phase 1 | Complete |
 | SYNC-02 | Phase 2 | Pending |
 | SYNC-03 | Phase 4 | Pending |
 | SYNC-04 | Phase 2 | Pending |
-| SYNC-05 | Phase 1 | Pending |
+| SYNC-05 | Phase 1 | Complete |
 | LIFE-01 | Phase 3 | Pending |
 | LIFE-02 | Phase 3 | Pending |
 | LIFE-03 | Phase 3 | Pending |
