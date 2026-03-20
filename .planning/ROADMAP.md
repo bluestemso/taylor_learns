@@ -60,8 +60,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Implement two-pass lifecycle reconciliation for Bluesky edits and soft-removals.
-- [ ] 03-02-PLAN.md — Persist sync run outcomes and expose imported/updated/removed/skipped visibility in admin and command output.
+- [x] 03-01-PLAN.md — Implement two-pass lifecycle reconciliation for Bluesky edits and soft-removals.
+- [x] 03-02-PLAN.md — Persist sync run outcomes and expose imported/updated/removed/skipped visibility in admin and command output.
 
 ### Phase 4: Scheduled Sync and Concurrency Safety
 **Goal**: User can rely on automated sync cadence without overlapping runs corrupting or duplicating lifecycle outcomes.

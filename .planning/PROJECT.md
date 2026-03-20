@@ -32,12 +32,12 @@ Publish in one place and reliably syndicate personal writing/activity so the sit
 ### Active
 
 - [ ] Sync can run manually and on schedule using existing job infrastructure.
-- [ ] Edit and delete events from Bluesky update or soft-remove corresponding microblog entries.
+- [x] Edit and delete events from Bluesky update or soft-remove corresponding microblog entries.
 
 ## Current State
 
-Phase 2 is complete: deterministic import, text/link fidelity, and auto-publish dedupe behaviors are implemented and verified.
-Current focus is Phase 3: post lifecycle reconciliation and run visibility.
+Phase 3 is complete: lifecycle reconciliation and run visibility are implemented and verified.
+Current focus is Phase 4: scheduled sync and concurrency safety.
 
 ### Out of Scope
 
@@ -68,7 +68,8 @@ Current focus is Phase 3: post lifecycle reconciliation and run visibility.
 | Use manual + scheduled sync | Balances control with automation and fits existing Celery model | — Pending |
 | Auto-publish imported entries | User preference for low-friction publishing | — Pending |
 | v1 content limited to text and links | Minimize integration complexity for first release | — Pending |
-| Sync edits and soft-delete removals | Keep mirrored feed aligned with source without hard data loss | — Pending |
+| Sync edits and soft-delete removals | Keep mirrored feed aligned with source without hard data loss | Implemented in Phase 3 |
+| Treat Bluesky lifecycle edits as delete+repost in live verification | Bluesky does not support true post editing semantics | Accepted during Phase 3 human verification |
 
 ---
-*Last updated: 2026-03-19 after Phase 2 completion*
+*Last updated: 2026-03-20 after Phase 3 verification completion*

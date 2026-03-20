@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-03-20T16:18:46.929Z"
+stopped_at: Completed 03-VERIFICATION.md
+last_updated: "2026-03-20T16:55:40.698Z"
 progress:
   total_phases: 4
   completed_phases: 3
@@ -16,7 +16,7 @@ progress:
 
 ## Project Reference
 
-See: `.planning/PROJECT.md` (updated 2026-03-19)
+See: `.planning/PROJECT.md` (updated 2026-03-20)
 
 **Core value:** Publish in one place and reliably syndicate personal writing/activity so the site remains the canonical home for content.
 **Current focus:** Phase 04 — scheduled-sync-and-concurrency-safety
@@ -81,6 +81,7 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 03]: Cap listRecords page size at 100 and follow cursors until exhausted so deletion detection uses complete remote URI state.
 - [Phase 03]: Persist one BlueskySyncRun row per run_sync invocation using returned counters as the source of truth.
 - [Phase 03]: Use source-scoped descending completion index bluesky_sr_src_comp_idx for run history queries within database identifier limits.
+- [Phase 03]: Bluesky does not support true post edits; human lifecycle verification validated expected behavior through delete + repost flow.
 
 ### Pending Todos
 
@@ -92,6 +93,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-20T16:18:21.781Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-03-20T16:55:40.695Z
+Stopped at: Completed 03-VERIFICATION.md
 Resume file: None
