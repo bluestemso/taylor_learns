@@ -222,7 +222,7 @@ class TestRunSyncContract(TestCase):
 class TestSyncBlueskyCommand(SimpleTestCase):
     @patch("apps.bluesky.management.commands.sync_bluesky.run_sync")
     def test_sync_bluesky_forwards_limit_and_prints_deterministic_counters(self, mock_run_sync):
-        mock_run_sync.return_value = {"imported": 3, "updated": 2, "skipped": 5, "failed": 1}
+        mock_run_sync.return_value = {"imported": 3, "updated": 2, "removed": 4, "skipped": 5, "failed": 1}
 
         with patch("sys.stdout"):
             output = []
@@ -235,4 +235,4 @@ class TestSyncBlueskyCommand(SimpleTestCase):
 
         mock_run_sync.assert_called_once_with(limit=25)
         rendered = " ".join(output)
-        self.assertIn("Sync complete: imported=3 updated=2 skipped=5 failed=1", rendered)
+        self.assertIn("Sync complete: imported=3 updated=2 removed=4 skipped=5 failed=1", rendered)
