@@ -71,7 +71,34 @@ class TestRunSyncContract(TestCase):
             ]
         )
         self.assertEqual(mock_upsert_and_publish_micro_post.call_count, 2)
-        self.assertEqual(result, {"imported": 1, "updated": 1, "skipped": 1, "failed": 0})
+        self.assertEqual(result, {"imported": 1, "updated": 1, "removed": 0, "skipped": 1, "failed": 0})
+
+    @patch("apps.bluesky.sync.upsert_and_publish_micro_post")
+    @patch("apps.bluesky.sync.classify_record_operation")
+    @patch("apps.bluesky.sync.list_feed_post_records")
+    def test_run_sync_uses_created_at_when_indexed_at_missing(
+        self,
+        mock_list_feed_post_records,
+        mock_classify_record_operation,
+        mock_upsert_and_publish_micro_post,
+    ):
+        mock_list_feed_post_records.return_value = {
+            "records": [
+                {
+                    "uri": "at://did:plc:abc123/app.bsky.feed.post/a",
+                    "cid": "cid-a",
+                    "value": {"text": "A", "facets": [], "createdAt": "2024-01-01T00:00:00Z"},
+                }
+            ],
+            "cursor": None,
+        }
+        mock_classify_record_operation.return_value = "created"
+
+        result = run_sync(limit=1)
+
+        self.assertEqual(result, {"imported": 1, "updated": 0, "removed": 0, "skipped": 0, "failed": 0})
+        called_at = mock_upsert_and_publish_micro_post.call_args.kwargs["source_indexed_at"]
+        self.assertEqual(called_at.isoformat(), "2024-01-01T00:00:00+00:00")
 
     @patch("apps.bluesky.sync.list_feed_post_records")
     def test_run_sync_twice_with_unchanged_cid_is_idempotent(self, mock_list_feed_post_records):
@@ -95,8 +122,8 @@ class TestRunSyncContract(TestCase):
         first = run_sync(limit=1)
         second = run_sync(limit=1)
 
-        self.assertEqual(first, {"imported": 1, "updated": 0, "skipped": 0, "failed": 0})
-        self.assertEqual(second, {"imported": 0, "updated": 0, "skipped": 1, "failed": 0})
+        self.assertEqual(first, {"imported": 1, "updated": 0, "removed": 0, "skipped": 0, "failed": 0})
+        self.assertEqual(second, {"imported": 0, "updated": 0, "removed": 0, "skipped": 1, "failed": 0})
         self.assertEqual(MicroPostPage.objects.count(), 1)
 
     @patch("apps.bluesky.sync.upsert_and_publish_micro_post")
@@ -141,7 +168,54 @@ class TestRunSyncContract(TestCase):
 
         result = run_sync(limit=4)
 
-        self.assertEqual(result, {"imported": 1, "updated": 1, "skipped": 1, "failed": 1})
+        self.assertEqual(result, {"imported": 1, "updated": 1, "removed": 0, "skipped": 1, "failed": 1})
+        self.assertEqual(mock_upsert_and_publish_micro_post.call_count, 2)
+
+    @patch("apps.bluesky.sync.upsert_and_publish_micro_post")
+    @patch("apps.bluesky.sync.classify_record_operation")
+    @patch("apps.bluesky.sync.list_feed_post_records")
+    def test_run_sync_exhausts_cursor_pages_before_reconcile(
+        self,
+        mock_list_feed_post_records,
+        mock_classify_record_operation,
+        mock_upsert_and_publish_micro_post,
+    ):
+        mock_list_feed_post_records.side_effect = [
+            {
+                "records": [
+                    {
+                        "uri": "at://did:plc:abc123/app.bsky.feed.post/a",
+                        "cid": "cid-a",
+                        "indexedAt": "2024-01-01T00:00:00Z",
+                        "value": {"text": "A", "facets": []},
+                    }
+                ],
+                "cursor": "cursor-2",
+            },
+            {
+                "records": [
+                    {
+                        "uri": "at://did:plc:abc123/app.bsky.feed.post/b",
+                        "cid": "cid-b",
+                        "indexedAt": "2024-01-01T01:00:00Z",
+                        "value": {"text": "B", "facets": []},
+                    }
+                ],
+                "cursor": None,
+            },
+        ]
+        mock_classify_record_operation.side_effect = ["created", "updated"]
+
+        result = run_sync(limit=250)
+
+        self.assertEqual(mock_list_feed_post_records.call_count, 2)
+        mock_list_feed_post_records.assert_has_calls(
+            [
+                call(source_settings=self.source_settings, cursor=None, limit=100),
+                call(source_settings=self.source_settings, cursor="cursor-2", limit=100),
+            ]
+        )
+        self.assertEqual(result, {"imported": 1, "updated": 1, "removed": 0, "skipped": 0, "failed": 0})
         self.assertEqual(mock_upsert_and_publish_micro_post.call_count, 2)
 
 

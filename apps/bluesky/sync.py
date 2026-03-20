@@ -14,10 +14,21 @@ def run_sync(*, limit: int = 100) -> dict[str, int]:
         raise ValueError("No active enabled Bluesky source configured")
 
     counters = {"imported": 0, "updated": 0, "removed": 0, "skipped": 0, "failed": 0}
-    payload = list_feed_post_records(source_settings=source_settings, limit=limit)
-    records = payload.get("records", [])
-    if not isinstance(records, list):
-        records = []
+    page_limit = max(1, min(limit, 100))
+    records: list[dict] = []
+    cursor: str | None = None
+
+    while True:
+        payload = list_feed_post_records(source_settings=source_settings, cursor=cursor, limit=page_limit)
+        page_records = payload.get("records", [])
+        if isinstance(page_records, list):
+            records.extend(page_records)
+
+        next_cursor = payload.get("cursor")
+        if not isinstance(next_cursor, str) or not next_cursor.strip():
+            break
+        cursor = next_cursor
+
     remote_uris: set[str] = set()
 
     for record in records:
