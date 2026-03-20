@@ -2,7 +2,7 @@ from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-from health_check.views import MainView
+from health_check.views import HealthCheckView
 
 from apps.content.models import BlogIndexPage
 
@@ -42,9 +42,9 @@ def gadgets_bridge(request):
     return HttpResponseRedirect(f"{gadgets_url}/")
 
 
-class HealthCheck(MainView):
-    def get(self, request, *args, **kwargs):
+class HealthCheck(HealthCheckView):
+    async def get(self, request, *args, **kwargs):
         tokens = settings.HEALTH_CHECK_TOKENS
         if tokens and request.GET.get("token") not in tokens:
             raise Http404
-        return super().get(request, *args, **kwargs)
+        return await super().get(request, *args, **kwargs)

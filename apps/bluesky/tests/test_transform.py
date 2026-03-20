@@ -33,7 +33,7 @@ class TestRenderPostBodyHtmlContract(SimpleTestCase):
     def test_utf8_byte_offsets_preserve_non_link_boundaries(self):
         text = "A🙂B docs C"
         encoded = text.encode("utf-8")
-        target = "docs".encode("utf-8")
+        target = b"docs"
         byte_start = encoded.index(target)
         byte_end = byte_start + len(target)
         facets = [

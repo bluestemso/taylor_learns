@@ -100,7 +100,6 @@ THIRD_PARTY_APPS = [
     "whitenoise.runserver_nostatic",  # whitenoise runserver
     "waffle",
     "health_check",
-    "health_check.db",
     "health_check.contrib.celery",
     "health_check.contrib.redis",
     "django_celery_beat",
