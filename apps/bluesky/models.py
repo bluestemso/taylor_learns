@@ -16,6 +16,8 @@ class BlueskySourceSettings(BaseModel):
     is_enabled = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     verified_at = models.DateTimeField(blank=True, null=True)
+    sync_lock_token = models.CharField(max_length=64, blank=True, null=True)
+    sync_lock_expires_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         app_label = "bluesky"
