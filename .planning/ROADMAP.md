@@ -57,7 +57,11 @@ Plans:
   1. When a Bluesky post is edited, the corresponding microblog entry reflects that edit after sync.
   2. When a Bluesky post is deleted, the corresponding microblog entry is soft-removed after sync.
   3. User can view sync run results with counts for imported, updated, removed, and skipped posts.
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Implement two-pass lifecycle reconciliation for Bluesky edits and soft-removals.
+- [ ] 03-02-PLAN.md — Persist sync run outcomes and expose imported/updated/removed/skipped visibility in admin and command output.
 
 ### Phase 4: Scheduled Sync and Concurrency Safety
 **Goal**: User can rely on automated sync cadence without overlapping runs corrupting or duplicating lifecycle outcomes.
