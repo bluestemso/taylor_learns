@@ -6,6 +6,7 @@ score: 3/3 must-haves verified
 human_approved: 2026-03-20T17:49:02Z
 human_notes:
   - "Admin/runtime verification passed after applying migration bluesky.0005_blueskysourcesettings_sync_lock_fields."
+  - "2026-03-20T18:28:03Z: Confirmed scheduled runs execute after enabling BLUESKY_SYNC_ENABLED and reloading scheduler config."
 human_verification:
   - test: "Validate recurring Celery beat execution in a running environment"
     expected: "With BLUESKY_SYNC_ENABLED=true and celery beat+worker running, bluesky-sync executes every 15 minutes and creates new BlueskySyncRun rows without manual trigger."
@@ -74,6 +75,7 @@ Requirement ID accounting check:
 **Expected:** `bluesky-sync` executes automatically on cadence without manual command trigger; each run records counters and does not overlap active lock owner.
 **Why human:** Time-based scheduler behavior across beat/worker processes is runtime/system-level and cannot be fully established through static inspection.
 **Result:** approved
+**Observed:** Scheduled sync runs executed after enabling `BLUESKY_SYNC_ENABLED=true`, with no overlap errors reported.
 
 ### Gaps Summary
 
