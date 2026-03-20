@@ -142,7 +142,8 @@ html[data-theme='dark'] {
     border-top: 1px solid var(--ei-border);
   }
 
-  .ei-link {
+  .ei-link,
+  .ei-reading a {
     color: var(--ei-text);
     text-decoration: none;
     background-image: linear-gradient(transparent 60%, var(--ei-primary) 0);
@@ -152,7 +153,8 @@ html[data-theme='dark'] {
   }
 
   .ei-link:hover,
-  .ei-link-active {
+  .ei-link-active,
+  .ei-reading a:hover {
     background-image: linear-gradient(transparent 0%, var(--ei-primary) 0);
     color: #111111;
   }
