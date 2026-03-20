@@ -97,8 +97,15 @@ None yet.
 
 None currently.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260320-j0d | update feed/blog to sort by date originally posted, not just date created. we just implemented a feature that syncs in bluesky posts, so need to show those in the order in which they were originally posted to bluesky, not the order in which they were synced to this site | 2026-03-20 | e781627 | [260320-j0d-update-feed-blog-to-sort-by-date-origina](./quick/260320-j0d-update-feed-blog-to-sort-by-date-origina/) |
+
 ## Session Continuity
 
 Last session: 2026-03-20T18:50:27.435Z
 Stopped at: Completed quick-260320-j0d-PLAN.md
 Resume file: None
+Last activity: 2026-03-20 - Completed quick task 260320-j0d: update feed/blog to sort by date originally posted, not just date created. we just implemented a feature that syncs in bluesky posts, so need to show those in the order in which they were originally posted to bluesky, not the order in which they were synced to this site
