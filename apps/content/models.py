@@ -1,5 +1,5 @@
+from datetime import UTC, datetime
 from datetime import date as date_value
-from datetime import datetime, timezone
 
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -107,7 +107,7 @@ class BlogIndexPage(BaseContentPage):
         posts = list(Page.objects.live().descendant_of(self).specific())
 
         def sort_key(post):
-            published_at = post.first_published_at or datetime.min.replace(tzinfo=timezone.utc)
+            published_at = post.first_published_at or datetime.min.replace(tzinfo=UTC)
             content_date = getattr(post, "date", None) or published_at.date() or date_value.min
             return (content_date, published_at, post.id or 0)
 
