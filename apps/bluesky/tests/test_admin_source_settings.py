@@ -108,6 +108,14 @@ class TestBlueskySourceSettingsAdminFlow(TestCase):
         self.assertFalse(admin_obj.has_add_permission(request))
         self.assertFalse(admin_obj.has_change_permission(request))
 
+    def test_add_view_renders_when_effective_settings_are_unset(self):
+        self.client.force_login(self.superuser)
+
+        response = self.client.get(reverse("admin:bluesky_blueskysourcesettings_add"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Backfill from: -")
+
 
 class TestBlueskySourceSettingsAdminVisibility(TestCase):
     def setUp(self):
