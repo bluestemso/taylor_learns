@@ -28,16 +28,16 @@ Publish in one place and reliably syndicate personal writing/activity so the sit
 - ✓ External content sync patterns already exist via gadgets pipeline in `apps/gadgets/sync.py` and `apps/gadgets/tasks.py` — existing
 - ✓ Bluesky account sync can fetch posts for the site owner and import them into microblog content. — Validated in Phase 2: Deterministic Import and Auto-Publish
 - ✓ Imported posts are auto-published and deduplicated by source post ID. — Validated in Phase 2: Deterministic Import and Auto-Publish
+- ✓ Sync can run manually and on schedule using existing job infrastructure. — Validated in Phase 4: Scheduled Sync and Concurrency Safety
 
 ### Active
 
-- [ ] Sync can run manually and on schedule using existing job infrastructure.
 - [x] Edit and delete events from Bluesky update or soft-remove corresponding microblog entries.
 
 ## Current State
 
-Phase 3 is complete: lifecycle reconciliation and run visibility are implemented and verified.
-Current focus is Phase 4: scheduled sync and concurrency safety.
+Phase 4 is complete: scheduled sync and per-source overlap protection are implemented and verified.
+Milestone v1.0 execution is complete across all planned phases.
 
 ### Out of Scope
 
@@ -72,4 +72,4 @@ Current focus is Phase 4: scheduled sync and concurrency safety.
 | Treat Bluesky lifecycle edits as delete+repost in live verification | Bluesky does not support true post editing semantics | Accepted during Phase 3 human verification |
 
 ---
-*Last updated: 2026-03-20 after Phase 3 verification completion*
+*Last updated: 2026-03-20 after Phase 4 execution completion*
