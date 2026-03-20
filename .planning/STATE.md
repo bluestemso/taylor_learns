@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-20T16:07:56.350Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-20T16:18:46.929Z"
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-03-19)
 
 **Core value:** Publish in one place and reliably syndicate personal writing/activity so the site remains the canonical home for content.
-**Current focus:** Phase 03 — post-lifecycle-reconciliation-and-run-visibility
+**Current focus:** Phase 04 — scheduled-sync-and-concurrency-safety
 
 ## Current Position
 
-Phase: 03 (post-lifecycle-reconciliation-and-run-visibility) — EXECUTING
-Plan: 2 of 2
+Phase: 04 (scheduled-sync-and-concurrency-safety) — READY
+Plan: 0 of TBD
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: 2 of 2
 | Phase 02 P02 | 7 min | 2 tasks | 4 files |
 | Phase 02 P03 | 7 min | 2 tasks | 8 files |
 | Phase 03 P01 | 6 min | 3 tasks | 8 files |
+| Phase 03 P02 | 7 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,8 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 03]: Track soft-deleted source posts with BlueskyPostMap.removed_at and exclude them from repeat removal reconciliation.
 - [Phase 03]: Perform lifecycle sync in two passes: fetch/classify all remote records first, then compute missing mapped URIs for remove operations.
 - [Phase 03]: Cap listRecords page size at 100 and follow cursors until exhausted so deletion detection uses complete remote URI state.
+- [Phase 03]: Persist one BlueskySyncRun row per run_sync invocation using returned counters as the source of truth.
+- [Phase 03]: Use source-scoped descending completion index bluesky_sr_src_comp_idx for run history queries within database identifier limits.
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-20T16:07:56.348Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-03-20T16:18:21.781Z
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
