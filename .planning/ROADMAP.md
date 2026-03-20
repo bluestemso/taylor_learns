@@ -13,7 +13,7 @@ This milestone delivers a reliable one-way mirror from Taylor's Bluesky account 
 - [x] **Phase 1: Source Setup and Import Scope** - Bind the single owner source and define controlled historical import boundaries. (completed 2026-03-19)
 - [x] **Phase 2: Deterministic Import and Auto-Publish** - Import new posts safely, deduplicate by source identity, and publish text/link content automatically. (completed 2026-03-19)
 - [x] **Phase 3: Post Lifecycle Reconciliation and Run Visibility** - Keep mirrored entries aligned with Bluesky edits/deletes and expose sync outcomes. (completed 2026-03-20)
-- [ ] **Phase 4: Scheduled Sync and Concurrency Safety** - Automate recurring sync with overlap prevention for reliable operations.
+- [x] **Phase 4: Scheduled Sync and Concurrency Safety** - Automate recurring sync with overlap prevention for reliable operations. (completed 2026-03-20)
 
 ## Phase Details
 
@@ -74,7 +74,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — Add Celery-scheduled Bluesky sync trigger and enforce per-source single-flight locking in `run_sync`.
+- [x] 04-01-PLAN.md — Add Celery-scheduled Bluesky sync trigger and enforce per-source single-flight locking in `run_sync`.
 
 ## Progress
 
@@ -86,4 +86,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Source Setup and Import Scope | 3/3 | Complete   | 2026-03-19 |
 | 2. Deterministic Import and Auto-Publish | 3/3 | Complete   | 2026-03-19 |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 2/2 | Complete   | 2026-03-20 |
-| 4. Scheduled Sync and Concurrency Safety | 0/1 | Not started | - |
+| 4. Scheduled Sync and Concurrency Safety | 1/1 | Complete   | 2026-03-20 |
