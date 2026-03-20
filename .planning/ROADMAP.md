@@ -71,7 +71,10 @@ Plans:
   1. User can enable recurring scheduled sync runs that execute without manual intervention.
   2. If a sync is already in progress for the source, a second run is prevented from overlapping.
   3. Scheduled sync behavior produces the same safe import/update/remove outcomes as manual sync.
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Add Celery-scheduled Bluesky sync trigger and enforce per-source single-flight locking in `run_sync`.
 
 ## Progress
 
@@ -83,4 +86,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Source Setup and Import Scope | 3/3 | Complete   | 2026-03-19 |
 | 2. Deterministic Import and Auto-Publish | 3/3 | Complete   | 2026-03-19 |
 | 3. Post Lifecycle Reconciliation and Run Visibility | 2/2 | Complete   | 2026-03-20 |
-| 4. Scheduled Sync and Concurrency Safety | 0/TBD | Not started | - |
+| 4. Scheduled Sync and Concurrency Safety | 0/1 | Not started | - |
