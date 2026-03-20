@@ -15,6 +15,7 @@ class Command(BaseCommand):
             self.style.SUCCESS(
                 f"Sync complete: imported={result['imported']} "
                 f"updated={result['updated']} "
+                f"removed={result['removed']} "
                 f"skipped={result['skipped']} "
                 f"failed={result['failed']}"
             )
