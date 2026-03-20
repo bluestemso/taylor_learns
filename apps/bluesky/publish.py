@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 
 from apps.bluesky.models import BlueskyPostMap
 from apps.bluesky.transform import build_micropost_stream_body
@@ -62,6 +63,7 @@ def upsert_and_publish_micro_post(
         post_map.source_did = source_did
         post_map.source_rkey = source_rkey
         post_map.source_indexed_at = source_indexed_at
+        post_map.removed_at = None
         post_map.save(
             update_fields=[
                 "source_settings",
@@ -70,8 +72,28 @@ def upsert_and_publish_micro_post(
                 "source_did",
                 "source_rkey",
                 "source_indexed_at",
+                "removed_at",
                 "updated_at",
             ]
         )
 
     return {"operation": "updated"}
+
+
+def unpublish_mapped_micro_post(*, source_settings, source_uri: str) -> dict[str, str]:
+    post_map = (
+        BlueskyPostMap.objects.select_related("micro_post")
+        .filter(source_settings=source_settings, source_uri=source_uri)
+        .first()
+    )
+
+    if post_map is None or post_map.removed_at is not None:
+        return {"operation": "skipped"}
+
+    with transaction.atomic():
+        micro_post = post_map.micro_post
+        micro_post.unpublish(set_expired=False, log_action=True)
+        post_map.removed_at = timezone.now()
+        post_map.save(update_fields=["removed_at", "updated_at"])
+
+    return {"operation": "removed"}

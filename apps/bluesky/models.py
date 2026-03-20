@@ -53,6 +53,7 @@ class BlueskyPostMap(BaseModel):
     source_rkey = models.CharField(max_length=255)
     source_indexed_at = models.DateTimeField()
     last_synced_at = models.DateTimeField(auto_now=True)
+    removed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         app_label = "bluesky"
