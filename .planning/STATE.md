@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: complete
-stopped_at: Completed 04-VERIFICATION.md
-last_updated: "2026-03-20T17:50:56.008Z"
+status: unknown
+stopped_at: Completed quick-260320-j0d-PLAN.md
+last_updated: "2026-03-20T18:50:27.438Z"
 progress:
   total_phases: 4
   completed_phases: 4
@@ -54,6 +54,7 @@ Plan: 1 of 1
 | Phase 03 P01 | 6 min | 3 tasks | 8 files |
 | Phase 03 P02 | 7 min | 3 tasks | 7 files |
 | Phase 04 P01 | 5 min | 3 tasks | 7 files |
+| Phase quick-260320-j0d-update-feed-blog-to-sort-by-date-origina P01 | 5m | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 03]: Bluesky does not support true post edits; human lifecycle verification validated expected behavior through delete + repost flow.
 - [Phase 04]: Put overlap lock acquisition/release inside run_sync so manual and scheduled triggers share one single-flight path.
 - [Phase 04]: Use DB lease fields on BlueskySourceSettings instead of cache locking so behavior is deterministic across environments.
+- [Phase quick-260320-j0d-update-feed-blog-to-sort-by-date-origina]: Order BlogIndex descendants in Python using page date first, then publish timestamp/id fallback for no-date pages.
+- [Phase quick-260320-j0d-update-feed-blog-to-sort-by-date-origina]: Prefer Bluesky value.createdAt over indexedAt to preserve original posted chronology during backfills.
 
 ### Pending Todos
 
@@ -96,6 +99,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-20T17:35:21.925Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-03-20T18:50:27.435Z
+Stopped at: Completed quick-260320-j0d-PLAN.md
 Resume file: None
