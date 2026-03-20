@@ -1,7 +1,8 @@
 from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 
 from apps.bluesky.client import list_feed_post_records
-from apps.bluesky.models import BlueskySourceSettings
+from apps.bluesky.models import BlueskySourceSettings, BlueskySyncRun
 from apps.bluesky.publish import unpublish_mapped_micro_post, upsert_and_publish_micro_post
 from apps.bluesky.reconcile import classify_record_operation, get_missing_mapped_uris
 
@@ -13,6 +14,7 @@ def run_sync(*, limit: int = 100) -> dict[str, int]:
     if source_settings is None:
         raise ValueError("No active enabled Bluesky source configured")
 
+    started_at = timezone.now()
     counters = {"imported": 0, "updated": 0, "removed": 0, "skipped": 0, "failed": 0}
     page_limit = max(1, min(limit, 100))
     records: list[dict] = []
@@ -79,5 +81,16 @@ def run_sync(*, limit: int = 100) -> dict[str, int]:
                 counters["removed"] += 1
         except Exception:  # noqa: BLE001
             counters["failed"] += 1
+
+    BlueskySyncRun.objects.create(
+        source_settings=source_settings,
+        started_at=started_at,
+        completed_at=timezone.now(),
+        imported_count=counters["imported"],
+        updated_count=counters["updated"],
+        removed_count=counters["removed"],
+        skipped_count=counters["skipped"],
+        failed_count=counters["failed"],
+    )
 
     return counters

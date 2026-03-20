@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from apps.bluesky.forms import BlueskySourceSettingsAdminForm
-from apps.bluesky.models import BlueskySourceSettings
+from apps.bluesky.models import BlueskySourceSettings, BlueskySyncRun
 
 
 @admin.register(BlueskySourceSettings)
@@ -21,13 +21,19 @@ class BlueskySourceSettingsAdmin(admin.ModelAdmin):
         if obj is None:
             return "-"
 
-        effective_backfill = obj.effective_backfill_start_at()
-        backfill_display = f"{effective_backfill.strftime('%Y-%m-%d %H:%M:%S')} {settings.TIME_ZONE}"
+        backfill_display = "-"
+        if obj.backfill_start_date:
+            effective_backfill = obj.effective_backfill_start_at()
+            backfill_display = f"{effective_backfill.strftime('%Y-%m-%d %H:%M:%S')} {settings.TIME_ZONE}"
+
+        handle = obj.handle or "-"
+        did = obj.did or "-"
+        profile_url = obj.profile_url or "-"
         return format_html(
             "Handle: {}<br>DID: {}<br>Profile: {}<br>Backfill from: {}<br>Enabled: {}",
-            obj.handle,
-            obj.did,
-            obj.profile_url,
+            handle,
+            did,
+            profile_url,
             backfill_display,
             obj.is_enabled,
         )
@@ -40,3 +46,22 @@ class BlueskySourceSettingsAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(BlueskySyncRun)
+class BlueskySyncRunAdmin(admin.ModelAdmin):
+    list_display = (
+        "source_handle",
+        "completed_at",
+        "imported_count",
+        "updated_count",
+        "removed_count",
+        "skipped_count",
+        "failed_count",
+    )
+    list_select_related = ("source_settings",)
+    ordering = ("-completed_at", "-created_at")
+
+    @admin.display(description="Source")
+    def source_handle(self, obj):
+        return obj.source_settings.handle

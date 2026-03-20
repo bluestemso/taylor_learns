@@ -64,3 +64,28 @@ class BlueskyPostMap(BaseModel):
                 name="unique_bluesky_post_map_source_uri",
             )
         ]
+
+
+class BlueskySyncRun(BaseModel):
+    source_settings = models.ForeignKey(
+        "bluesky.BlueskySourceSettings",
+        on_delete=models.CASCADE,
+        related_name="sync_runs",
+    )
+    started_at = models.DateTimeField()
+    completed_at = models.DateTimeField()
+    imported_count = models.PositiveIntegerField(default=0)
+    updated_count = models.PositiveIntegerField(default=0)
+    removed_count = models.PositiveIntegerField(default=0)
+    skipped_count = models.PositiveIntegerField(default=0)
+    failed_count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        app_label = "bluesky"
+        ordering = ["-completed_at", "-created_at"]
+        indexes = [
+            models.Index(
+                fields=["source_settings", "-completed_at", "-created_at"],
+                name="bluesky_sr_src_comp_idx",
+            )
+        ]
