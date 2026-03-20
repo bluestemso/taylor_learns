@@ -1,3 +1,6 @@
+from datetime import date as date_value
+from datetime import datetime, timezone
+
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -101,7 +104,14 @@ class BlogIndexPage(BaseContentPage):
     content_panels = Page.content_panels + [FieldPanel("intro", classname="full")]
 
     def get_ordered_blog_posts(self):
-        return Page.objects.live().descendant_of(self).specific().order_by("-first_published_at")
+        posts = list(Page.objects.live().descendant_of(self).specific())
+
+        def sort_key(post):
+            published_at = post.first_published_at or datetime.min.replace(tzinfo=timezone.utc)
+            content_date = getattr(post, "date", None) or published_at.date() or date_value.min
+            return (content_date, published_at, post.id or 0)
+
+        return sorted(posts, key=sort_key, reverse=True)
 
 
 class BlogPage(BaseContentPage):
