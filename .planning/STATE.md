@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 03-VERIFICATION.md
-last_updated: "2026-03-20T16:55:40.698Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-20T17:35:21.928Z"
 progress:
   total_phases: 4
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  completed_phases: 4
+  total_plans: 9
+  completed_plans: 9
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: `.planning/PROJECT.md` (updated 2026-03-20)
 
 ## Current Position
 
-Phase: 04 (scheduled-sync-and-concurrency-safety) — READY
-Plan: 0 of TBD
+Phase: 04 (scheduled-sync-and-concurrency-safety) — EXECUTING
+Plan: 1 of 1
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Plan: 0 of TBD
 | Phase 02 P03 | 7 min | 2 tasks | 8 files |
 | Phase 03 P01 | 6 min | 3 tasks | 8 files |
 | Phase 03 P02 | 7 min | 3 tasks | 7 files |
+| Phase 04 P01 | 5 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 03]: Persist one BlueskySyncRun row per run_sync invocation using returned counters as the source of truth.
 - [Phase 03]: Use source-scoped descending completion index bluesky_sr_src_comp_idx for run history queries within database identifier limits.
 - [Phase 03]: Bluesky does not support true post edits; human lifecycle verification validated expected behavior through delete + repost flow.
+- [Phase 04]: Put overlap lock acquisition/release inside run_sync so manual and scheduled triggers share one single-flight path.
+- [Phase 04]: Use DB lease fields on BlueskySourceSettings instead of cache locking so behavior is deterministic across environments.
 
 ### Pending Todos
 
@@ -93,6 +96,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-20T16:55:40.695Z
-Stopped at: Completed 03-VERIFICATION.md
+Last session: 2026-03-20T17:35:21.925Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
