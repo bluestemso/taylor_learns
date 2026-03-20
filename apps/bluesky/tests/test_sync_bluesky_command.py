@@ -76,7 +76,7 @@ class TestRunSyncContract(TestCase):
     @patch("apps.bluesky.sync.upsert_and_publish_micro_post")
     @patch("apps.bluesky.sync.classify_record_operation")
     @patch("apps.bluesky.sync.list_feed_post_records")
-    def test_run_sync_uses_created_at_when_indexed_at_missing(
+    def test_run_sync_prefers_created_at_when_both_timestamps_exist(
         self,
         mock_list_feed_post_records,
         mock_classify_record_operation,
@@ -87,6 +87,7 @@ class TestRunSyncContract(TestCase):
                 {
                     "uri": "at://did:plc:abc123/app.bsky.feed.post/a",
                     "cid": "cid-a",
+                    "indexedAt": "2024-01-01T01:00:00Z",
                     "value": {"text": "A", "facets": [], "createdAt": "2024-01-01T00:00:00Z"},
                 }
             ],
@@ -99,6 +100,34 @@ class TestRunSyncContract(TestCase):
         self.assertEqual(result, {"imported": 1, "updated": 0, "removed": 0, "skipped": 0, "failed": 0})
         called_at = mock_upsert_and_publish_micro_post.call_args.kwargs["source_indexed_at"]
         self.assertEqual(called_at.isoformat(), "2024-01-01T00:00:00+00:00")
+
+    @patch("apps.bluesky.sync.upsert_and_publish_micro_post")
+    @patch("apps.bluesky.sync.classify_record_operation")
+    @patch("apps.bluesky.sync.list_feed_post_records")
+    def test_run_sync_falls_back_to_indexed_at_when_created_at_missing(
+        self,
+        mock_list_feed_post_records,
+        mock_classify_record_operation,
+        mock_upsert_and_publish_micro_post,
+    ):
+        mock_list_feed_post_records.return_value = {
+            "records": [
+                {
+                    "uri": "at://did:plc:abc123/app.bsky.feed.post/a",
+                    "cid": "cid-a",
+                    "indexedAt": "2024-01-01T01:00:00Z",
+                    "value": {"text": "A", "facets": []},
+                }
+            ],
+            "cursor": None,
+        }
+        mock_classify_record_operation.return_value = "created"
+
+        result = run_sync(limit=1)
+
+        self.assertEqual(result, {"imported": 1, "updated": 0, "removed": 0, "skipped": 0, "failed": 0})
+        called_at = mock_upsert_and_publish_micro_post.call_args.kwargs["source_indexed_at"]
+        self.assertEqual(called_at.isoformat(), "2024-01-01T01:00:00+00:00")
 
     @patch("apps.bluesky.sync.list_feed_post_records")
     def test_run_sync_twice_with_unchanged_cid_is_idempotent(self, mock_list_feed_post_records):
