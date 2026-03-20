@@ -3,8 +3,8 @@ from uuid import uuid4
 
 from django.db import transaction
 from django.db.models import Q
-from django.utils.dateparse import parse_datetime
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 
 from apps.bluesky.client import list_feed_post_records
 from apps.bluesky.models import BlueskySourceSettings, BlueskySyncRun
@@ -68,7 +68,7 @@ def run_sync(*, limit: int = 100) -> dict[str, int]:
                 source_cid = str(record.get("cid", "")).strip()
                 remote_uris.add(source_uri)
                 value = record.get("value") or {}
-                source_indexed_at_raw = str(record.get("indexedAt") or value.get("createdAt") or "").strip()
+                source_indexed_at_raw = str(value.get("createdAt") or record.get("indexedAt") or "").strip()
                 source_indexed_at = parse_datetime(source_indexed_at_raw)
                 if source_indexed_at is None:
                     raise ValueError("Record missing or invalid timestamp")
