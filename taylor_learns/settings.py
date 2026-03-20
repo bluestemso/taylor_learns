@@ -57,6 +57,7 @@ GADGETS_HOSTS = env.list(
     default=["gadgets.localhost"] if DEBUG else ["gadgets.taylorlearns.com"],
 )
 GADGETS_SYNC_ENABLED = env.bool("GADGETS_SYNC_ENABLED", default=False)
+BLUESKY_SYNC_ENABLED = env.bool("BLUESKY_SYNC_ENABLED", default=False)
 GADGETS_SYNC_TOPICS = env.list("GADGETS_SYNC_TOPICS", default=["taylor-learns-gadget"])
 GADGETS_SYNC_OWNERS = env.list("GADGETS_SYNC_OWNERS", default=["bluestemso"])
 GADGETS_GITHUB_TOKEN = env("GADGETS_GITHUB_TOKEN", default="")
@@ -564,6 +565,11 @@ SCHEDULED_TASKS = {
         "task": "apps.gadgets.tasks.sync_gadgets_task",
         "schedule": schedules.crontab(minute=0),
         "enabled": GADGETS_SYNC_ENABLED,
+    },
+    "bluesky-sync": {
+        "task": "apps.bluesky.tasks.sync_bluesky_task",
+        "schedule": schedules.crontab(minute="*/15"),
+        "enabled": BLUESKY_SYNC_ENABLED,
     },
 }
 
