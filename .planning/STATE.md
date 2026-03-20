@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-03-19T21:44:06.147Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-20T16:07:56.350Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: `.planning/PROJECT.md` (updated 2026-03-19)
 
 ## Current Position
 
-Phase: 03 (post-lifecycle-reconciliation-and-run-visibility) — READY
-Plan: 1 of TBD
+Phase: 03 (post-lifecycle-reconciliation-and-run-visibility) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Plan: 1 of TBD
 | Phase 02-deterministic-import-and-auto-publish P01 | 2 min | 1 tasks | 3 files |
 | Phase 02 P02 | 7 min | 2 tasks | 4 files |
 | Phase 02 P03 | 7 min | 2 tasks | 8 files |
+| Phase 03 P01 | 6 min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Decisions are logged in `.planning/PROJECT.md` under Key Decisions.
 - [Phase 02]: Normalize run_sync counters to imported/updated/skipped/failed and map created to imported for operator clarity.
 - [Phase 02]: Keep sync_bluesky as a thin command and delegate orchestration logic to run_sync.
 - [Phase 02]: Classify source_uri/source_cid before publish to enforce deterministic skip behavior on unchanged reruns.
+- [Phase 03]: Track soft-deleted source posts with BlueskyPostMap.removed_at and exclude them from repeat removal reconciliation.
+- [Phase 03]: Perform lifecycle sync in two passes: fetch/classify all remote records first, then compute missing mapped URIs for remove operations.
+- [Phase 03]: Cap listRecords page size at 100 and follow cursors until exhausted so deletion detection uses complete remote URI state.
 
 ### Pending Todos
 
@@ -85,6 +89,6 @@ None currently.
 
 ## Session Continuity
 
-Last session: 2026-03-19T20:03:14.120Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-03-20T16:07:56.348Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None

@@ -18,8 +18,8 @@ Requirements committed for this milestone.
 
 ### Lifecycle
 
-- [ ] **LIFE-01**: User can see Bluesky post edits reflected in the corresponding microblog entry after sync.
-- [ ] **LIFE-02**: User can have deleted Bluesky posts soft-removed (unpublished/marked removed) in the CMS after sync.
+- [x] **LIFE-01**: User can see Bluesky post edits reflected in the corresponding microblog entry after sync.
+- [x] **LIFE-02**: User can have deleted Bluesky posts soft-removed (unpublished/marked removed) in the CMS after sync.
 - [ ] **LIFE-03**: User can view sync run outcomes including counts for imported, updated, removed, and skipped posts.
 - [ ] **LIFE-04**: User can rely on the system to prevent overlapping sync runs for the same source account.
 
@@ -60,8 +60,8 @@ Which phases cover which requirements. Populated during roadmap creation.
 | SYNC-03 | Phase 4 | Pending |
 | SYNC-04 | Phase 2 | Complete |
 | SYNC-05 | Phase 1 | Complete |
-| LIFE-01 | Phase 3 | Pending |
-| LIFE-02 | Phase 3 | Pending |
+| LIFE-01 | Phase 3 | Complete |
+| LIFE-02 | Phase 3 | Complete |
 | LIFE-03 | Phase 3 | Pending |
 | LIFE-04 | Phase 4 | Pending |
 | PUBL-01 | Phase 2 | Complete |
