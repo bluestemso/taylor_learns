@@ -28,7 +28,7 @@
 - Django 5.2.x - main web framework and app configuration in `pyproject.toml` and `taylor_learns/settings.py`
 - Wagtail 7.2.x - CMS/content layer configured in `taylor_learns/settings.py` and routed via `taylor_learns/urls.py`
 - Django REST Framework - API layer and schema generation in `taylor_learns/settings.py` and `apps/api/`
-- Channels + Daphne - ASGI/WebSocket support in `taylor_learns/asgi.py`, `taylor_learns/channels_urls.py`, and `apps/chat/routing.py`
+- Channels + Daphne - ASGI/WebSocket support in `taylor_learns/asgi.py` and `taylor_learns/channels_urls.py`
 
 **Testing:**
 - Django test runner - test execution via `make test` in `Makefile` and CI in `.github/workflows/tests.yml`
@@ -43,8 +43,7 @@
 **Critical:**
 - `django-allauth` - auth, social auth, MFA, and headless auth URLs configured in `taylor_learns/settings.py` and `taylor_learns/urls.py`
 - `celery` + `django-celery-beat` - background jobs and scheduler in `taylor_learns/settings.py`, `taylor_learns/celery.py`, and `apps/gadgets/tasks.py`
-- `channels` + `channels_redis` - websocket chat transport and channel layer in `taylor_learns/asgi.py` and `taylor_learns/settings.py`
-- `litellm` + `pydantic-ai` + `openai` - AI chat/agent orchestration in `apps/chat/sessions.py`, `apps/ai/agents.py`, and `taylor_learns/settings.py`
+- `channels` + `channels_redis` - channel layer and async transport support in `taylor_learns/asgi.py` and `taylor_learns/settings.py`
 
 **Infrastructure:**
 - `psycopg2-binary` - PostgreSQL driver declared in `pyproject.toml`
@@ -57,7 +56,7 @@
 **Environment:**
 - Uses `django-environ` with `.env` loading from `taylor_learns/settings.py` (`env.read_env(...)`)
 - `.env` and `.env.example` files are present at project root for local configuration
-- Required integration/config vars are consumed in `taylor_learns/settings.py` (database, redis, auth, AI, storage, observability)
+- Required integration/config vars are consumed in `taylor_learns/settings.py` (database, redis, auth, storage, observability)
 
 **Build:**
 - Python/dependency config in `pyproject.toml` and `uv.lock`

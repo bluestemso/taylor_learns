@@ -64,7 +64,6 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("design/", TemplateView.as_view(template_name="web/design_showcase.html")),
     path("", include(wagtail_urls)),
-    path("chat/", include("apps.chat.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

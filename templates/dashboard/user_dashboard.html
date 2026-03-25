@@ -1,8 +1,6 @@
 {% extends "web/app/app_base.html" %}
 {% load form_tags %}
-{% load meta_tags %}
 {% load i18n %}
-{% load static %}
 {% load django_vite %}
 {% block app %}
 <section class="app-card">
@@ -31,13 +29,10 @@
     </div>
   </div>
 </section>
-{% websocket_url 'ws_admin_agent_chat' as chat_websocket_url %}
-{% include "chat/components/chat_overlay.html" %}
 {% endblock %}
 {% block page_js %}
 {{ signup_data|json_script:'signup-data' }}
 {% vite_asset 'assets/javascript/app.js' %}
-{% vite_asset 'assets/javascript/chat/ws_initialize.ts' %}
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const start = new Date("{{ start|escapejs }}");

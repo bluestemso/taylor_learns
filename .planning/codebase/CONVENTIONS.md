@@ -27,7 +27,7 @@
 - Use Ruff as the canonical formatter and linter configuration source from `pyproject.toml`.
 - Keep Python line length at 120 and indentation width at 4 as defined in `pyproject.toml`.
 - Use double quotes for Python strings per Ruff format settings in `pyproject.toml`.
-- Use semicolon-terminated statements and 2-space indentation for JS/TS to match current assets (examples: `assets/javascript/chat/ws_initialize.ts`, `assets/javascript/api.js`).
+- Use semicolon-terminated statements and 2-space indentation for JS/TS to match current assets (examples: `assets/javascript/site.js`, `assets/javascript/api.js`).
 
 **Linting:**
 - Run Ruff checks and auto-fixes with `ruff check --fix` and `ruff format` via `Makefile` targets `ruff-lint` and `ruff-format`.
@@ -39,11 +39,11 @@
 **Order:**
 1. Python standard library imports first (examples: `json`, `tempfile` in `apps/gadgets/sync.py`).
 2. Third-party imports second (examples: `httpx`, `django.*`, `markdown`, `nh3` in `apps/gadgets/sync.py` and `apps/web/templatetags/markdown_tags.py`).
-3. Local app imports last, then explicit relative imports where appropriate (examples: `from apps.chat.models import Chat` in `apps/chat/views.py`, `from .gadgets import get_gadgets_url` in `apps/web/views.py`).
+3. Local app imports last, then explicit relative imports where appropriate (examples: `from apps.content.models import BlogIndexPage` in `apps/web/views.py`, `from .gadgets import get_gadgets_url` in `apps/web/views.py`).
 
 **Path Aliases:**
 - Use Vite alias `@` mapped to `assets/javascript` for frontend imports, as declared in `vite.config.ts`.
-- Use Django app absolute imports under `apps.` for cross-app Python imports (examples: `apps/users/forms.py`, `apps/chat/views.py`).
+- Use Django app absolute imports under `apps.` for cross-app Python imports (examples: `apps/users/forms.py`, `apps/dashboard/views.py`).
 
 ## Error Handling
 

@@ -134,8 +134,6 @@ PROJECT_APPS = [
     "apps.gadgets.apps.GadgetsConfig",
     "apps.bluesky.apps.BlueskyConfig",
     "apps.web",
-    "apps.chat",
-    "apps.ai.apps.AiConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS + WAGTAIL_APPS
@@ -229,7 +227,6 @@ TEMPLATES = [
                 "apps.web.context_processors.project_meta",
                 # this line can be removed if not using google analytics
                 "apps.web.context_processors.google_analytics_id",
-                "apps.chat.context_processors.chat_websocket_url",
             ],
             "loaders": _DEFAULT_LOADERS if DEBUG else _CACHED_LOADERS,
             "builtins": [
@@ -620,24 +617,6 @@ GOOGLE_ANALYTICS_ID = env("GOOGLE_ANALYTICS_ID", default="")
 # more here: https://daisyui.com/docs/themes/
 LIGHT_THEME = "emerald"
 DARK_THEME = "forest"
-
-
-# AI Chat Setup
-OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
-# LiteLLM models
-# See:
-# * https://docs.litellm.ai/docs/providers
-# * https://docs.litellm.ai/docs/set_keys#litellm-variables
-LLM_MODELS = {
-    "gpt-5-nano": {"api_key": env("OPENAI_API_KEY", default="")},
-    "gpt-4o": {"api_key": env("OPENAI_API_KEY", default="")},
-    "ollama_chat/llama3": {"api_base": env("OLLAMA_API_BASE", default="http://localhost:11434")},
-}
-DEFAULT_LLM_MODEL = env("DEFAULT_LLM_MODEL", default="gpt-4o")
-# see: https://ai.pydantic.dev/models/overview/ for model options
-DEFAULT_AGENT_MODEL = env("DEFAULT_AGENT_MODEL", default="openai:gpt-4o")
-if DEFAULT_LLM_MODEL not in LLM_MODELS:
-    raise ValueError(f"DEFAULT_LLM_MODEL {DEFAULT_LLM_MODEL} not found in LLM_MODELS")
 
 
 # Sentry setup

@@ -30,9 +30,6 @@ env:
     - SENTRY_DSN
     - TURNSTILE_KEY
     - TURNSTILE_SECRET
-    - DEFAULT_AGENT_MODEL
-    - DEFAULT_LLM_MODEL
-    - OPENAI_API_KEY
 
 # https://kamal-deploy.org/docs/configuration#using-different-roles-for-servers
 servers:

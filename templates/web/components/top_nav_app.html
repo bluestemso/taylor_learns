@@ -6,17 +6,11 @@
 <a class="ei-mono ei-link {% if active_tab == 'dashboard' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
   {% translate "Dashboard" %}
 </a>
-<a class="ei-mono ei-link {% if active_tab == 'ai-chat' %}ei-link-active{% endif %}" href="{% url 'chat:chat_home' %}">
-  {% translate "AI Chat" %}
-</a>
 {% endblock %}
 
 {% block mobile_nav %}
 {{ block.super }}
 <a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if active_tab == 'dashboard' %}ei-link-active{% endif %}" href="{% url 'web:home' %}">
   {% translate "Dashboard" %}
-</a>
-<a class="ei-mono ei-link border-b border-[var(--ei-border)] px-2 py-2 {% if active_tab == 'ai-chat' %}ei-link-active{% endif %}" href="{% url 'chat:chat_home' %}">
-  {% translate "AI Chat" %}
 </a>
 {% endblock %}

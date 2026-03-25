@@ -4,26 +4,10 @@
 
 ## APIs & External Services
 
-**AI & Model Providers:**
-- OpenAI models through LiteLLM routing - powers chat completions and agents
-  - SDK/Client: `litellm`, `openai`, `pydantic-ai` declared in `pyproject.toml`
-  - Auth: `OPENAI_API_KEY` in `taylor_learns/settings.py`
-- Optional local Ollama endpoint - alternate model backend
-  - SDK/Client: LiteLLM provider mapping in `taylor_learns/settings.py`
-  - Auth: no token required by default; endpoint configured by `OLLAMA_API_BASE`
-
 **Source Code Discovery/Sync:**
 - GitHub REST API - discovers and syncs gadget repos in `apps/gadgets/sync.py`
   - SDK/Client: `httpx.Client` with `base_url="https://api.github.com"`
   - Auth: `GADGETS_GITHUB_TOKEN` in `taylor_learns/settings.py`
-
-**Weather & Geocoding:**
-- OpenStreetMap Nominatim - geocoding in `apps/ai/tools/weather.py`
-  - SDK/Client: `requests`
-  - Auth: none detected
-- Open-Meteo API - weather lookup in `apps/ai/tools/weather.py`
-  - SDK/Client: `httpx.AsyncClient`
-  - Auth: none detected
 
 **Human Verification:**
 - Cloudflare Turnstile verify API - signup captcha validation in `apps/users/forms.py`
@@ -77,7 +61,6 @@
 - Core app/security: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS` in `taylor_learns/settings.py`
 - Database/cache: `DATABASE_URL` (or `DJANGO_DATABASE_*`), `REDIS_URL`/`REDIS_TLS_URL` in `taylor_learns/settings.py`
 - Auth/integrations: `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET_ID`, `TURNSTILE_KEY`, `TURNSTILE_SECRET`, `GADGETS_GITHUB_TOKEN`
-- AI: `OPENAI_API_KEY`, `DEFAULT_LLM_MODEL`, `DEFAULT_AGENT_MODEL`, `OLLAMA_API_BASE`
 - Storage/observability: `USE_S3_MEDIA`, `AWS_*`, `SENTRY_DSN`
 
 **Secrets location:**

@@ -28,7 +28,6 @@ export default defineConfig({
         'site-tailwind-css': path.resolve(__dirname, './assets/styles/site-tailwind.css'),
         'site': path.resolve(__dirname, './assets/javascript/site.js'),
         'app': path.resolve(__dirname, './assets/javascript/app.js'),
-        'chat-ws-initialize': path.resolve(__dirname, './assets/javascript/chat/ws_initialize.ts'),
       },
       output: {
         // Use hashed entry names to prevent stale browser/CDN caches
