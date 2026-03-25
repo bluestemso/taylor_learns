@@ -173,20 +173,51 @@ jobs:
             ghcr.io/bluestemso/taylor_learns:latest
             ghcr.io/bluestemso/taylor_learns:${{ needs.gate.outputs.target_sha }}
 
-      - name: Trigger Coolify deployment webhook
+      - name: Trigger Coolify deployment
         env:
           COOLIFY_DEPLOY_WEBHOOK_URL: ${{ secrets.COOLIFY_DEPLOY_WEBHOOK_URL }}
+          COOLIFY_BASE_URL: ${{ secrets.COOLIFY_BASE_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_RESOURCE_UUIDS: ${{ secrets.COOLIFY_RESOURCE_UUIDS }}
         run: |
-          if [ -z "$COOLIFY_DEPLOY_WEBHOOK_URL" ]; then
-            echo "Missing required secret: COOLIFY_DEPLOY_WEBHOOK_URL"
-            exit 1
-          fi
+          set -euo pipefail
 
           if [ -z "$COOLIFY_API_TOKEN" ]; then
             echo "Missing required secret: COOLIFY_API_TOKEN"
             exit 1
           fi
 
-          curl --fail --show-error --silent --request GET "$COOLIFY_DEPLOY_WEBHOOK_URL" \
+          if [ -n "${COOLIFY_RESOURCE_UUIDS:-}" ]; then
+            if [ -z "${COOLIFY_BASE_URL:-}" ]; then
+              echo "Missing required secret: COOLIFY_BASE_URL (required when COOLIFY_RESOURCE_UUIDS is set)"
+              exit 1
+            fi
+
+            base_url="${COOLIFY_BASE_URL%/}"
+            IFS=',' read -ra resource_uuids <<< "$COOLIFY_RESOURCE_UUIDS"
+
+            for raw_uuid in "${resource_uuids[@]}"; do
+              uuid="${raw_uuid//[[:space:]]/}"
+              if [ -z "$uuid" ]; then
+                continue
+              fi
+
+              echo "Queueing Coolify deploy for resource: $uuid"
+              curl --fail --show-error --silent \
+                --request GET "${base_url}/api/v1/deploy?uuid=${uuid}" \
+                --header "Authorization: Bearer $COOLIFY_API_TOKEN"
+              echo
+            done
+
+            exit 0
+          fi
+
+          if [ -z "${COOLIFY_DEPLOY_WEBHOOK_URL:-}" ]; then
+            echo "Missing required secret: COOLIFY_DEPLOY_WEBHOOK_URL"
+            echo "Or set COOLIFY_RESOURCE_UUIDS + COOLIFY_BASE_URL to deploy specific resources via API."
+            exit 1
+          fi
+
+          curl --fail --show-error --silent \
+            --request GET "$COOLIFY_DEPLOY_WEBHOOK_URL" \
             --header "Authorization: Bearer $COOLIFY_API_TOKEN"
