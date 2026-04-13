@@ -86,7 +86,7 @@ dev = [
     "django-debug-toolbar",
     "pre-commit",
     "ruff>=0.13.1",
-    "pegasus-cli>=0.8",
+    "pegasus-cli>=0.12",
 ]
 prod = [
     "gunicorn",
