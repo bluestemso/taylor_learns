@@ -68,7 +68,7 @@ dependencies = [
     "psycopg2-binary",
     "pyasn1>=0.6.3",
     "pyopenssl>=26.0.0",
-    "protobuf>=6.33.5",
+    "protobuf>=7.34.1",
     "python-multipart>=0.0.22",
     "redis",
     "requests",
