@@ -72,7 +72,7 @@ dependencies = [
     "python-multipart>=0.0.22",
     "redis",
     "requests",
-    "sentry-sdk[django]>=2.33.2",
+    "sentry-sdk[django]>=2.57.0",
     "sqlparse>=0.5.4",
     "urllib3>=2.6.3",
     "virtualenv>=20.36.1",
