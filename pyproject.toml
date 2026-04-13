@@ -75,7 +75,7 @@ dependencies = [
     "sentry-sdk[django]>=2.33.2",
     "sqlparse>=0.5.4",
     "urllib3>=2.6.3",
-    "virtualenv>=20.36.1",
+    "virtualenv>=21.2.1",
     "wagtail>=7.2.3",
     "whitenoise[brotli]",
 ]
