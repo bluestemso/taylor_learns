@@ -73,7 +73,7 @@ dependencies = [
     "redis",
     "requests",
     "sentry-sdk[django]>=2.33.2",
-    "sqlparse>=0.5.4",
+    "sqlparse>=0.5.5",
     "urllib3>=2.6.3",
     "virtualenv>=20.36.1",
     "wagtail>=7.2.3",
