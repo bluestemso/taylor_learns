@@ -69,7 +69,7 @@ dependencies = [
     "pyasn1>=0.6.3",
     "pyopenssl>=26.0.0",
     "protobuf>=6.33.5",
-    "python-multipart>=0.0.22",
+    "python-multipart>=0.0.26",
     "redis",
     "requests",
     "sentry-sdk[django]>=2.33.2",
