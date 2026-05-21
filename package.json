@@ -30,7 +30,7 @@
     "daisyui": "^5.4.7",
     "htmx-ext-ws": "^2.0.4",
     "htmx.org": "^2.0.8",
-    "js-cookie": "^3.0.5",
+    "js-cookie": "^3.0.7",
     "tailwindcss": "^4.1.17"
   }
 }
