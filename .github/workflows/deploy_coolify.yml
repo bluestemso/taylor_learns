@@ -14,7 +14,7 @@ concurrency:
 jobs:
   gate:
     name: Gate deploy on required workflows
-    if: github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -181,43 +181,34 @@ jobs:
           COOLIFY_RESOURCE_UUIDS: ${{ secrets.COOLIFY_RESOURCE_UUIDS }}
         run: |
           set -euo pipefail
+          : "${COOLIFY_API_TOKEN:?Missing Coolify deploy credential}"
 
-          if [ -z "$COOLIFY_API_TOKEN" ]; then
-            echo "Missing required secret: COOLIFY_API_TOKEN"
-            exit 1
-          fi
-
-          if [ -n "${COOLIFY_RESOURCE_UUIDS:-}" ]; then
-            if [ -z "${COOLIFY_BASE_URL:-}" ]; then
-              echo "Missing required secret: COOLIFY_BASE_URL (required when COOLIFY_RESOURCE_UUIDS is set)"
+          if [[ -n "$COOLIFY_RESOURCE_UUIDS" ]]; then
+            : "${COOLIFY_BASE_URL:?Missing Coolify base URL}"
+            ids="${COOLIFY_RESOURCE_UUIDS//[[:space:]]/}"
+            if [[ ! "$ids" =~ ^[A-Za-z0-9_-]+(,[A-Za-z0-9_-]+)*$ ]]; then
+              echo "The Coolify resource list is invalid." >&2
               exit 1
             fi
-
-            base_url="${COOLIFY_BASE_URL%/}"
-            IFS=',' read -ra resource_uuids <<< "$COOLIFY_RESOURCE_UUIDS"
-
-            for raw_uuid in "${resource_uuids[@]}"; do
-              uuid="${raw_uuid//[[:space:]]/}"
-              if [ -z "$uuid" ]; then
-                continue
-              fi
-
-              echo "Queueing Coolify deploy for resource: $uuid"
-              curl --fail --show-error --silent \
-                --request GET "${base_url}/api/v1/deploy?uuid=${uuid}" \
-                --header "Authorization: Bearer $COOLIFY_API_TOKEN"
-              echo
-            done
-
-            exit 0
+            endpoint="${COOLIFY_BASE_URL%/}/api/v1/deploy?uuid=$ids"
+          else
+            endpoint="${COOLIFY_DEPLOY_WEBHOOK_URL:?Missing Coolify deployment URL}"
           fi
 
-          if [ -z "${COOLIFY_DEPLOY_WEBHOOK_URL:-}" ]; then
-            echo "Missing required secret: COOLIFY_DEPLOY_WEBHOOK_URL"
-            echo "Or set COOLIFY_RESOURCE_UUIDS + COOLIFY_BASE_URL to deploy specific resources via API."
-            exit 1
-          fi
+          case "$endpoint" in
+            https://coolify.bluestem.solutions/api/v1/deploy\?*) ;;
+            *) echo "The Coolify endpoint must use the approved HTTPS deployment route." >&2; exit 1 ;;
+          esac
 
-          curl --fail --show-error --silent \
-            --request GET "$COOLIFY_DEPLOY_WEBHOOK_URL" \
-            --header "Authorization: Bearer $COOLIFY_API_TOKEN"
+          response=$(curl --proto '=https' --fail --silent --show-error \
+            --connect-timeout 10 --max-time 60 --request POST \
+            --header "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            --header 'Accept: application/json' "$endpoint")
+          jq -e '(.deployments | type == "array" and length > 0)
+            and all(.deployments[]; (.deployment_uuid | type == "string" and length > 0))' \
+            <<< "$response" >/dev/null
+          if [[ -n "$COOLIFY_RESOURCE_UUIDS" ]]; then
+            jq -e --arg ids "$ids" '([.deployments[].resource_uuid] | sort) == ($ids | split(",") | sort)' \
+              <<< "$response" >/dev/null
+          fi
+          jq -r '.deployments[] | "Queued deployment " + .deployment_uuid' <<< "$response"
