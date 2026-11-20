@@ -1,9 +1,9 @@
-# syntax = docker/dockerfile:1.5
+# syntax = docker/dockerfile:1.5@sha256:39b85bbfa7536a5feceb7372a0817649ecb2724562a38360f4d6a7782a409b14
 # Multi-stage Docker buildfile
 # See https://docs.docker.com/build/building/multi-stage/
 
 # Stage 1: Build the python dependencies
-FROM python:3.12-slim-bookworm as build-python
+FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df as build-python
 
 # This approximately follows this guide: https://hynek.me/articles/docker-uv/
 # Which creates a standalone environment with the dependencies.
@@ -16,12 +16,15 @@ ENV UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=never \
     UV_PROJECT_ENVIRONMENT=/code/.venv
 
-COPY --from=ghcr.io/astral-sh/uv:0.5.2 /uv /uvx /bin/
+COPY .github/release-age/uv-bootstrap.txt /tmp/uv-bootstrap.txt
+RUN python -m pip install --no-deps --only-binary=:all: --require-hashes -r /tmp/uv-bootstrap.txt
 
 # Since there's no point in shipping lock files, we move them
 # into a directory that is NOT copied into the runtime image.
 # The trailing slash makes COPY create `/_lock/` automagically.
-COPY pyproject.toml uv.lock /_lock/
+COPY pyproject.toml uv.lock package-lock.json /_lock/
+COPY .github/release-age/check-lock.py /_lock/check-lock.py
+RUN python /_lock/check-lock.py --local-package api-client /_lock/uv.lock /_lock/package-lock.json
 
 # Synchronize dependencies.
 # This layer is cached until uv.lock or pyproject.toml change.
@@ -33,12 +36,13 @@ RUN --mount=type=cache,target=/root/.cache \
       --group prod
 
 # Stage 2: Build the front end files
-FROM node:22-bookworm-slim AS build-node
+FROM node:22-bookworm-slim@sha256:e9f565d32859f0cbfb52125eafe8be39390f24dac302dc3cdf566e8ba3ab21ee AS build-node
 WORKDIR /code
+COPY --from=build-python /_lock/package-lock.json /code/package-lock.json
 COPY *.json *.js /code/
 COPY assets /code/assets/
 COPY api-client /code/api-client/
-RUN npm install
+RUN npm ci
 
 # build needs everything because it needs to be able to do the tailwind class detection / purging stuff
 COPY . /code
@@ -48,14 +52,18 @@ RUN npm run build
 # This copies the python dependencies from the first stage
 # and the front end files from the second stage.
 # Add any runtime OS dependencies here.
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df
 ENV PYTHONUNBUFFERED=1
 ENV DEBUG=0
 
+# The production builder changes this cache key daily. Snapshot selection uses UTC inside the build.
+ARG APT_CACHE_DAY=manual
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
-    apt-get update \
+    SNAPSHOT="$(date -u -d '3 days ago' +%Y%m%dT000000Z)" \
+    && sed -Ei "s|https?://deb.debian.org/debian-security|https://snapshot.debian.org/archive/debian-security/${SNAPSHOT}|; s|https?://deb.debian.org/debian$|https://snapshot.debian.org/archive/debian/${SNAPSHOT}|; /^Types: deb$/a Check-Valid-Until: no" /etc/apt/sources.list.d/debian.sources \
+    && apt-get update \
     && apt-get install -y \
     curl \
     # psycopg2 dependencies

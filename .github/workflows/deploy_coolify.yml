@@ -104,6 +104,7 @@ jobs:
       - name: Determine cache export policy
         id: cache-policy
         run: |
+          echo "apt_cache_day=$(date -u +%F)" >> "$GITHUB_OUTPUT"
           if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
             changed_files="$(git diff --name-only HEAD^ HEAD)"
           else
@@ -152,6 +153,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.web
+          build-args: APT_CACHE_DAY=${{ steps.cache-policy.outputs.apt_cache_day }}
           platforms: linux/arm64
           push: true
           cache-from: type=gha,scope=taylor-learns-web-arm64
@@ -166,6 +168,7 @@ jobs:
         with:
           context: .
           file: Dockerfile.web
+          build-args: APT_CACHE_DAY=${{ steps.cache-policy.outputs.apt_cache_day }}
           platforms: linux/arm64
           push: true
           cache-from: type=gha,scope=taylor-learns-web-arm64
