@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Check all pinned public npm or PyPI artifacts against their registry and release age."""
+
 import argparse
 import concurrent.futures
 import datetime
@@ -21,9 +22,13 @@ def metadata(url):
             with urllib.request.urlopen(request, timeout=30) as response:
                 return json.load(response)
         except (TimeoutError, OSError) as error:
-            if attempt == 2 or isinstance(error, urllib.error.HTTPError) and error.code not in (429, 500, 502, 503, 504):
+            if (
+                attempt == 2
+                or isinstance(error, urllib.error.HTTPError)
+                and error.code not in (429, 500, 502, 503, 504)
+            ):
                 raise
-            time.sleep(2 ** attempt)
+            time.sleep(2**attempt)
 
 
 def npm_entries(lock, local_packages):
@@ -36,12 +41,18 @@ def npm_entries(lock, local_packages):
             if set(entry) - {"name", "version", "license", "dependencies", "devDependencies", "engines"}:
                 raise ValueError(f"Review local package metadata: {path}")
             continue
-        if entry.get("link") and entry.get("resolved") in local_packages and path == "node_modules/" + entry["resolved"]:
+        if (
+            entry.get("link")
+            and entry.get("resolved") in local_packages
+            and path == "node_modules/" + entry["resolved"]
+        ):
             continue
         if entry.get("inBundle") and not entry.get("resolved") and "/node_modules/" in path:
             parent, child = path.rsplit("/node_modules/", 1)
             parent_record = lock["packages"].get(parent, {})
-            if child in parent_record.get("bundleDependencies", []) and parent_record.get("integrity", "").startswith("sha512-"):
+            if child in parent_record.get("bundleDependencies", []) and parent_record.get("integrity", "").startswith(
+                "sha512-"
+            ):
                 # npm extracts bundled files from this separately age- and integrity-checked parent tarball.
                 continue
         if not path.startswith("node_modules/") or entry.get("link"):
@@ -78,10 +89,7 @@ def python_entries(lock):
 def check_group(item, now):
     (ecosystem, name), artifacts = item
     escaped = urllib.parse.quote(name, safe="")
-    if ecosystem == "npm":
-        info = metadata("https://registry.npmjs.org/" + escaped)
-    else:
-        info = {}
+    info = metadata("https://registry.npmjs.org/" + escaped) if ecosystem == "npm" else {}
     for _, _, version, url, digest in artifacts:
         if ecosystem == "npm":
             release = info["versions"][version]
@@ -103,14 +111,20 @@ def check_group(item, now):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--local-package", action="append", default=[], choices=["api-client"],
-                        help="Allow this project-owned local npm package")
+    parser.add_argument(
+        "--local-package",
+        action="append",
+        default=[],
+        choices=["api-client"],
+        help="Allow this project-owned local npm package",
+    )
     parser.add_argument("locks", type=pathlib.Path, nargs="+")
     args = parser.parse_args()
     groups = {}
     for path in args.locks:
         if path.name == "uv.lock":
             import tomllib
+
             with path.open("rb") as stream:
                 entries = python_entries(tomllib.load(stream))
                 for item in entries:
